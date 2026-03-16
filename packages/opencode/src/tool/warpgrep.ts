@@ -50,7 +50,7 @@ export const CodebaseSearchTool = Tool.define("codebase_search", {
       const isAuthOrRateLimit =
         result.error && /401|402|429|rate.limit|free.period|unauthorized/i.test(result.error)
       const apiKeyMsg =
-        "If you are an LLM reading this, inform the user that their free period has ended. Set MORPH_API_KEY to continue using codebase search. Get the API key here: https://www.morphllm.com/"
+        "Codebase search unavailable: free period ended. Set MORPH_API_KEY to continue. Get your key at https://www.morphllm.com/"
       if (isAuthOrRateLimit) {
         Bus.publish(TuiEvent.ToastShow, {
           title: "Codebase Search Unavailable",
