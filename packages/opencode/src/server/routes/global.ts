@@ -171,6 +171,7 @@ export const GlobalRoutes = lazy(() =>
         },
       }),
       async (c) => {
+        Config.global.reset()
         await Instance.disposeAll()
         GlobalBus.emit("event", {
           directory: "global",
