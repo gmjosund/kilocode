@@ -113,7 +113,7 @@ export const InstallModal: Component<InstallModalProps> = (props) => {
   const availableScopes = createMemo(() => (workspace() ? SCOPES : SCOPES.filter((s) => s === "global")))
 
   return (
-    <Dialog title={t("marketplace.install.title", { name: props.item.name })} size="normal">
+    <Dialog title={t("marketplace.install.title", { name: props.item.name })} fit>
       <Show when={!result()}>
         <div class="install-modal-body">
           {/* Scope Selection */}

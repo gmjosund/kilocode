@@ -25,7 +25,7 @@ export const RemoveDialog: Component<RemoveDialogProps> = (props) => {
   )
 
   return (
-    <Dialog title={t("marketplace.remove.title", { name: props.item.name })}>
+    <Dialog title={t("marketplace.remove.title", { name: props.item.name })} fit>
       <div class="install-modal-body">
         <p>{t("marketplace.remove.confirm", { type: label(), scope: scopeLabel() })}</p>
       </div>
