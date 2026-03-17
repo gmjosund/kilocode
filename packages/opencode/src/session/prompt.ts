@@ -42,6 +42,8 @@ import { TaskTool } from "@/tool/task"
 import { Tool } from "@/tool/tool"
 import { PermissionNext } from "@/permission/next"
 import { SessionStatus } from "./status"
+import { Database, eq } from "../storage/db" // kilocode_change
+import { SessionTable } from "./session.sql" // kilocode_change
 import { LLM } from "./llm"
 import { iife } from "@/util/iife"
 import { Shell } from "@/shell/shell"
@@ -290,6 +292,14 @@ export namespace SessionPrompt {
     match.abort.abort()
     delete s[sessionID]
     SessionStatus.set(sessionID, { type: "idle" })
+    // kilocode_change start - cancel running child sessions (sub-agents)
+    const kids = Database.use((db) =>
+      db.select({ id: SessionTable.id }).from(SessionTable).where(eq(SessionTable.parent_id, sessionID)).all(),
+    )
+    for (const kid of kids) {
+      if (s[kid.id]) cancel(kid.id)
+    }
+    // kilocode_change end
     return
   }
 
