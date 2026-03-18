@@ -85,8 +85,10 @@ export const NewWorktreeDialog: Component<{ onClose: () => void; defaultBaseBran
 
   const imageAttach = useImageAttachments()
 
-  // Save session model so we can restore it when the dialog closes.
-  // We temporarily call session.selectModel() so ThinkingSelector picks up variants.
+  // Save whether a model override existed before opening the dialog.
+  // We temporarily call session.selectModel() so ThinkingSelector picks up variants,
+  // but must restore the original state on close to avoid creating a phantom override.
+  const hadOverride = session.hasModelOverride()
   const savedModel = session.selected()
 
   onMount(() => {
@@ -95,7 +97,7 @@ export const NewWorktreeDialog: Component<{ onClose: () => void; defaultBaseBran
   })
 
   onCleanup(() => {
-    if (savedModel) session.selectModel(savedModel.providerID, savedModel.modelID)
+    if (hadOverride && savedModel) session.selectModel(savedModel.providerID, savedModel.modelID)
     else session.clearModelOverride()
   })
 
