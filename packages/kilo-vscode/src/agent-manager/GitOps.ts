@@ -357,6 +357,7 @@ export class GitOps {
           env: options?.env,
           encoding: "utf8",
           maxBuffer: 64 * 1024 * 1024,
+          windowsHide: true,
         },
         (error, stdout, stderr) => {
           if (!error) {

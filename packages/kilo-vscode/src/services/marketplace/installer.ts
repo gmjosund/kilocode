@@ -152,7 +152,7 @@ export class MarketplaceInstaller {
       await fs.writeFile(tarball, buffer)
 
       await fs.mkdir(staging, { recursive: true })
-      await exec("tar", ["-xzf", tarball, "--strip-components=1", "-C", staging])
+      await exec("tar", ["-xzf", tarball, "--strip-components=1", "-C", staging], { windowsHide: true })
 
       const escaped = await findEscapedPaths(staging)
       if (escaped.length > 0) {

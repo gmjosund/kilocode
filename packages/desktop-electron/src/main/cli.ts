@@ -84,7 +84,7 @@ export async function installCli(): Promise<string> {
   writeFileSync(tempScript, script, "utf8")
   chmodSync(tempScript, 0o755)
 
-  const cmd = spawn(tempScript, ["--binary", sidecar], { stdio: "pipe" })
+  const cmd = spawn(tempScript, ["--binary", sidecar], { stdio: "pipe", windowsHide: true })
   return await new Promise<string>((resolve, reject) => {
     cmd.on("exit", (code: number | null) => {
       try {
@@ -107,7 +107,7 @@ export function syncCli() {
 
   let version = ""
   try {
-    version = execFileSync(installPath, ["--version"]).toString().trim()
+    version = execFileSync(installPath, ["--version"], { windowsHide: true }).toString().trim()
   } catch {
     return
   }

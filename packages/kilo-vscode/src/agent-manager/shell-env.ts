@@ -73,6 +73,7 @@ export async function getShellEnvironment(): Promise<Record<string, string>> {
     const { stdout } = await run(shell, ["-lc", "env"], {
       timeout: 10_000,
       env: { ...process.env, HOME: os.homedir() },
+      windowsHide: true,
     })
 
     const env = parseEnvOutput(stdout)
@@ -127,7 +128,7 @@ export async function execWithShellEnv(
   options?: Omit<ExecFileOptionsWithStringEncoding, "encoding">,
 ): Promise<{ stdout: string; stderr: string }> {
   try {
-    return await run(cmd, args, { ...options, encoding: "utf8" })
+    return await run(cmd, args, { ...options, encoding: "utf8", windowsHide: true })
   } catch (error) {
     if (
       process.platform !== "darwin" ||
@@ -141,13 +142,13 @@ export async function execWithShellEnv(
     // Already resolved and PATH was actually changed — no point retrying resolution.
     // Just retry with the (already-patched) process.env.
     if (fixed) {
-      return await run(cmd, args, { ...options, encoding: "utf8" })
+      return await run(cmd, args, { ...options, encoding: "utf8", windowsHide: true })
     }
 
     // If another caller is already resolving, wait for it then retry.
     if (fixing) {
       await fixing
-      return await run(cmd, args, { ...options, encoding: "utf8" })
+      return await run(cmd, args, { ...options, encoding: "utf8", windowsHide: true })
     }
 
     console.log(`[shell-env] "${cmd}" not found, resolving shell environment`)
@@ -159,7 +160,7 @@ export async function execWithShellEnv(
       fixing = null
     }
 
-    return await run(cmd, args, { ...options, encoding: "utf8" })
+    return await run(cmd, args, { ...options, encoding: "utf8", windowsHide: true })
   }
 }
 

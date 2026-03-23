@@ -21,11 +21,11 @@ export function wslPath(path: string, mode: "windows" | "linux" | null): string 
     if (path.startsWith("~")) {
       const suffix = path.slice(1)
       const cmd = `wslpath ${flag} \"$HOME${suffix.replace(/\"/g, '\\"')}\"`
-      const output = execFileSync("wsl", ["-e", "sh", "-lc", cmd])
+      const output = execFileSync("wsl", ["-e", "sh", "-lc", cmd], { windowsHide: true })
       return output.toString().trim()
     }
 
-    const output = execFileSync("wsl", ["-e", "wslpath", flag, path])
+    const output = execFileSync("wsl", ["-e", "wslpath", flag, path], { windowsHide: true })
     return output.toString().trim()
   } catch (error) {
     throw new Error(`Failed to run wslpath: ${String(error)}`)
@@ -51,7 +51,7 @@ function checkMacosApp(appName: string) {
 function resolveWindowsAppPath(appName: string): string | null {
   let output: string
   try {
-    output = execFileSync("where", [appName]).toString()
+    output = execFileSync("where", [appName], { windowsHide: true }).toString()
   } catch {
     return null
   }
