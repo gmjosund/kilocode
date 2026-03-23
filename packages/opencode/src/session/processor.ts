@@ -49,6 +49,9 @@ export namespace SessionProcessor {
         needsCompaction = false
         const shouldBreak = (await Config.get()).experimental?.continue_loop_on_deny !== true
         while (true) {
+          // kilocode_change start - track parts created during this attempt for cleanup on retry
+          const pending: string[] = []
+          // kilocode_change end
           try {
             let currentText: MessageV2.TextPart | undefined
             let reasoningMap: Record<string, MessageV2.ReasoningPart> = {}
@@ -78,6 +81,7 @@ export namespace SessionProcessor {
                   }
                   reasoningMap[value.id] = reasoningPart
                   await Session.updatePart(reasoningPart)
+                  pending.push(reasoningPart.id) // kilocode_change
                   break
 
                 case "reasoning-delta":
@@ -125,6 +129,7 @@ export namespace SessionProcessor {
                     },
                   })
                   toolcalls[value.id] = part as MessageV2.ToolPart
+                  pending.push(part.id) // kilocode_change
                   break
 
                 case "tool-input-delta":
@@ -232,17 +237,20 @@ export namespace SessionProcessor {
                 case "error":
                   throw value.error
 
-                case "start-step":
+                case "start-step": {
                   stepStart = performance.now() // kilocode_change
                   snapshot = await Snapshot.track()
+                  const stepID = Identifier.ascending("part")
                   await Session.updatePart({
-                    id: Identifier.ascending("part"),
+                    id: stepID,
                     messageID: input.assistantMessage.id,
                     sessionID: input.sessionID,
                     snapshot,
                     type: "step-start",
                   })
+                  pending.push(stepID) // kilocode_change
                   break
+                }
 
                 case "finish-step":
                   const usage = Session.getUsage({
@@ -323,6 +331,7 @@ export namespace SessionProcessor {
                     metadata: value.providerMetadata,
                   }
                   await Session.updatePart(currentText)
+                  pending.push(currentText.id) // kilocode_change
                   break
 
                 case "text-delta":
@@ -388,6 +397,17 @@ export namespace SessionProcessor {
             } else {
               const retry = SessionRetry.retryable(error)
               if (retry !== undefined) {
+                // kilocode_change start - remove partial parts from failed attempt before retrying
+                // Without this, the partial assistant message stays in the conversation and
+                // causes "does not support assistant message prefill" errors on retry
+                for (const id of pending) {
+                  await Session.removePart({
+                    sessionID: input.sessionID,
+                    messageID: input.assistantMessage.id,
+                    partID: id,
+                  })
+                }
+                // kilocode_change end
                 attempt++
                 const delay = SessionRetry.delay(attempt, error.name === "APIError" ? error : undefined)
                 SessionStatus.set(input.sessionID, {

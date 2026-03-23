@@ -2737,3 +2737,126 @@ describe("ProviderTransform.variants", () => {
   })
 })
 // kilocode_change end
+
+// kilocode_change start - tests for assistant prefill stripping
+describe("ProviderTransform.supportsAssistantPrefill", () => {
+  const model = (apiId: string) =>
+    ({
+      api: { id: apiId },
+    }) as any
+
+  test("returns false for claude opus 4.6", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-opus-4.6-20250601"))).toBe(false)
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-opus-4-6-20250601"))).toBe(false)
+  })
+
+  test("returns false for claude sonnet 4.6", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-sonnet-4.6-20250514"))).toBe(false)
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-sonnet-4-6-20250514"))).toBe(false)
+  })
+
+  test("returns false for claude sonnet 4.5", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-sonnet-4.5-20250514"))).toBe(false)
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-sonnet-4-5-20250514"))).toBe(false)
+  })
+
+  test("returns true for claude sonnet 4", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-sonnet-4-20250514"))).toBe(true)
+  })
+
+  test("returns true for claude 3.5 sonnet", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("claude-3-5-sonnet-20241022"))).toBe(true)
+  })
+
+  test("returns true for non-claude models", () => {
+    expect(ProviderTransform.supportsAssistantPrefill(model("gpt-4"))).toBe(true)
+    expect(ProviderTransform.supportsAssistantPrefill(model("gemini-3-pro"))).toBe(true)
+  })
+})
+
+describe("ProviderTransform.message - strip trailing assistant for no-prefill models", () => {
+  const opus46 = {
+    id: "anthropic/claude-opus-4.6",
+    providerID: "anthropic",
+    api: {
+      id: "claude-opus-4.6-20250601",
+      url: "https://api.anthropic.com",
+      npm: "@ai-sdk/anthropic",
+    },
+    name: "Claude Opus 4.6",
+    capabilities: {
+      temperature: true,
+      reasoning: true,
+      attachment: true,
+      toolcall: true,
+      input: { text: true, audio: false, image: true, video: false, pdf: true },
+      output: { text: true, audio: false, image: false, video: false, pdf: false },
+      interleaved: false,
+    },
+    cost: { input: 0.015, output: 0.075, cache: { read: 0.0015, write: 0.01875 } },
+    limit: { context: 200000, output: 32000 },
+    status: "active",
+    options: {},
+    headers: {},
+  } as any
+
+  test("strips trailing assistant message for opus 4.6", () => {
+    const msgs = [
+      { role: "user", content: "Hello" },
+      { role: "assistant", content: [{ type: "text", text: "Partial response..." }] },
+    ] as any[]
+
+    const result = ProviderTransform.message(msgs, opus46, {})
+
+    expect(result).toHaveLength(1)
+    expect(result[0].role).toBe("user")
+  })
+
+  test("strips multiple trailing assistant messages", () => {
+    const msgs = [
+      { role: "user", content: "Hello" },
+      { role: "assistant", content: [{ type: "text", text: "First" }] },
+      { role: "assistant", content: [{ type: "text", text: "Second" }] },
+    ] as any[]
+
+    const result = ProviderTransform.message(msgs, opus46, {})
+
+    expect(result).toHaveLength(1)
+    expect(result[0].role).toBe("user")
+  })
+
+  test("does not strip non-trailing assistant messages", () => {
+    const msgs = [
+      { role: "user", content: "Hello" },
+      { role: "assistant", content: [{ type: "text", text: "Response" }] },
+      { role: "user", content: "Follow up" },
+    ] as any[]
+
+    const result = ProviderTransform.message(msgs, opus46, {})
+
+    expect(result).toHaveLength(3)
+    expect(result[2].role).toBe("user")
+  })
+
+  test("does not strip for models that support prefill", () => {
+    const sonnet4 = {
+      ...opus46,
+      id: "anthropic/claude-sonnet-4",
+      api: {
+        ...opus46.api,
+        id: "claude-sonnet-4-20250514",
+      },
+    }
+
+    const msgs = [
+      { role: "user", content: "Hello" },
+      { role: "assistant", content: [{ type: "text", text: "Partial response..." }] },
+    ] as any[]
+
+    const result = ProviderTransform.message(msgs, sonnet4, {})
+
+    expect(result).toHaveLength(2)
+    expect(result[1].role).toBe("assistant")
+  })
+})
+// kilocode_change end
