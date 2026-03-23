@@ -107,27 +107,20 @@ export class AutocompleteServiceManager {
 
     await this.updateGlobalContext()
     this.updateStatusBar()
-    await this.ensureInlineCompletionProviderRegistration()
+    await this.updateInlineCompletionProviderRegistration()
     this.setupSnoozeTimerIfNeeded()
   }
 
-  /**
-   * Ensure the inline completion provider registration matches the current settings.
-   * Only disposes/re-registers when the desired state actually changes, avoiding
-   * unnecessary churn that can break VS Code's provider tracking during startup races.
-   */
-  private async ensureInlineCompletionProviderRegistration() {
+  private async updateInlineCompletionProviderRegistration() {
     const shouldBeRegistered = (this.settings?.enableAutoTrigger ?? false) && !this.isSnoozed()
-    const isRegistered = this.inlineCompletionProviderDisposable !== null
 
-    // Already in the correct state — nothing to do
-    if (shouldBeRegistered === isRegistered) {
-      return
+    // First, dispose any existing registration
+    if (this.inlineCompletionProviderDisposable) {
+      this.inlineCompletionProviderDisposable.dispose()
+      this.inlineCompletionProviderDisposable = null
     }
 
     if (!shouldBeRegistered) {
-      this.inlineCompletionProviderDisposable!.dispose()
-      this.inlineCompletionProviderDisposable = null
       return
     }
 

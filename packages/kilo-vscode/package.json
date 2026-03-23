@@ -45,7 +45,13 @@
     "kilocode"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "onWebviewPanel:kilo-code.new.AgentManagerPanel",
+    "onWebviewPanel:kilo-code.new.TabPanel",
+    "onWebviewPanel:kilo-code.new.settingsPanel",
+    "onWebviewPanel:kilo-code.new.profilePanel",
+    "onWebviewPanel:kilo-code.new.marketplacePanel",
+    "onWebviewPanel:kilo-code.new.DiffViewerPanel",
+    "onWebviewPanel:kilo-code.new.SubAgentViewerPanel"
   ],
   "main": "./dist/extension.js",
   "contributes": {
