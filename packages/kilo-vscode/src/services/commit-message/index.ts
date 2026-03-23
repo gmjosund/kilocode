@@ -13,17 +13,47 @@ interface GitRepository {
 
 interface GitAPI {
   repositories: GitRepository[]
+  getRepository(uri: vscode.Uri): GitRepository | null
 }
 
 interface GitExtensionExports {
   getAPI(version: number): GitAPI
 }
 
+/**
+ * Resolve the git repository for commit message generation.
+ *
+ * When triggered from the SCM view, VS Code passes a SourceControl or
+ * SourceControlInputBox arg that carries the rootUri of the clicked
+ * repository — use getRepository() to match it.  Otherwise fall back to
+ * the active text editor's file, and finally to repositories[0].
+ */
+function resolveRepository(git: GitAPI | undefined, arg: unknown): GitRepository | undefined {
+  if (!git) return undefined
+
+  // SCM menu passes an object with rootUri (SourceControl) or a nested
+  // reference.  Try to extract a Uri we can look up.
+  const uri = (arg as any)?.rootUri ?? (arg as any)?.resourceUri
+  if (uri && git.getRepository) {
+    const match = git.getRepository(uri)
+    if (match) return match
+  }
+
+  // Fall back to the repository containing the active editor's file
+  const editor = vscode.window.activeTextEditor
+  if (editor?.document.uri.scheme === "file" && git.getRepository) {
+    const match = git.getRepository(editor.document.uri)
+    if (match) return match
+  }
+
+  return git.repositories[0]
+}
+
 export function registerCommitMessageService(
   context: vscode.ExtensionContext,
   connectionService: KiloConnectionService,
 ): vscode.Disposable[] {
-  const command = vscode.commands.registerCommand("kilo-code.new.generateCommitMessage", async () => {
+  const command = vscode.commands.registerCommand("kilo-code.new.generateCommitMessage", async (...args: any[]) => {
     const extension = vscode.extensions.getExtension<GitExtensionExports>("vscode.git")
     if (!extension) {
       vscode.window.showErrorMessage("Git extension not found")
@@ -35,7 +65,7 @@ export function registerCommitMessageService(
     }
 
     const git = extension.exports?.getAPI(1)
-    const repository = git?.repositories[0]
+    const repository = resolveRepository(git, args[0])
     if (!repository) {
       vscode.window.showErrorMessage("No Git repository found")
       return
