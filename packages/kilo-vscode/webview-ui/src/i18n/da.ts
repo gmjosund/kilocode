@@ -364,6 +364,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "Tema skiftet",
   "toast.scheme.title": "Farveskema",
@@ -1127,6 +1128,7 @@ export const dict = {
   "settings.providers.notSet": "Ikke angivet (brug serverstandard)",
   "dialog.model.notSet": "Ikke angivet",
   "profile.personalAccount": "Personlig konto",
+  "profile.switchingAccount": "Skifter konto…",
 
   // Agent Manager strings live in webview-ui/agent-manager/i18n/da.ts
 
@@ -1201,4 +1203,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Flere sessioner kører og vil blive afbrudt",
   "settings.saveBar.saveAnyway": "Gem alligevel",
   "settings.saveBar.cancel": "Annuller",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

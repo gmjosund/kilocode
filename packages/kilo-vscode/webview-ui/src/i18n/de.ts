@@ -370,6 +370,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "Thema gewechselt",
   "toast.scheme.title": "Farbschema",
@@ -1148,6 +1149,7 @@ export const dict = {
   "settings.providers.notSet": "Nicht festgelegt (Server-Standard verwenden)",
   "dialog.model.notSet": "Nicht festgelegt",
   "profile.personalAccount": "Persönliches Konto",
+  "profile.switchingAccount": "Konto wird gewechselt…",
 
   // Agent Manager strings live in webview-ui/agent-manager/i18n/de.ts
 
@@ -1223,4 +1225,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Mehrere Sitzungen laufen und werden unterbrochen",
   "settings.saveBar.saveAnyway": "Trotzdem speichern",
   "settings.saveBar.cancel": "Abbrechen",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 } satisfies Partial<Record<Keys, string>>

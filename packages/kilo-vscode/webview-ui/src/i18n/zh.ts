@@ -362,6 +362,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "主题已切换",
   "toast.scheme.title": "颜色方案",
@@ -1098,6 +1099,7 @@ export const dict = {
   "settings.providers.notSet": "未设置（使用服务器默认值）",
   "dialog.model.notSet": "未设置",
   "profile.personalAccount": "个人账户",
+  "profile.switchingAccount": "正在切换账户…",
   // Agent Manager strings live in webview-ui/agent-manager/i18n/zh.ts
 
   "question.summary": "第 {{n}} / {{total}} 个问题",
@@ -1169,4 +1171,8 @@ export const dict = {
   "settings.saveBar.warning.many": "多个会话正在运行，将被中断",
   "settings.saveBar.saveAnyway": "仍然保存",
   "settings.saveBar.cancel": "取消",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 } satisfies Partial<Record<Keys, string>>

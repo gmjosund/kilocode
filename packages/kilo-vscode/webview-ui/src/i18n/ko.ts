@@ -366,6 +366,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "테마 전환됨",
   "toast.scheme.title": "색상 테마",
@@ -1117,6 +1118,7 @@ export const dict = {
   "settings.providers.notSet": "설정되지 않음 (서버 기본값 사용)",
   "dialog.model.notSet": "설정되지 않음",
   "profile.personalAccount": "개인 계정",
+  "profile.switchingAccount": "계정 전환 중…",
   // Agent Manager strings live in webview-ui/agent-manager/i18n/ko.ts
 
   "question.summary": "{{total}}개 질문 중 {{n}}번째",
@@ -1189,4 +1191,8 @@ export const dict = {
   "settings.saveBar.warning.many": "여러 세션이 실행 중이며 중단됩니다",
   "settings.saveBar.saveAnyway": "그래도 저장",
   "settings.saveBar.cancel": "취소",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

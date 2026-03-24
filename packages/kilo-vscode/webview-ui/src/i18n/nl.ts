@@ -1156,6 +1156,7 @@ export const dict = {
   "dialog.model.notSet": "Niet ingesteld",
 
   "profile.personalAccount": "Persoonlijk Account",
+  "profile.switchingAccount": "Account wisselen…",
 
   // Agent Manager strings live in webview-ui/agent-manager/i18n/en.ts
 
@@ -1231,4 +1232,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Meerdere sessies zijn actief en worden onderbroken",
   "settings.saveBar.saveAnyway": "Toch opslaan",
   "settings.saveBar.cancel": "Annuleren",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

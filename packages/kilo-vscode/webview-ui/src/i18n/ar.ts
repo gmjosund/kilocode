@@ -362,6 +362,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "تم تبديل السمة",
   "toast.scheme.title": "مخطط الألوان",
@@ -1113,6 +1114,7 @@ export const dict = {
   "settings.providers.notSet": "غير محدد (استخدام الافتراضي)",
   "dialog.model.notSet": "غير محدد",
   "profile.personalAccount": "حساب شخصي",
+  "profile.switchingAccount": "جارٍ تبديل الحساب…",
 
   // Agent Manager strings live in webview-ui/agent-manager/i18n/ar.ts
 
@@ -1186,4 +1188,8 @@ export const dict = {
   "settings.saveBar.warning.many": "عدة جلسات تعمل وستتوقف",
   "settings.saveBar.saveAnyway": "حفظ على أي حال",
   "settings.saveBar.cancel": "إلغاء",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

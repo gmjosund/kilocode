@@ -365,6 +365,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "Тема переключена",
   "toast.scheme.title": "Цветовая схема",
@@ -1133,6 +1134,7 @@ export const dict = {
   "settings.providers.notSet": "Не задано (использовать значение сервера по умолчанию)",
   "dialog.model.notSet": "Не задано",
   "profile.personalAccount": "Личный аккаунт",
+  "profile.switchingAccount": "Переключение аккаунта…",
   // Agent Manager strings live in webview-ui/agent-manager/i18n/ru.ts
 
   "question.summary": "{{n}} из {{total}} вопросов",
@@ -1205,4 +1207,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Несколько сеансов выполняются и будут прерваны",
   "settings.saveBar.saveAnyway": "Сохранить в любом случае",
   "settings.saveBar.cancel": "Отмена",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

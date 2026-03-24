@@ -363,6 +363,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.language.title": "Jezik",
   "toast.language.description": "Prebačeno na {{language}}",
@@ -1135,6 +1136,7 @@ export const dict = {
   "settings.providers.notSet": "Nije postavljeno (koristi zadano servera)",
   "dialog.model.notSet": "Nije postavljeno",
   "profile.personalAccount": "Osobni račun",
+  "profile.switchingAccount": "Prebacivanje računa…",
 
   // Agent Manager strings live in webview-ui/agent-manager/i18n/bs.ts
 
@@ -1208,4 +1210,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Nekoliko sesija je pokrenuto i bit će prekinuto",
   "settings.saveBar.saveAnyway": "Spremi svejedno",
   "settings.saveBar.cancel": "Otkaži",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

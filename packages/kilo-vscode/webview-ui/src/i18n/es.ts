@@ -365,6 +365,7 @@ export const dict = {
   "language.br": "Português (Brasil)",
   "language.bs": "Bosanski",
   "language.th": "ไทย",
+  "language.tr": "Türkçe",
 
   "toast.theme.title": "Tema cambiado",
   "toast.scheme.title": "Esquema de color",
@@ -1139,6 +1140,7 @@ export const dict = {
   "settings.providers.notSet": "No establecido (usar predeterminado del servidor)",
   "dialog.model.notSet": "No establecido",
   "profile.personalAccount": "Cuenta personal",
+  "profile.switchingAccount": "Cambiando de cuenta…",
   // Agent Manager strings live in webview-ui/agent-manager/i18n/es.ts
 
   "question.summary": "{{n}} de {{total}} preguntas",
@@ -1212,4 +1214,8 @@ export const dict = {
   "settings.saveBar.warning.many": "Varias sesiones están en ejecución y se interrumpirán",
   "settings.saveBar.saveAnyway": "Guardar de todas formas",
   "settings.saveBar.cancel": "Cancelar",
+  "notifications.action.previous": "Previous",
+  "notifications.action.next": "Next",
+  "notifications.action.close": "Close",
+  "notifications.action.tryModel": "Try model",
 }

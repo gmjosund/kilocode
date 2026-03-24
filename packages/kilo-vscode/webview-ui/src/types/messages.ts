@@ -251,6 +251,7 @@ export interface KilocodeNotification {
   message: string
   action?: KilocodeNotificationAction
   showIn?: string[]
+  suggestModelId?: string
 }
 
 // Profile types from kilo-gateway
@@ -416,6 +417,11 @@ export interface ReadyMessage {
 export interface WorkspaceDirectoryChangedMessage {
   type: "workspaceDirectoryChanged"
   directory: string
+}
+
+export interface LanguageChangedMessage {
+  type: "languageChanged"
+  locale: string
 }
 
 export interface ConnectionStateMessage {
@@ -586,6 +592,7 @@ export interface ReviewComment {
 export interface AppendReviewCommentsMessage {
   type: "appendReviewComments"
   comments: ReviewComment[]
+  autoSend?: boolean
 }
 
 export interface TriggerTaskMessage {
@@ -800,6 +807,7 @@ export interface AgentManagerStateMessage {
   sessions: ManagedSessionState[]
   staleWorktreeIds?: string[]
   tabOrder?: Record<string, string[]>
+  worktreeOrder?: string[]
   sessionsCollapsed?: boolean
   reviewDiffStyle?: "unified" | "split"
   isGitRepo?: boolean
@@ -1277,6 +1285,7 @@ export type ExtensionMessage =
   | ProviderDisconnectedMessage
   | ProviderActionErrorMessage
   | RecentsLoadedMessage
+  | LanguageChangedMessage
 
 // ============================================
 // Messages FROM webview TO extension
@@ -1562,6 +1571,7 @@ export interface DismissNotificationMessage {
 export interface SyncSessionRequest {
   type: "syncSession"
   sessionID: string
+  parentSessionID?: string
 }
 
 // Agent Manager worktree messages
@@ -1710,6 +1720,12 @@ export interface CreateMultiVersionRequest {
 export interface SetTabOrderRequest {
   type: "agentManager.setTabOrder"
   key: string
+  order: string[]
+}
+
+// Persist sidebar worktree order
+export interface SetWorktreeOrderRequest {
+  type: "agentManager.setWorktreeOrder"
   order: string[]
 }
 
@@ -1945,6 +1961,7 @@ export type WebviewMessage =
   | AgentManagerOpenFileRequest
   | CreateMultiVersionRequest
   | SetTabOrderRequest
+  | SetWorktreeOrderRequest
   | SetSessionsCollapsedRequest
   | SetReviewDiffStyleRequest
   | PersistVariantRequest

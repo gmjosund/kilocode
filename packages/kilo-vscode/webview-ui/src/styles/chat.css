@@ -1573,6 +1573,133 @@
 }
 
 /* ============================================
+   Account Switcher (welcome screen header)
+   ============================================ */
+
+.account-switcher {
+  position: relative;
+}
+
+.account-switcher-welcome {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 160px;
+  z-index: 10;
+}
+
+.account-switcher-trigger {
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid var(--vscode-dropdown-border);
+  background: var(--vscode-dropdown-background);
+  color: var(--vscode-dropdown-foreground);
+  border-radius: 4px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-family: inherit;
+  font-size: var(--vscode-font-size);
+  opacity: 0.9;
+  transition:
+    opacity 150ms,
+    background 150ms,
+    border-color 150ms;
+}
+
+.account-switcher-switching {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: default;
+}
+
+.account-switcher-trigger:hover:not(:disabled) {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.account-switcher-trigger:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: -1px;
+}
+
+.account-switcher-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-switcher-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.account-switcher-role {
+  border-radius: 9999px;
+  padding: 1px 6px;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  background: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+}
+
+.account-switcher-chevron {
+  width: 12px;
+  height: 12px;
+  transition: transform 150ms;
+}
+
+.account-switcher-chevron.open {
+  transform: rotate(180deg);
+}
+
+.account-switcher-dropdown {
+  position: absolute;
+  z-index: 20;
+  margin-top: 4px;
+  right: 0;
+  width: max-content;
+  min-width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: 4px;
+  border: 1px solid var(--vscode-dropdown-border);
+  background: var(--vscode-dropdown-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.account-switcher-item {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--vscode-foreground);
+  font-family: inherit;
+  font-size: var(--vscode-font-size);
+  text-align: left;
+}
+
+.account-switcher-item:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.account-switcher-item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
    Permission Dock (VS Code overrides)
    ============================================ */
 
@@ -1997,7 +2124,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--vscode-panel-border);
@@ -2056,6 +2183,65 @@
   display: flex;
   align-items: center;
   gap: 2px;
+}
+
+.kilo-notifications-next-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kilo-notifications-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
+  background: none;
+  border: 1px solid var(--vscode-focusBorder);
+  border-radius: 3px;
+  color: var(--vscode-focusBorder);
+  font-size: 12px;
+  font-family: var(--vscode-font-family);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.kilo-notifications-action-btn:hover {
+  background-color: var(--vscode-toolbar-hoverBackground);
+}
+
+.kilo-notifications-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
+  background-color: var(--vscode-button-background);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--vscode-button-foreground);
+  font-size: 12px;
+  font-family: var(--vscode-font-family);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.kilo-notifications-primary-btn:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.kilo-notifications-back-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--vscode-descriptionForeground);
+  font-size: 12px;
+}
+
+.kilo-notifications-back-link:hover {
+  color: var(--vscode-foreground);
 }
 
 .kilo-notifications-nav-btn {
