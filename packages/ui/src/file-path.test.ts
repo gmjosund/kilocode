@@ -130,6 +130,48 @@ describe("parseFilePath", () => {
     it("path without extension", () => {
       expect(parseFilePath("src/Makefile")).toBeUndefined()
     })
+
+    it("dotted code identifier with camelCase extension", () => {
+      expect(parseFilePath("session.updateMode")).toBeUndefined()
+    })
+
+    it("React hook reference", () => {
+      expect(parseFilePath("React.useState")).toBeUndefined()
+    })
+
+    it("Object method reference", () => {
+      expect(parseFilePath("Object.fromEntries")).toBeUndefined()
+    })
+
+    it("method with long extension", () => {
+      expect(parseFilePath("config.something")).toBeUndefined()
+    })
+
+    it("allows bare name with short lowercase extension", () => {
+      // Ambiguous cases like path.posix still match — the heuristic
+      // targets camelCase and long extensions which are clearly code.
+      expect(parseFilePath("path.posix")).toEqual({ path: "path.posix", line: undefined, column: undefined })
+    })
+
+    it("bare file with short lowercase extension", () => {
+      expect(parseFilePath("foo.ts")).toEqual({ path: "foo.ts", line: undefined, column: undefined })
+    })
+
+    it("bare file with json extension", () => {
+      expect(parseFilePath("package.json")).toEqual({ path: "package.json", line: undefined, column: undefined })
+    })
+
+    it("bare file with graphql extension", () => {
+      expect(parseFilePath("schema.graphql")).toEqual({ path: "schema.graphql", line: undefined, column: undefined })
+    })
+
+    it("dotted path with slash still works", () => {
+      expect(parseFilePath("src/session.updateMode.ts")).toEqual({
+        path: "src/session.updateMode.ts",
+        line: undefined,
+        column: undefined,
+      })
+    })
   })
 })
 

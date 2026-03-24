@@ -9,6 +9,14 @@ const FILE_PATH_UNIX_RE =
   /^((?:\/|\.\.?\/)?(?:[a-zA-Z0-9_@-][a-zA-Z0-9_@./-]*\/)*[a-zA-Z0-9_@.-]+\.[a-zA-Z0-9]+)(?::(\d+)(?::(\d+))?)?$/
 const FILE_PATH_WIN_RE = /^((?:[a-zA-Z]:[/\\]|\\\\)(?:[^\\/]+[/\\])*[^\\/]+\.[a-zA-Z0-9]+)(?::(\d+)(?::(\d+))?)?$/
 
+// For bare names (no path separator), reject dotted identifiers like
+// `session.updateMode` or `Object.keys`. Real file extensions are short
+// and lowercase (e.g. .ts, .json, .graphql). Extensions containing
+// uppercase letters (camelCase method names) or longer than 7 chars
+// are almost certainly code identifiers, not files.
+const BARE_EXT_RE = /\.([a-zA-Z0-9]+)(?::\d+(?::\d+)?)?$/
+const MAX_BARE_EXT = 7
+
 /**
  * Parse an inline code span into a file path with optional line/column.
  * Returns undefined when the text does not look like a file reference.
@@ -21,8 +29,20 @@ export function parseFilePath(text: string): { path: string; line?: number; colu
   if (text.includes(" ")) return undefined
   const match = FILE_PATH_UNIX_RE.exec(text) ?? FILE_PATH_WIN_RE.exec(text)
   if (!match) return undefined
+  // For bare names without a path separator, validate the extension.
+  // Dotted code identifiers like `session.updateMode` or `React.useState`
+  // have camelCase or long "extensions" that real files never use.
+  const bare = !text.includes("/") && !text.includes("\\")
+  if (bare) {
+    const ext = BARE_EXT_RE.exec(text)
+    const suffix = ext?.[1]
+    if (suffix) {
+      if (suffix.length > MAX_BARE_EXT) return undefined
+      if (suffix !== suffix.toLowerCase()) return undefined
+    }
+  }
   return {
-    path: match[1],
+    path: match[1]!,
     line: match[2] ? parseInt(match[2], 10) : undefined,
     column: match[3] ? parseInt(match[3], 10) : undefined,
   }
