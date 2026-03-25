@@ -56,7 +56,7 @@ type AgentView = "list" | "create" | "edit"
 
 const AgentBehaviourTab: Component = () => {
   const language = useLanguage()
-  const { config, updateConfig, isDirty } = useConfig()
+  const { config, updateConfig } = useConfig()
   const session = useSession()
   const dialog = useDialog()
   const [activeSubtab, setActiveSubtab] = createSignal<SubtabId>("agents")
@@ -70,10 +70,16 @@ const AgentBehaviourTab: Component = () => {
   // Modes pending removal (hidden from list until save persists the deletion)
   const [pending, setPending] = createSignal<Set<string>>(new Set())
 
-  // Clear pending removals when config is saved or discarded
+  // Clear pending removals when the backend agents list updates (after CLI
+  // disposes and re-reads config). We can't clear on isDirty going false
+  // because session.agents() may still be stale at that point.
   createEffect(() => {
-    const dirty = isDirty()
-    if (!dirty && pending().size > 0) setPending(new Set<string>())
+    const agents = session.agents()
+    if (pending().size === 0) return
+    const names = new Set(agents.map((a) => a.name))
+    // Keep only pending entries that still appear in the backend list
+    const remaining = new Set([...pending()].filter((n) => names.has(n)))
+    if (remaining.size !== pending().size) setPending(remaining)
   })
 
   // Fetch skills whenever the skills subtab becomes active
