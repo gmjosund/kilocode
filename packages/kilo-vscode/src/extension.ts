@@ -181,27 +181,45 @@ export function activate(context: vscode.ExtensionContext) {
       settingsEditorProvider.openPanel("settings", tab)
     }),
     (() => {
-      let auxMaximized = false
-      let primaryExpanded = false
-      return vscode.Disposable.from(
-        vscode.commands.registerCommand("kilo-code.new.supersizeSidebarAux", async () => {
-          if (auxMaximized) {
+      let maximized = false
+      return vscode.commands.registerCommand("kilo-code.new.supersizeSidebar", async () => {
+        // Detect which sidebar the view is in by focusing the auxiliary bar
+        // and checking if our WebviewView becomes visible.
+        const view = provider.view
+        if (!view) return
+
+        // Focus our view so it's guaranteed active
+        await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
+
+        // Check if view is in auxiliary bar: toggle auxiliary bar off,
+        // if our view becomes invisible it was there.
+        await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar")
+        const inAuxiliary = !view.visible
+        // Restore auxiliary bar to original state
+        await vscode.commands.executeCommand("workbench.action.toggleAuxiliaryBar")
+
+        if (maximized) {
+          if (inAuxiliary) {
             await vscode.commands.executeCommand("workbench.action.restoreAuxiliaryBar")
           } else {
             await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
+            for (let i = 0; i < 20; i++) {
+              await vscode.commands.executeCommand("workbench.action.decreaseViewSize")
+            }
+          }
+        } else {
+          if (inAuxiliary) {
+            await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
             await vscode.commands.executeCommand("workbench.action.maximizeAuxiliaryBar")
+          } else {
+            await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
+            for (let i = 0; i < 20; i++) {
+              await vscode.commands.executeCommand("workbench.action.increaseViewSize")
+            }
           }
-          auxMaximized = !auxMaximized
-        }),
-        vscode.commands.registerCommand("kilo-code.new.supersizeSidebarPrimary", async () => {
-          await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
-          const cmd = primaryExpanded ? "workbench.action.decreaseViewSize" : "workbench.action.increaseViewSize"
-          for (let i = 0; i < 20; i++) {
-            await vscode.commands.executeCommand(cmd)
-          }
-          primaryExpanded = !primaryExpanded
-        }),
-      )
+        }
+        maximized = !maximized
+      })
     })(),
     // legacy-migration start
     vscode.commands.registerCommand("kilo-code.new.openMigrationWizard", () => {

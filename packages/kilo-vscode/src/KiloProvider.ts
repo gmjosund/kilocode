@@ -85,6 +85,7 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
   public static readonly viewType = "kilo-code.SidebarProvider"
 
   private webview: vscode.Webview | null = null
+  public view: vscode.WebviewView | null = null
   private currentSession: Session | null = null
   private connectionState: "connecting" | "connected" | "disconnected" | "error" = "connecting"
   private loginAttempt = 0
@@ -285,6 +286,7 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
   ) {
     // Store the webview references
     this.isWebviewReady = false
+    this.view = webviewView
     this.webview = webviewView.webview
 
     // Set up webview options
