@@ -180,17 +180,19 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("kilo-code.new.settingsButtonClicked", (tab?: string) => {
       settingsEditorProvider.openPanel("settings", tab)
     }),
-    vscode.commands.registerCommand("kilo-code.new.supersizeSidebar", async () => {
-      // Focus our view first, then try to resize whichever sidebar it's in.
-      // There's no VS Code API to detect primary vs secondary sidebar, so we
-      // try the auxiliary bar (secondary sidebar) first — if it's not visible
-      // that command is a no-op — then also increase the primary sidebar size.
-      await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
-      await vscode.commands.executeCommand("workbench.action.maximizeAuxiliaryBar")
-      for (let i = 0; i < 20; i++) {
-        await vscode.commands.executeCommand("workbench.action.increaseViewSize")
-      }
-    }),
+    (() => {
+      let maximized = false
+      return vscode.commands.registerCommand("kilo-code.new.supersizeSidebar", async () => {
+        if (maximized) {
+          await vscode.commands.executeCommand("workbench.action.restoreAuxiliaryBar")
+          maximized = false
+        } else {
+          await vscode.commands.executeCommand(`${KiloProvider.viewType}.focus`)
+          await vscode.commands.executeCommand("workbench.action.maximizeAuxiliaryBar")
+          maximized = true
+        }
+      })
+    })(),
     // legacy-migration start
     vscode.commands.registerCommand("kilo-code.new.openMigrationWizard", () => {
       provider.postMessage({ type: "navigate", view: "migration" })
