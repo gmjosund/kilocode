@@ -165,26 +165,28 @@ const ModeEditView: Component<Props> = (props) => {
               ? language.t("settings.agentBehaviour.editMode.promptOverride")
               : language.t("settings.agentBehaviour.editMode.prompt")}
           </div>
-          <div style={{ display: "flex", gap: "4px" }}>
-            <IconButton
-              size="small"
-              variant="ghost"
-              icon="eye"
-              title={language.t("settings.agentBehaviour.editMode.promptPreview.title")}
-              onClick={preview}
-            />
-            <IconButton
-              size="small"
-              variant="ghost"
-              icon="copy"
-              title={
-                copied()
-                  ? language.t("settings.agentBehaviour.editMode.promptCopied")
-                  : language.t("settings.agentBehaviour.editMode.promptCopy")
-              }
-              onClick={copy}
-            />
-          </div>
+          <Show when={prompt()}>
+            <div style={{ display: "flex", gap: "4px" }}>
+              <IconButton
+                size="small"
+                variant="ghost"
+                icon="eye"
+                title={language.t("settings.agentBehaviour.editMode.promptPreview.title")}
+                onClick={preview}
+              />
+              <IconButton
+                size="small"
+                variant="ghost"
+                icon="copy"
+                title={
+                  copied()
+                    ? language.t("settings.agentBehaviour.editMode.promptCopied")
+                    : language.t("settings.agentBehaviour.editMode.promptCopy")
+                }
+                onClick={copy}
+              />
+            </div>
+          </Show>
         </div>
         <TextField
           value={cfg().prompt ?? ""}
