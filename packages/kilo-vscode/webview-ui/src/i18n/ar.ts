@@ -1066,6 +1066,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "العودة إلى القائمة",
   "settings.agentBehaviour.editMode.native": "وضع مدمج (تعريف للقراءة فقط)",
   "settings.agentBehaviour.editMode.promptOverride": "تجاوز موجه مخصص لهذا الوضع المدمج",
+  "settings.agentBehaviour.editMode.promptPreview.title": "معاينة موجه النظام",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "لم يتم تكوين موجه مخصص لهذا الوكيل.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "نسخ إلى الحافظة",
+  "settings.agentBehaviour.editMode.promptCopy": "نسخ موجه النظام",
+  "settings.agentBehaviour.editMode.promptCopied": "تم النسخ!",
   "settings.agentBehaviour.removeMode.title": "إزالة الوضع",
   "settings.agentBehaviour.removeMode.confirm":
     'هل تريد إزالة الوضع "{{name}}"؟ سيؤدي هذا إلى تعطيل الوضع عن طريق تحديث الإعدادات.',

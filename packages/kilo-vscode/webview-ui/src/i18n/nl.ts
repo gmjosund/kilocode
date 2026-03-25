@@ -1060,6 +1060,12 @@ export const dict = {
     "Geen skills ontdekt. Voeg hieronder skill mappaden of URL's toe om skills beschikbaar te maken.",
   "settings.agentBehaviour.availableModes": "Beschikbare Aangepaste Modi",
   "settings.agentBehaviour.noModesFound": "Geen modi gevonden.",
+  "settings.agentBehaviour.editMode.promptOverride": "Aangepaste prompt-overschrijving voor deze ingebouwde modus",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Systeem prompt voorbeeld",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Geen aangepaste prompt geconfigureerd voor deze agent.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Kopiëren naar klembord",
+  "settings.agentBehaviour.editMode.promptCopy": "Systeem prompt kopiëren",
+  "settings.agentBehaviour.editMode.promptCopied": "Gekopieerd!",
   "settings.agentBehaviour.removeMode.title": "Verwijder modus",
   "settings.agentBehaviour.removeMode.confirm":
     'Modus "{{name}}" verwijderen? Dit zal de modus uitschakelen door je configuratie bij te werken.',

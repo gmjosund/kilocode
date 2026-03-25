@@ -1079,6 +1079,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "Nazad na listu",
   "settings.agentBehaviour.editMode.native": "Ugrađeni mod (definicija samo za čitanje)",
   "settings.agentBehaviour.editMode.promptOverride": "Prilagođeno nadjačavanje prompta za ovaj ugrađeni mod",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Pregled sistemskog prompta",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Nema konfiguriranog prilagođenog prompta za ovog agenta.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Kopiraj u međuspremnik",
+  "settings.agentBehaviour.editMode.promptCopy": "Kopiraj sistemski prompt",
+  "settings.agentBehaviour.editMode.promptCopied": "Kopirano!",
   "settings.agentBehaviour.removeMode.title": "Ukloni mod",
   "settings.agentBehaviour.removeMode.confirm":
     'Ukloniti mod "{{name}}"? Ovo će onemogućiti mod ažuriranjem vaše konfiguracije.',

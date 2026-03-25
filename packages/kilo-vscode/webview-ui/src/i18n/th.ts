@@ -1066,6 +1066,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "กลับไปที่รายการ",
   "settings.agentBehaviour.editMode.native": "โหมดในตัว (นิยามสำหรับอ่านอย่างเดียว)",
   "settings.agentBehaviour.editMode.promptOverride": "การแทนที่ prompt แบบกำหนดเองสำหรับโหมดในตัวนี้",
+  "settings.agentBehaviour.editMode.promptPreview.title": "ตัวอย่าง System Prompt",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "ไม่มี prompt แบบกำหนดเองที่กำหนดค่าสำหรับเอเจนต์นี้",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "คัดลอกไปยังคลิปบอร์ด",
+  "settings.agentBehaviour.editMode.promptCopy": "คัดลอก system prompt",
+  "settings.agentBehaviour.editMode.promptCopied": "คัดลอกแล้ว!",
   "settings.agentBehaviour.removeMode.title": "ลบโหมด",
   "settings.agentBehaviour.removeMode.confirm":
     'ต้องการลบโหมด "{{name}}" หรือไม่? การดำเนินการนี้จะปิดใช้งานโหมดโดยอัปเดตการกำหนดค่าของคุณ',

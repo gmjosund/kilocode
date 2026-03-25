@@ -1093,6 +1093,12 @@ export const dict = {
   "settings.agentBehaviour.editMode.native": "Eingebauter Modus (schreibgeschützte Definition)",
   "settings.agentBehaviour.editMode.promptOverride":
     "Benutzerdefinierte Prompt-Überschreibung für diesen eingebauten Modus",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Systemprompt-Vorschau",
+  "settings.agentBehaviour.editMode.promptPreview.empty":
+    "Kein benutzerdefinierter Prompt für diesen Agenten konfiguriert.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "In die Zwischenablage kopieren",
+  "settings.agentBehaviour.editMode.promptCopy": "Systemprompt kopieren",
+  "settings.agentBehaviour.editMode.promptCopied": "Kopiert!",
   "settings.agentBehaviour.removeMode.title": "Modus entfernen",
   "settings.agentBehaviour.removeMode.confirm":
     'Modus "{{name}}" entfernen? Dadurch wird der Modus durch Aktualisierung Ihrer Konfiguration deaktiviert.',

@@ -1070,6 +1070,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "목록으로 돌아가기",
   "settings.agentBehaviour.editMode.native": "내장 모드 (읽기 전용 정의)",
   "settings.agentBehaviour.editMode.promptOverride": "이 내장 모드에 대한 사용자 지정 프롬프트 재정의",
+  "settings.agentBehaviour.editMode.promptPreview.title": "시스템 프롬프트 미리보기",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "이 에이전트에 대해 구성된 사용자 지정 프롬프트가 없습니다.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "클립보드에 복사",
+  "settings.agentBehaviour.editMode.promptCopy": "시스템 프롬프트 복사",
+  "settings.agentBehaviour.editMode.promptCopied": "복사됨!",
   "settings.agentBehaviour.removeMode.title": "모드 제거",
   "settings.agentBehaviour.removeMode.confirm":
     '모드 "{{name}}"을(를) 제거하시겠습니까? 구성을 업데이트하여 모드를 비활성화합니다.',

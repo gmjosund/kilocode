@@ -1059,6 +1059,12 @@ export const dict = {
     "Keşfedilen beceri yok. Becerileri kullanılabilir kılmak için aşağıya beceri klasör yolları veya URL'ler ekleyin.",
   "settings.agentBehaviour.availableModes": "Mevcut Özel Modlar",
   "settings.agentBehaviour.noModesFound": "Mod bulunamadı.",
+  "settings.agentBehaviour.editMode.promptOverride": "Bu yerleşik mod için özel prompt geçersiz kılma",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Sistem Prompt Önizlemesi",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Bu ajan için özel prompt yapılandırılmadı.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Panoya Kopyala",
+  "settings.agentBehaviour.editMode.promptCopy": "Sistem promptunu kopyala",
+  "settings.agentBehaviour.editMode.promptCopied": "Kopyalandı!",
   "settings.agentBehaviour.removeMode.title": "Modu kaldır",
   "settings.agentBehaviour.removeMode.confirm":
     '"{{name}}" modu kaldırılsın mı? Bu, yapılandırmanızı güncelleyerek modu devre dışı bırakacak.',

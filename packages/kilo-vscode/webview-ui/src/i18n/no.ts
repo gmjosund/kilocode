@@ -1077,6 +1077,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "Tilbake til listen",
   "settings.agentBehaviour.editMode.native": "Innebygd modus (skrivebeskyttet definisjon)",
   "settings.agentBehaviour.editMode.promptOverride": "Tilpasset prompt-overstyring for denne innebygde modusen",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Forhåndsvisning av systemprompt",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Ingen tilpasset prompt konfigurert for denne agenten.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Kopier til utklippstavle",
+  "settings.agentBehaviour.editMode.promptCopy": "Kopier systemprompt",
+  "settings.agentBehaviour.editMode.promptCopied": "Kopiert!",
   "settings.agentBehaviour.removeMode.title": "Fjern modus",
   "settings.agentBehaviour.removeMode.confirm":
     'Vil du fjerne modusen "{{name}}"? Dette vil deaktivere modusen ved å oppdatere konfigurasjonen din.',

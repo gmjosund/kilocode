@@ -1074,6 +1074,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "Tilbage til listen",
   "settings.agentBehaviour.editMode.native": "Indbygget tilstand (skrivebeskyttet definition)",
   "settings.agentBehaviour.editMode.promptOverride": "Tilpasset prompt-tilsidesættelse for denne indbyggede tilstand",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Forhåndsvisning af systemprompt",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Ingen brugerdefineret prompt konfigureret for denne agent.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Kopiér til udklipsholder",
+  "settings.agentBehaviour.editMode.promptCopy": "Kopiér systemprompt",
+  "settings.agentBehaviour.editMode.promptCopied": "Kopieret!",
   "settings.agentBehaviour.removeMode.title": "Fjern tilstand",
   "settings.agentBehaviour.removeMode.confirm":
     'Vil du fjerne tilstanden "{{name}}"? Dette vil deaktivere tilstanden ved at opdatere din konfiguration.',

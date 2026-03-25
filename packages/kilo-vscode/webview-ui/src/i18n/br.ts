@@ -1079,6 +1079,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "Voltar à lista",
   "settings.agentBehaviour.editMode.native": "Modo integrado (definição somente leitura)",
   "settings.agentBehaviour.editMode.promptOverride": "Substituição de prompt personalizado para este modo integrado",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Pré-visualização do Prompt do Sistema",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Nenhum prompt personalizado configurado para este agente.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Copiar para a Área de Transferência",
+  "settings.agentBehaviour.editMode.promptCopy": "Copiar prompt do sistema",
+  "settings.agentBehaviour.editMode.promptCopied": "Copiado!",
   "settings.agentBehaviour.removeMode.title": "Remover modo",
   "settings.agentBehaviour.removeMode.confirm":
     'Remover o modo "{{name}}"? Isso desativará o modo atualizando sua configuração.',

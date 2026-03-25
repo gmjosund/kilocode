@@ -1078,6 +1078,12 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "Powrót do listy",
   "settings.agentBehaviour.editMode.native": "Tryb wbudowany (definicja tylko do odczytu)",
   "settings.agentBehaviour.editMode.promptOverride": "Niestandardowe nadpisanie promptu dla tego wbudowanego trybu",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Podgląd promptu systemowego",
+  "settings.agentBehaviour.editMode.promptPreview.empty":
+    "Nie skonfigurowano niestandardowego promptu dla tego agenta.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Kopiuj do schowka",
+  "settings.agentBehaviour.editMode.promptCopy": "Kopiuj prompt systemowy",
+  "settings.agentBehaviour.editMode.promptCopied": "Skopiowano!",
   "settings.agentBehaviour.removeMode.title": "Usuń tryb",
   "settings.agentBehaviour.removeMode.confirm":
     'Usunąć tryb "{{name}}"? Spowoduje to wyłączenie trybu poprzez aktualizację konfiguracji.',

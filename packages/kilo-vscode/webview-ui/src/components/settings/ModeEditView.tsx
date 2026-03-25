@@ -1,8 +1,10 @@
-import { Component, Show, createMemo } from "solid-js"
+import { Component, Show, createMemo, createSignal } from "solid-js"
 import { TextField } from "@kilocode/kilo-ui/text-field"
 import { Card } from "@kilocode/kilo-ui/card"
 import { Button } from "@kilocode/kilo-ui/button"
 import { IconButton } from "@kilocode/kilo-ui/icon-button"
+import { Dialog } from "@kilocode/kilo-ui/dialog"
+import { useDialog } from "@kilocode/kilo-ui/context/dialog"
 
 import { useConfig } from "../../context/config"
 import { useSession } from "../../context/session"
@@ -20,6 +22,8 @@ const ModeEditView: Component<Props> = (props) => {
   const language = useLanguage()
   const { config, updateConfig } = useConfig()
   const session = useSession()
+  const dialog = useDialog()
+  const [copied, setCopied] = createSignal(false)
 
   // agent() may be undefined for modes that only exist in the config draft (just
   // created, not yet saved). This is fine — native defaults to false (correct for
@@ -38,6 +42,55 @@ const ModeEditView: Component<Props> = (props) => {
         [props.name]: { ...current, ...partial },
       },
     })
+  }
+
+  const prompt = () => cfg().prompt ?? ""
+
+  const copy = () => {
+    const text = prompt()
+    if (!text) return
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const preview = () => {
+    const text = prompt()
+    dialog.show(() => (
+      <Dialog title={language.t("settings.agentBehaviour.editMode.promptPreview.title")} fit>
+        <div style={{ "max-height": "400px", overflow: "auto" }}>
+          <pre
+            style={{
+              "font-family": "var(--vscode-editor-font-family, monospace)",
+              "font-size": "12px",
+              "white-space": "pre-wrap",
+              "word-break": "break-word",
+              margin: 0,
+              "line-height": "1.5",
+              color: "var(--vscode-foreground)",
+            }}
+          >
+            {text || language.t("settings.agentBehaviour.editMode.promptPreview.empty")}
+          </pre>
+        </div>
+        <div style={{ display: "flex", "justify-content": "flex-end", "margin-top": "12px", gap: "8px" }}>
+          <Button variant="ghost" size="large" onClick={() => dialog.close()}>
+            {language.t("common.close")}
+          </Button>
+          <Show when={text}>
+            <Button
+              variant="secondary"
+              size="large"
+              onClick={() => {
+                navigator.clipboard.writeText(text)
+              }}
+            >
+              {language.t("settings.agentBehaviour.editMode.promptPreview.copy")}
+            </Button>
+          </Show>
+        </div>
+      </Dialog>
+    ))
   }
 
   return (
@@ -99,10 +152,39 @@ const ModeEditView: Component<Props> = (props) => {
 
       {/* Prompt (full-width, auto-resizing) */}
       <Card style={{ "margin-bottom": "12px" }}>
-        <div data-slot="settings-row-label-title" style={{ "margin-bottom": "8px" }}>
-          {native()
-            ? language.t("settings.agentBehaviour.editMode.promptOverride")
-            : language.t("settings.agentBehaviour.editMode.prompt")}
+        <div
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "space-between",
+            "margin-bottom": "8px",
+          }}
+        >
+          <div data-slot="settings-row-label-title">
+            {native()
+              ? language.t("settings.agentBehaviour.editMode.promptOverride")
+              : language.t("settings.agentBehaviour.editMode.prompt")}
+          </div>
+          <div style={{ display: "flex", gap: "4px" }}>
+            <IconButton
+              size="small"
+              variant="ghost"
+              icon="eye"
+              title={language.t("settings.agentBehaviour.editMode.promptPreview.title")}
+              onClick={preview}
+            />
+            <IconButton
+              size="small"
+              variant="ghost"
+              icon="copy"
+              title={
+                copied()
+                  ? language.t("settings.agentBehaviour.editMode.promptCopied")
+                  : language.t("settings.agentBehaviour.editMode.promptCopy")
+              }
+              onClick={copy}
+            />
+          </div>
         </div>
         <TextField
           value={cfg().prompt ?? ""}

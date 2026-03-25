@@ -1074,6 +1074,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.back": "リストに戻る",
   "settings.agentBehaviour.editMode.native": "組み込みモード（読み取り専用の定義）",
   "settings.agentBehaviour.editMode.promptOverride": "この組み込みモードのカスタムプロンプト上書き",
+  "settings.agentBehaviour.editMode.promptPreview.title": "システムプロンプトのプレビュー",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "このエージェントにカスタムプロンプトは設定されていません。",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "クリップボードにコピー",
+  "settings.agentBehaviour.editMode.promptCopy": "システムプロンプトをコピー",
+  "settings.agentBehaviour.editMode.promptCopied": "コピーしました！",
   "settings.agentBehaviour.removeMode.title": "モードを削除",
   "settings.agentBehaviour.removeMode.confirm":
     'モード "{{name}}" を削除しますか？設定を更新してモードを無効にします。',

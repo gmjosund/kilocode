@@ -1082,6 +1082,11 @@ export const dict = {
   "settings.agentBehaviour.editMode.native": "Встроенный режим (определение только для чтения)",
   "settings.agentBehaviour.editMode.promptOverride":
     "Пользовательское переопределение промпта для этого встроенного режима",
+  "settings.agentBehaviour.editMode.promptPreview.title": "Предпросмотр системного промпта",
+  "settings.agentBehaviour.editMode.promptPreview.empty": "Для этого агента не настроен пользовательский промпт.",
+  "settings.agentBehaviour.editMode.promptPreview.copy": "Скопировать в буфер обмена",
+  "settings.agentBehaviour.editMode.promptCopy": "Скопировать системный промпт",
+  "settings.agentBehaviour.editMode.promptCopied": "Скопировано!",
   "settings.agentBehaviour.removeMode.title": "Удалить режим",
   "settings.agentBehaviour.removeMode.confirm":
     'Удалить режим "{{name}}"? Это отключит режим, обновив вашу конфигурацию.',
