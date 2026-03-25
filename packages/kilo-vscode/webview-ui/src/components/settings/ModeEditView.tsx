@@ -19,9 +19,12 @@ interface Props {
 
 const variantOptions = [
   { value: "", label: "Default" },
+  { value: "none", label: "None" },
+  { value: "minimal", label: "Minimal" },
   { value: "low", label: "Low" },
   { value: "medium", label: "Medium" },
   { value: "high", label: "High" },
+  { value: "xhigh", label: "Extra High" },
   { value: "max", label: "Max" },
 ]
 
