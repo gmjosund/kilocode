@@ -1034,6 +1034,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "معامل أخذ العينات النووي (0-1)",
   "settings.agentBehaviour.variant.title": "مستوى التفكير الافتراضي",
   "settings.agentBehaviour.variant.description": "مستوى جهد التفكير/الاستدلال الافتراضي لهذا الوكيل",
+  "settings.agentBehaviour.variant.placeholder": "مثال: low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "الحد الأقصى للخطوات",
   "settings.agentBehaviour.maxSteps.description": "الحد الأقصى لتكرارات الوكيل",
   "settings.agentBehaviour.discoveredSkills": "المهارات المكتشفة",

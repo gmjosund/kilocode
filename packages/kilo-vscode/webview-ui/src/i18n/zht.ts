@@ -1029,6 +1029,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "核取樣參數（0-1）",
   "settings.agentBehaviour.variant.title": "預設思考力度",
   "settings.agentBehaviour.variant.description": "此代理的預設思考/推理力度級別",
+  "settings.agentBehaviour.variant.placeholder": "例如 low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "最大步數",
   "settings.agentBehaviour.maxSteps.description": "最大 Agent 迭代次數",
   "settings.agentBehaviour.discoveredSkills": "已發現的 Skill",

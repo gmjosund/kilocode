@@ -1052,6 +1052,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Nucleus sampling parameter (0-1)",
   "settings.agentBehaviour.variant.title": "Standaard denkinspanning",
   "settings.agentBehaviour.variant.description": "Standaard denk-/redeneringsinspanningsniveau voor deze agent",
+  "settings.agentBehaviour.variant.placeholder": "bijv. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Max Stappen",
   "settings.agentBehaviour.maxSteps.description": "Maximale agent iteraties",
   "settings.agentBehaviour.discoveredSkills": "Ontdekte Skills",

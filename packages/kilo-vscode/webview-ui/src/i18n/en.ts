@@ -1048,6 +1048,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Nucleus sampling parameter (0-1)",
   "settings.agentBehaviour.variant.title": "Default Thinking Effort",
   "settings.agentBehaviour.variant.description": "Default thinking/reasoning effort level for this agent",
+  "settings.agentBehaviour.variant.placeholder": "e.g. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Max Steps",
   "settings.agentBehaviour.maxSteps.description": "Maximum agentic iterations",
   "settings.agentBehaviour.discoveredSkills": "Discovered Skills",

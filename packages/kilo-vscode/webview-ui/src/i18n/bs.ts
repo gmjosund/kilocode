@@ -1048,6 +1048,7 @@ export const dict = {
   "settings.agentBehaviour.variant.title": "Podrazumijevani nivo razmišljanja",
   "settings.agentBehaviour.variant.description":
     "Podrazumijevani nivo napora razmišljanja/zaključivanja za ovog agenta",
+  "settings.agentBehaviour.variant.placeholder": "npr. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Maks. koraci",
   "settings.agentBehaviour.maxSteps.description": "Maksimalne iteracije agenta",
   "settings.agentBehaviour.discoveredSkills": "Otkrivene vještine",

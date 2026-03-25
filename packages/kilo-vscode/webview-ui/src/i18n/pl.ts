@@ -1045,6 +1045,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Parametr próbkowania nucleus (0-1)",
   "settings.agentBehaviour.variant.title": "Domyślny poziom myślenia",
   "settings.agentBehaviour.variant.description": "Domyślny poziom wysiłku myślenia/rozumowania dla tego agenta",
+  "settings.agentBehaviour.variant.placeholder": "np. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Maks. kroki",
   "settings.agentBehaviour.maxSteps.description": "Maksymalna liczba iteracji agenta",
   "settings.agentBehaviour.discoveredSkills": "Wykryte umiejętności",

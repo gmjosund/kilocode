@@ -1,6 +1,5 @@
 import { Component, Show, createMemo } from "solid-js"
 import { TextField } from "@kilocode/kilo-ui/text-field"
-import { Select } from "@kilocode/kilo-ui/select"
 import { Card } from "@kilocode/kilo-ui/card"
 import { Button } from "@kilocode/kilo-ui/button"
 import { IconButton } from "@kilocode/kilo-ui/icon-button"
@@ -17,24 +16,6 @@ interface Props {
   onRemove: (agent: AgentInfo) => void
 }
 
-interface VariantOption {
-  value: string
-  label: string
-}
-
-const BUILTIN_VARIANTS: VariantOption[] = [
-  { value: "", label: "Default" },
-  { value: "none", label: "None" },
-  { value: "minimal", label: "Minimal" },
-  { value: "low", label: "Low" },
-  { value: "medium", label: "Medium" },
-  { value: "high", label: "High" },
-  { value: "xhigh", label: "Extra High" },
-  { value: "max", label: "Max" },
-]
-
-const known = new Set(BUILTIN_VARIANTS.map((o) => o.value))
-
 const ModeEditView: Component<Props> = (props) => {
   const language = useLanguage()
   const { config, updateConfig } = useConfig()
@@ -47,13 +28,6 @@ const ModeEditView: Component<Props> = (props) => {
   const native = () => agent()?.native ?? false
 
   const cfg = createMemo<AgentConfig>(() => config().agent?.[props.name] ?? {})
-
-  // Build variant options dynamically so custom/gateway-defined values show up
-  const variants = createMemo<VariantOption[]>(() => {
-    const current = cfg().variant ?? ""
-    if (!current || known.has(current)) return BUILTIN_VARIANTS
-    return [...BUILTIN_VARIANTS, { value: current, label: current }]
-  })
 
   const update = (partial: Partial<AgentConfig>) => {
     const existing = config().agent ?? {}
@@ -155,18 +129,10 @@ const ModeEditView: Component<Props> = (props) => {
           title={language.t("settings.agentBehaviour.variant.title")}
           description={language.t("settings.agentBehaviour.variant.description")}
         >
-          <Select
-            options={variants()}
-            current={variants().find((o) => o.value === (cfg().variant ?? ""))}
-            value={(o) => o.value}
-            label={(o) => o.label}
-            onSelect={(o) => {
-              if (!o) return
-              update({ variant: o.value || undefined })
-            }}
-            variant="secondary"
-            size="small"
-            triggerVariant="settings"
+          <TextField
+            value={cfg().variant ?? ""}
+            placeholder={language.t("settings.agentBehaviour.variant.placeholder")}
+            onChange={(val) => update({ variant: val.trim() || undefined })}
           />
         </SettingsRow>
 

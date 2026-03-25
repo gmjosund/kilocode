@@ -1051,6 +1051,7 @@ export const dict = {
   "settings.agentBehaviour.variant.title": "Esfuerzo de pensamiento predeterminado",
   "settings.agentBehaviour.variant.description":
     "Nivel predeterminado de esfuerzo de pensamiento/razonamiento para este agente",
+  "settings.agentBehaviour.variant.placeholder": "p. ej. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Pasos máximos",
   "settings.agentBehaviour.maxSteps.description": "Iteraciones máximas del agente",
   "settings.agentBehaviour.discoveredSkills": "Habilidades descubiertas",

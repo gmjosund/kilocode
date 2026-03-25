@@ -1060,6 +1060,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Nucleus-Sampling-Parameter (0-1)",
   "settings.agentBehaviour.variant.title": "Standard-Denkaufwand",
   "settings.agentBehaviour.variant.description": "Standard-Denk-/Schlussfolgerungsaufwand für diesen Agenten",
+  "settings.agentBehaviour.variant.placeholder": "z.B. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Max. Schritte",
   "settings.agentBehaviour.maxSteps.description": "Maximale Agent-Iterationen",
   "settings.agentBehaviour.discoveredSkills": "Erkannte Skills",

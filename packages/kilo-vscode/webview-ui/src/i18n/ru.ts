@@ -1048,6 +1048,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Параметр nucleus-сэмплирования (0-1)",
   "settings.agentBehaviour.variant.title": "Уровень мышления по умолчанию",
   "settings.agentBehaviour.variant.description": "Уровень усилий мышления/рассуждения по умолчанию для этого агента",
+  "settings.agentBehaviour.variant.placeholder": "напр. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Макс. шагов",
   "settings.agentBehaviour.maxSteps.description": "Максимальное число итераций агента",
   "settings.agentBehaviour.discoveredSkills": "Обнаруженные навыки",

@@ -1045,6 +1045,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Nucleus-samplingsparameter (0-1)",
   "settings.agentBehaviour.variant.title": "Standard tankeinnsats",
   "settings.agentBehaviour.variant.description": "Standard tanke-/resonneringsinnsatsnivå for denne agenten",
+  "settings.agentBehaviour.variant.placeholder": "f.eks. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Maks. trinn",
   "settings.agentBehaviour.maxSteps.description": "Maksimale agentiterasjoner",
   "settings.agentBehaviour.discoveredSkills": "Oppdagede ferdigheter",

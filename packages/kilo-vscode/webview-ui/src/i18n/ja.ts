@@ -1042,6 +1042,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "核サンプリングパラメータ（0-1）",
   "settings.agentBehaviour.variant.title": "デフォルト思考エフォート",
   "settings.agentBehaviour.variant.description": "このエージェントのデフォルトの思考・推論エフォートレベル",
+  "settings.agentBehaviour.variant.placeholder": "例: low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "最大ステップ数",
   "settings.agentBehaviour.maxSteps.description": "最大エージェント反復回数",
   "settings.agentBehaviour.discoveredSkills": "検出されたスキル",

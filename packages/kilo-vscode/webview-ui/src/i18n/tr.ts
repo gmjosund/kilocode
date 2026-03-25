@@ -1051,6 +1051,7 @@ export const dict = {
   "settings.agentBehaviour.topP.description": "Çekirdek örnekleme parametresi (0-1)",
   "settings.agentBehaviour.variant.title": "Varsayılan Düşünme Çabası",
   "settings.agentBehaviour.variant.description": "Bu ajan için varsayılan düşünme/akıl yürütme çaba düzeyi",
+  "settings.agentBehaviour.variant.placeholder": "örn. low, medium, high, max",
   "settings.agentBehaviour.maxSteps.title": "Maksimum Adım",
   "settings.agentBehaviour.maxSteps.description": "Maksimum ajanlık yinelemesi",
   "settings.agentBehaviour.discoveredSkills": "Keşfedilen Beceriler",
