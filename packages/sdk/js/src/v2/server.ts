@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process"
+import { randomBytes } from "node:crypto"
 import { type Config } from "./gen/types.gen.js"
 
 // kilocode_change start - Merge existing KILO_CONFIG_CONTENT with new config
@@ -37,6 +38,7 @@ export function buildConfigEnv(config?: Config): string {
 export type ServerOptions = {
   hostname?: string
   port?: number
+  password?: string
   signal?: AbortSignal
   timeout?: number
   config?: Config
@@ -61,6 +63,8 @@ export async function createKiloServer(options?: ServerOptions) {
     options ?? {},
   )
 
+  const password = options.password ?? randomBytes(32).toString("hex")
+
   const args = [`serve`, `--hostname=${options.hostname}`, `--port=${options.port}`]
   if (options.config?.logLevel) args.push(`--log-level=${options.config.logLevel}`)
 
@@ -70,6 +74,7 @@ export async function createKiloServer(options?: ServerOptions) {
     signal: options.signal,
     env: {
       ...process.env,
+      KILO_SERVER_PASSWORD: password, // kilocode_change
       KILO_CONFIG_CONTENT: buildConfigEnv(options.config), // kilocode_change
     },
   })
@@ -121,6 +126,7 @@ export async function createKiloServer(options?: ServerOptions) {
 
   return {
     url,
+    password,
     close() {
       proc.kill()
     },
