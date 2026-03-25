@@ -8,11 +8,9 @@ import { Component, createSignal, For, Show } from "solid-js"
 import { Popover } from "@kilocode/kilo-ui/popover"
 import { Button } from "@kilocode/kilo-ui/button"
 import { useSession } from "../../context/session"
-import { useProvider } from "../../context/provider"
 
 export const ThinkingSelector: Component = () => {
   const session = useSession()
-  const provider = useProvider()
   const [open, setOpen] = createSignal(false)
 
   const variants = () => session.variantList()
@@ -24,20 +22,9 @@ export const ThinkingSelector: Component = () => {
     requestAnimationFrame(() => window.dispatchEvent(new Event("focusPrompt")))
   }
 
-  const model = () => {
-    const sel = session.selected()
-    return sel ? provider.findModel(sel) : undefined
-  }
-
-  const nameFor = (v: string) =>
-    (model()?.variants?.[v] as Record<string, unknown> | undefined)?.name as string | undefined
-
   const triggerLabel = () => {
     const v = current()
-    if (!v) return ""
-    const label = v.charAt(0).toUpperCase() + v.slice(1)
-    const name = nameFor(v)
-    return name ? `${label} (${name})` : label
+    return v ? v.charAt(0).toUpperCase() + v.slice(1) : ""
   }
 
   return (
@@ -66,13 +53,7 @@ export const ThinkingSelector: Component = () => {
                 aria-selected={current() === v}
                 onClick={() => pick(v)}
               >
-                <span class="thinking-selector-item-name">
-                  {v.charAt(0).toUpperCase() + v.slice(1)}
-                  {(() => {
-                    const n = nameFor(v)
-                    return n ? ` (${n})` : ""
-                  })()}
-                </span>
+                <span class="thinking-selector-item-name">{v.charAt(0).toUpperCase() + v.slice(1)}</span>
               </div>
             )}
           </For>

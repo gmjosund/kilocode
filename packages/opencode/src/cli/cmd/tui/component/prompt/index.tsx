@@ -754,11 +754,10 @@ export function Prompt(props: PromptProps) {
   const resolved = createMemo(() => {
     const m = local.model.current()
     if (!m) return undefined
-    const variant = local.model.variant.current()
-    if (!variant) return undefined
+    const agent = local.agent.current().name
     const provider = sync.data.provider.find((x) => x.id === m.providerID)
     const info = provider?.models[m.modelID]
-    return info?.variants?.[variant]?.name as string | undefined
+    return info?.variants?.[agent]?.name as string | undefined
   })
   // kilocode_change end
 
@@ -1037,17 +1036,17 @@ export function Prompt(props: PromptProps) {
                   <text flexShrink={0} fg={keybind.leader ? theme.textMuted : theme.text}>
                     {local.model.parsed().model}
                   </text>
+                  {/* kilocode_change start - show resolved model name */}
+                  <Show when={resolved()}>
+                    <text fg={theme.textMuted}>({resolved()})</text>
+                  </Show>
+                  {/* kilocode_change end */}
                   <text fg={theme.textMuted}>{local.model.parsed().provider}</text>
                   <Show when={showVariant()}>
                     <text fg={theme.textMuted}>·</text>
                     <text>
                       <span style={{ fg: theme.warning, bold: true }}>{local.model.variant.current()}</span>
                     </text>
-                    {/* kilocode_change start - show resolved model name */}
-                    <Show when={resolved()}>
-                      <text fg={theme.textMuted}>({resolved()})</text>
-                    </Show>
-                    {/* kilocode_change end */}
                   </Show>
                 </box>
               </Show>
