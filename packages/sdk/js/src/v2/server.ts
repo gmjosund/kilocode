@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process"
-import { randomBytes } from "node:crypto"
+import { randomBytes } from "node:crypto" // kilocode_change
 import { type Config } from "./gen/types.gen.js"
 
 // kilocode_change start - Merge existing KILO_CONFIG_CONTENT with new config
