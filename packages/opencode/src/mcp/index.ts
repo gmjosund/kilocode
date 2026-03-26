@@ -117,10 +117,20 @@ export namespace MCP {
     })
   export type Status = z.infer<typeof Status>
 
+  // kilocode_change start — cache resolved MCP tools to avoid calling
+  // client.listTools() (network RPC) on every tool-loop step. Invalidated
+  // when an MCP server sends a ToolListChanged notification or on reconnect.
+  let toolsCache: Record<string, Tool> | undefined
+  export function invalidateToolsCache() {
+    toolsCache = undefined
+  }
+  // kilocode_change end
+
   // Register notification handlers for MCP client
   function registerNotificationHandlers(client: MCPClient, serverName: string) {
     client.setNotificationHandler(ToolListChangedNotificationSchema, async () => {
       log.info("tools list changed notification received", { server: serverName })
+      invalidateToolsCache() // kilocode_change
       Bus.publish(ToolsChanged, { server: serverName })
     })
   }
@@ -595,6 +605,7 @@ export namespace MCP {
       }
       s.clients[name] = result.mcpClient
     }
+    invalidateToolsCache() // kilocode_change — new client may expose different tools
   }
 
   export async function disconnect(name: string) {
@@ -607,9 +618,15 @@ export namespace MCP {
       delete s.clients[name]
     }
     s.status[name] = { status: "disabled" }
+    invalidateToolsCache() // kilocode_change — client removed, tool set changed
   }
 
   export async function tools() {
+    // kilocode_change start — return cached result when available to avoid
+    // calling client.listTools() (network RPC) on every tool-loop step.
+    if (toolsCache) return toolsCache
+    // kilocode_change end
+
     const result: Record<string, Tool> = {}
     const s = await state()
     const cfg = await Config.get()
@@ -648,6 +665,7 @@ export namespace MCP {
         result[sanitizedClientName + "_" + sanitizedToolName] = await convertMcpTool(mcpTool, client, timeout)
       }
     }
+    toolsCache = result // kilocode_change — store for subsequent loop steps
     return result
   }
 

@@ -823,6 +823,12 @@ export namespace SessionPrompt {
     return Provider.defaultModel()
   }
 
+  // kilocode_change start — cache schema conversions per model+tool to avoid
+  // re-running z.toJSONSchema() + ProviderTransform.schema() on every loop step.
+  // The Zod schema and model don't change between steps.
+  const schemaCache = new Map<string, ReturnType<typeof jsonSchema>>()
+  // kilocode_change end
+
   /** @internal Exported for testing */
   export async function resolveTools(input: {
     agent: Agent.Info
@@ -875,11 +881,19 @@ export namespace SessionPrompt {
       { modelID: input.model.api.id, providerID: input.model.providerID },
       input.agent,
     )) {
-      const schema = ProviderTransform.schema(input.model, z.toJSONSchema(item.parameters))
+      // kilocode_change start — cache schema conversion per model+tool
+      const cacheKey = `${input.model.providerID}:${input.model.id}:${item.id}`
+      let cached = schemaCache.get(cacheKey)
+      if (!cached) {
+        const raw = ProviderTransform.schema(input.model, z.toJSONSchema(item.parameters))
+        cached = jsonSchema(raw as any)
+        schemaCache.set(cacheKey, cached)
+      }
+      // kilocode_change end
       tools[item.id] = tool({
         id: item.id as any,
         description: item.description,
-        inputSchema: jsonSchema(schema as any),
+        inputSchema: cached,
         async execute(args, options) {
           const ctx = context(args, options)
           await Plugin.trigger(
@@ -922,8 +936,16 @@ export namespace SessionPrompt {
       const execute = item.execute
       if (!execute) continue
 
-      const transformed = ProviderTransform.schema(input.model, asSchema(item.inputSchema).jsonSchema)
-      item.inputSchema = jsonSchema(transformed)
+      // kilocode_change start — cache MCP schema conversion
+      const mcpKey = `mcp:${input.model.providerID}:${input.model.id}:${key}`
+      let mcpSchema = schemaCache.get(mcpKey)
+      if (!mcpSchema) {
+        const transformed = ProviderTransform.schema(input.model, asSchema(item.inputSchema).jsonSchema)
+        mcpSchema = jsonSchema(transformed)
+        schemaCache.set(mcpKey, mcpSchema)
+      }
+      item.inputSchema = mcpSchema
+      // kilocode_change end
       // Wrap execute to add plugin hooks and format output
       item.execute = async (args, opts) => {
         const ctx = context(args, opts)

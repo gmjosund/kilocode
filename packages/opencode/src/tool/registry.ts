@@ -35,6 +35,13 @@ import { pathToFileURL } from "url"
 export namespace ToolRegistry {
   const log = Log.create({ service: "tool.registry" })
 
+  // kilocode_change start — cache tool init results to avoid re-initializing
+  // every tool on every tool-loop step. Keyed by agent name; invalidated when
+  // custom tools change (register) or on new Instance.state cycle.
+  type InitResult = Awaited<ReturnType<Tool.Info["init"]>> & { id: string }
+  const cache = new Map<string, InitResult[]>()
+  // kilocode_change end
+
   export const state = Instance.state(async () => {
     const custom = [] as Tool.Info[]
 
@@ -59,6 +66,7 @@ export namespace ToolRegistry {
       }
     }
 
+    cache.clear() // kilocode_change — clear cache when state reinitializes
     return { custom }
   })
 
@@ -91,9 +99,10 @@ export namespace ToolRegistry {
     const idx = custom.findIndex((t) => t.id === tool.id)
     if (idx >= 0) {
       custom.splice(idx, 1, tool)
-      return
+    } else {
+      custom.push(tool)
     }
-    custom.push(tool)
+    cache.clear() // kilocode_change — invalidate init cache when tools change
   }
 
   async function all(): Promise<Tool.Info[]> {
@@ -137,41 +146,59 @@ export namespace ToolRegistry {
     },
     agent?: Agent.Info,
   ) {
+    // kilocode_change start — cache tool init results per agent to avoid
+    // re-running init + Plugin.trigger("tool.definition") on every loop step.
+    // Tool definitions (description, parameters) are stable within a session.
+    const key = agent?.name ?? ""
+    const cached = cache.get(key)
+    if (cached) {
+      return cached.filter((t) => {
+        // kilocode_change start
+        if (t.id === "codesearch" || t.id === "websearch") {
+          return model.providerID === "opencode" || model.providerID === "kilo" || Flag.KILO_ENABLE_EXA
+        }
+        // kilocode_change end
+        const usePatch =
+          model.modelID.includes("gpt-") && !model.modelID.includes("oss") && !model.modelID.includes("gpt-4")
+        if (t.id === "apply_patch") return usePatch
+        if (t.id === "edit" || t.id === "write") return !usePatch
+        return true
+      })
+    }
+    // kilocode_change end
+
     const tools = await all()
     const result = await Promise.all(
-      tools
-        .filter((t) => {
-          // Enable websearch/codesearch for zen/kilo users OR via enable flag
-          // kilocode_change start
-          if (t.id === "codesearch" || t.id === "websearch") {
-            return model.providerID === "opencode" || model.providerID === "kilo" || Flag.KILO_ENABLE_EXA
-          }
-          // kilocode_change end
-
-          // use apply tool in same format as codex
-          const usePatch =
-            model.modelID.includes("gpt-") && !model.modelID.includes("oss") && !model.modelID.includes("gpt-4")
-          if (t.id === "apply_patch") return usePatch
-          if (t.id === "edit" || t.id === "write") return !usePatch
-
-          return true
-        })
-        .map(async (t) => {
-          using _ = log.time(t.id)
-          const tool = await t.init({ agent })
-          const output = {
-            description: tool.description,
-            parameters: tool.parameters,
-          }
-          await Plugin.trigger("tool.definition", { toolID: t.id }, output)
-          return {
-            id: t.id,
-            ...tool,
-            description: output.description,
-            parameters: output.parameters,
-          }
-        }),
+      tools.map(async (t) => {
+        using _ = log.time(t.id)
+        const tool = await t.init({ agent })
+        const output = {
+          description: tool.description,
+          parameters: tool.parameters,
+        }
+        await Plugin.trigger("tool.definition", { toolID: t.id }, output)
+        return {
+          id: t.id,
+          ...tool,
+          description: output.description,
+          parameters: output.parameters,
+        }
+      }),
     )
-    return result
+    cache.set(key, result) // kilocode_change — store for subsequent loop steps
+
+    // Apply model-specific filtering on the full cached set
+    return result.filter((t) => {
+      // kilocode_change start
+      if (t.id === "codesearch" || t.id === "websearch") {
+        return model.providerID === "opencode" || model.providerID === "kilo" || Flag.KILO_ENABLE_EXA
+      }
+      // kilocode_change end
+      const usePatch =
+        model.modelID.includes("gpt-") && !model.modelID.includes("oss") && !model.modelID.includes("gpt-4")
+      if (t.id === "apply_patch") return usePatch
+      if (t.id === "edit" || t.id === "write") return !usePatch
+      return true
+    })
   }
 }
