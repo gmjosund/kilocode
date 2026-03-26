@@ -3,11 +3,12 @@ import * as os from "os"
 
 /**
  * Global config dir: ~/.config/kilo/ (XDG_CONFIG_HOME/kilo)
- * This matches where the CLI reads global config from.
+ * In KILO_DEV mode uses 'kilo-dev' to match the CLI's isolated data dirs.
  */
 function globalConfigDir(): string {
   const xdg = process.env.XDG_CONFIG_HOME || path.join(os.homedir(), ".config")
-  return path.join(xdg, "kilo")
+  const app = process.env.KILO_DEV ? "kilo-dev" : "kilo"
+  return path.join(xdg, app)
 }
 
 export class MarketplacePaths {
