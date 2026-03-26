@@ -669,6 +669,15 @@ function isContextGroupTool(part: PartType): part is ToolPart {
 
 function ExaOutput(props: { output?: string }) {
   const links = createMemo(() => urls(props.output))
+  const data = useData()
+
+  const open = (url: string, event: MouseEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const handler = data.openUrl
+    if (handler) return handler(url)
+    window.open(url, "_blank", "noopener,noreferrer")
+  }
 
   return (
     <Show when={links().length > 0}>
@@ -676,13 +685,7 @@ function ExaOutput(props: { output?: string }) {
         <div data-slot="exa-tool-links">
           <For each={links()}>
             {(url) => (
-              <a
-                data-slot="exa-tool-link"
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(event) => event.stopPropagation()}
-              >
+              <a data-slot="exa-tool-link" href={url} target="_blank" rel="noopener noreferrer" onClick={[open, url]}>
                 {url}
               </a>
             )}
@@ -1164,12 +1167,11 @@ PART_MAPPING["text"] = function TextPartDisplay(props) {
   })
 
   const handleMarkdownClick = (e: MouseEvent) => {
-    if (!data.openFile) return
     const target = e.target
     if (!(target instanceof HTMLElement)) return
     // Handle .file-link code spans (e.g. `src/foo.ts:42`)
     const fileLink = target.closest(".file-link[data-file-path]")
-    if (fileLink) {
+    if (fileLink && data.openFile) {
       const path = fileLink.getAttribute("data-file-path")
       if (!path) return
       const lineAttr = fileLink.getAttribute("data-file-line")
@@ -1179,11 +1181,18 @@ PART_MAPPING["text"] = function TextPartDisplay(props) {
       data.openFile(path, line, column)
       return
     }
-    // Handle markdown links whose href looks like a relative file path
+    // Handle markdown links
     const anchor = target.closest("a.external-link") as HTMLAnchorElement | null
     if (anchor) {
       const href = anchor.getAttribute("href")
       if (!href) return
+      // If it looks like a URL, open externally
+      if (data.openUrl && (href.startsWith("http://") || href.startsWith("https://"))) {
+        e.preventDefault()
+        data.openUrl(href)
+        return
+      }
+      if (!data.openFile) return
       const filePath = extractFilePathFromHref(href)
       if (!filePath) return
       e.preventDefault()
