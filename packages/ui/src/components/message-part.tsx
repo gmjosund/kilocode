@@ -875,16 +875,29 @@ ToolRegistry.register({
   name: "webfetch",
   render(props) {
     const i18n = useI18n()
+    const data = useData() // kilocode_change
+    // kilocode_change start
+    const url = () => props.input.url || ""
+    const handleOpen = (e: MouseEvent) => {
+      e.stopPropagation()
+      if (url() && data.openUrl) data.openUrl(url())
+    }
+    // kilocode_change end
     return (
       <BasicTool
         {...props}
         icon="window-cursor"
+        // kilocode_change - add onSubtitleClick to open the URL
+        onSubtitleClick={() => {
+          if (url() && data.openUrl) data.openUrl(url())
+        }}
         trigger={{
           title: i18n.t("ui.tool.webfetch"),
-          subtitle: props.input.url || "",
+          subtitle: url(),
           args: props.input.format ? ["format=" + props.input.format] : [],
           action: (
-            <div data-component="tool-action">
+            // kilocode_change - onClick to open URL in browser
+            <div data-component="tool-action" onClick={handleOpen}>
               <Icon name="square-arrow-top-right" size="small" />
             </div>
           ),

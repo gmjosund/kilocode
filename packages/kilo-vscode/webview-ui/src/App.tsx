@@ -83,8 +83,19 @@ export const DataBridge: Component<{ children: any }> = (props) => {
     vscode.postMessage({ type: "openFile", filePath, line, column })
   }
 
+  const openUrl = (url: string) => {
+    vscode.postMessage({ type: "openExternal", url })
+  }
+
   return (
-    <DataProvider data={data()} directory="" onPermissionRespond={respond} onSyncSession={sync} onOpenFile={open}>
+    <DataProvider
+      data={data()}
+      directory=""
+      onPermissionRespond={respond}
+      onSyncSession={sync}
+      onOpenFile={open}
+      onOpenUrl={openUrl}
+    >
       {props.children}
     </DataProvider>
   )

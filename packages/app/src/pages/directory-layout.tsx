@@ -10,12 +10,14 @@ import type { QuestionAnswer } from "@kilocode/sdk/v2"
 import { decode64 } from "@/utils/base64"
 import { showToast } from "@opencode-ai/ui/toast"
 import { useLanguage } from "@/context/language"
+import { usePlatform } from "@/context/platform"
 
 function DirectoryDataProvider(props: ParentProps<{ directory: string }>) {
   const params = useParams()
   const navigate = useNavigate()
   const sync = useSync()
   const sdk = useSDK()
+  const platform = usePlatform()
 
   return (
     <DataProvider
@@ -31,6 +33,7 @@ function DirectoryDataProvider(props: ParentProps<{ directory: string }>) {
       onNavigateToSession={(sessionID: string) => navigate(`/${params.dir}/session/${sessionID}`)}
       onSessionHref={(sessionID: string) => `/${params.dir}/session/${sessionID}`}
       onSyncSession={(sessionID: string) => sync.session.sync(sessionID)}
+      onOpenUrl={(url: string) => platform.openLink(url)}
     >
       <LocalProvider>{props.children}</LocalProvider>
     </DataProvider>

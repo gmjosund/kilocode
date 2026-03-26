@@ -54,6 +54,8 @@ export type SyncSessionFn = (sessionID: string) => void | Promise<void>
 
 export type OpenFileFn = (filePath: string, line?: number, column?: number) => void // kilocode_change
 
+export type OpenUrlFn = (url: string) => void // kilocode_change
+
 export const { use: useData, provider: DataProvider } = createSimpleContext({
   name: "Data",
   init: (props: {
@@ -66,6 +68,7 @@ export const { use: useData, provider: DataProvider } = createSimpleContext({
     onSessionHref?: SessionHrefFn
     onSyncSession?: SyncSessionFn
     onOpenFile?: OpenFileFn // kilocode_change
+    onOpenUrl?: OpenUrlFn // kilocode_change
   }) => {
     return {
       get store() {
@@ -81,6 +84,7 @@ export const { use: useData, provider: DataProvider } = createSimpleContext({
       sessionHref: props.onSessionHref,
       syncSession: props.onSyncSession,
       openFile: props.onOpenFile, // kilocode_change
+      openUrl: props.onOpenUrl, // kilocode_change
     }
   },
 })
