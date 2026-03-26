@@ -34,10 +34,13 @@ export namespace Snapshot {
       .then(() => true)
       .catch(() => false)
     if (!exists) return
-    const result = await $`git -c core.autocrlf=false -c core.longpaths=true -c core.symlinks=true --git-dir ${git} --work-tree ${Instance.worktree} gc --prune=${prune}`
-      .quiet()
-      .cwd(Instance.directory)
-      .nothrow()
+    // kilocode_change start
+    const result =
+      await $`git -c core.autocrlf=false -c core.longpaths=true -c core.symlinks=true --git-dir ${git} --work-tree ${Instance.worktree} gc --prune=${prune}`
+        .quiet()
+        .cwd(Instance.directory)
+        .nothrow()
+    // kilocode_change end
     if (result.exitCode !== 0) {
       log.warn("cleanup failed", {
         exitCode: result.exitCode,
@@ -256,7 +259,10 @@ export namespace Snapshot {
 
   function gitdir() {
     const project = Instance.project
-    return path.join(Global.Path.data, "snapshot", project.id)
+    // kilocode_change start
+    const workhash = Bun.hash(Instance.worktree).toString(36)
+    return path.join(Global.Path.data, "snapshot", project.id, workhash)
+    // kilocode_change end
   }
 
   async function add(git: string) {
