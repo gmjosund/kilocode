@@ -245,6 +245,7 @@ export namespace KiloSessions {
           [...ids].map(async (id) => {
             const session = await Session.get(id).catch(() => undefined)
             if (!session) return undefined
+            if (session.parentID) return undefined
             return {
               id,
               status: statuses[id]?.type ?? "idle",
