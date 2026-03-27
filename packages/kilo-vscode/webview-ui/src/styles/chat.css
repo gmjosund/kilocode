@@ -2170,6 +2170,22 @@
   opacity: 0.7;
 }
 
+.working-cancel {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--vscode-textLink-foreground);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.working-cancel:hover {
+  opacity: 1;
+}
+
 /* Session List Items */
 .session-list [data-slot="list-item-title"],
 .cloud-session-list [data-slot="list-item-title"] {

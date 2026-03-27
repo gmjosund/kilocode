@@ -88,6 +88,11 @@ export const WorkingIndicator: Component = () => {
         <Show when={elapsed() > 0}>
           <span class="working-elapsed">{formatElapsed()}</span>
         </Show>
+        <Show when={session.statusInfo().type === "retry"}>
+          <button class="working-cancel" onClick={() => session.abort()} aria-label={language.t("prompt.action.stop")}>
+            {language.t("prompt.action.stop")}
+          </button>
+        </Show>
       </div>
     </Show>
   )

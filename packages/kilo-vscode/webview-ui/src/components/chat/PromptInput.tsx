@@ -216,7 +216,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
 
   // Compact/summarize the current session (mirrors canCompact guards in TaskHeader)
   const onCompact = () => {
-    if (session.status() === "busy") return
+    if (session.status() !== "idle") return
     if (session.messages().length === 0) return
     if (!session.selected()) return
     session.compact()
@@ -225,10 +225,12 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
   onCleanup(() => window.removeEventListener("compactSession", onCompact))
 
   const isBusy = () => session.status() === "busy"
+  const isRetrying = () => session.status() === "retry"
+  const isActive = () => isBusy() || isRetrying()
   const isDisabled = () => !server.isConnected()
   const hasInput = () => text().trim().length > 0 || imageAttach.images().length > 0 || reviewComments().length > 0
   const canSend = () => hasInput() && !isDisabled() && !props.blocked?.()
-  const showStop = () => isBusy() && !hasInput()
+  const showStop = () => isActive() && !hasInput()
   const isAtEnd = () =>
     textareaRef ? atEnd(textareaRef.selectionStart, textareaRef.selectionEnd, textareaRef.value.length) : false
   const placeholder = () => {
@@ -476,7 +478,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
       ghost.dismiss()
       return
     }
-    if (e.key === "Escape" && isBusy()) {
+    if (e.key === "Escape" && isActive()) {
       e.preventDefault()
       e.stopPropagation()
       session.abort()
@@ -488,10 +490,10 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     }
   }
 
-  const canEnhance = () => !isBusy() && !isDisabled() && !enhancing()
+  const canEnhance = () => !isActive() && !isDisabled() && !enhancing()
 
   const handleEnhance = () => {
-    if (isDisabled() || enhancing() || isBusy()) return
+    if (isDisabled() || enhancing() || isActive()) return
     const draft = text().trim()
     if (!draft) {
       const description = language.t("prompt.action.enhanceDescription")
