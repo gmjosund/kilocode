@@ -1220,7 +1220,6 @@ export const dict = {
 
   // Screen 1 — What's New
   "migration.whatsNew.title": "Kilo Code의 새로운 기능",
-  "migration.whatsNew.badge": "Beta",
   "migration.whatsNew.subtitle": "더 빠르고 효율적인 기반 위에 확장 프로그램을 재구축했습니다.",
   "migration.whatsNew.features.performance.title": "더 빠른 에이전트 성능",
   "migration.whatsNew.features.performance.detail":

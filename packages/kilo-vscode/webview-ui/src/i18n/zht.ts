@@ -1197,7 +1197,6 @@ export const dict = {
 
   // Screen 1 — What's New
   "migration.whatsNew.title": "Kilo Code 新功能",
-  "migration.whatsNew.badge": "Beta",
   "migration.whatsNew.subtitle": "我們在更快、更高效的基礎上重新建構了擴充功能。",
   "migration.whatsNew.features.performance.title": "更快的 Agent 效能",
   "migration.whatsNew.features.performance.detail":
