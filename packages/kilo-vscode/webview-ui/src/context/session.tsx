@@ -352,6 +352,12 @@ export const SessionProvider: ParentComponent = (props) => {
       // Writing globally here would cause every other session (that hasn't
       // set its own override) to inherit this session's model.
       setStore("sessionOverrides", sid, selection)
+      // Cancel retry/backoff loop when the user switches models mid-retry
+      // so the new model takes effect immediately (#7768)
+      const info = statusMap[sid]
+      if (info?.type === "retry") {
+        abort()
+      }
     } else {
       // No active session (sidebar) — write globally
       setUserSetAgents((prev) => ({ ...prev, [agentName]: true }))
