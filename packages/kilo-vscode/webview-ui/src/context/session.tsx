@@ -361,6 +361,11 @@ export const SessionProvider: ParentComponent = (props) => {
 
   function selectModel(providerID: string, modelID: string) {
     applyModel(selectedAgentName(), { providerID, modelID })
+    // If the session is stuck in a retry loop (e.g. hit a free-model cap),
+    // abort it so the user can re-send with the newly selected model.
+    if (status() === "retry") {
+      abort()
+    }
   }
 
   /** The config/default model for the current mode (what settings says). */
