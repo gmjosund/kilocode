@@ -11,16 +11,17 @@ import { Wildcard } from "@/util/wildcard"
 import { drainCovered } from "@/kilocode/permission/drain" // kilocode_change
 import { ConfigProtection } from "@/kilocode/permission/config-paths" // kilocode_change
 import os from "os"
+import path from "path"
 import z from "zod"
 
 export namespace PermissionNext {
   const log = Log.create({ service: "permission" })
 
   function expand(pattern: string): string {
-    if (pattern.startsWith("~/")) return os.homedir() + pattern.slice(1)
+    if (pattern.startsWith("~/")) return path.join(os.homedir(), pattern.slice(2))
     if (pattern === "~") return os.homedir()
-    if (pattern.startsWith("$HOME/")) return os.homedir() + pattern.slice(5)
-    if (pattern.startsWith("$HOME")) return os.homedir() + pattern.slice(5)
+    if (pattern.startsWith("$HOME/")) return path.join(os.homedir(), pattern.slice(6))
+    if (pattern.startsWith("$HOME")) return path.join(os.homedir(), pattern.slice(5))
     return pattern
   }
 
