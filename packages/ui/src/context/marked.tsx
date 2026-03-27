@@ -615,6 +615,27 @@ export async function deferredHighlight(
 }
 // kilocode_change end
 
+// kilocode_change start: escape backslashes in Windows paths before markdown parsing
+/**
+ * Escape backslashes in Windows-style absolute paths so they survive markdown
+ * parsing.  Markdown treats backslash + ASCII punctuation (e.g. `\.` `\!` `\#`)
+ * as escape sequences, stripping the backslash.  This causes Windows paths like
+ * `C:\Users\user1\.config` to render as `C:\Users\user1.config`.
+ *
+ * This function doubles backslashes inside drive-letter paths (`C:\...`) while
+ * leaving code spans, fenced code blocks, and all other text untouched.
+ */
+export function escapeWindowsPaths(text: string): string {
+  return text.replace(
+    /(```[\s\S]*?```|`[^`]*`)|([A-Za-z]):(\\(?:[^\s\\*?<>|"`:]+\\?)*[^\s\\*?<>|"`:]*)/g,
+    (match, code, drive, rest) => {
+      if (code) return code
+      return drive + ":" + rest.replace(/\\/g, "\\\\")
+    },
+  )
+}
+// kilocode_change end
+
 export const { use: useMarked, provider: MarkedProvider } = createSimpleContext({
   name: "Marked",
   init: (props: { nativeParser?: NativeMarkdownParser }) => {
@@ -689,13 +710,21 @@ export const { use: useMarked, provider: MarkedProvider } = createSimpleContext(
       const nativeParser = props.nativeParser
       return {
         async parse(markdown: string): Promise<string> {
-          const html = await nativeParser(markdown)
+          const html = await nativeParser(escapeWindowsPaths(markdown)) // kilocode_change
           const withMath = renderMathExpressions(html)
           return highlightCodeBlocks(withMath)
         },
       }
     }
 
-    return parser
+    // kilocode_change start: wrap parser to escape Windows paths before parsing
+    const original = parser.parse.bind(parser)
+    return {
+      ...parser,
+      parse(markdown: string, options?: Parameters<typeof parser.parse>[1]) {
+        return original(escapeWindowsPaths(markdown), options)
+      },
+    }
+    // kilocode_change end
   },
 })
