@@ -303,4 +303,4 @@ This benchmarking system is complementary to, but separate from, the [Agent Obse
 - [ATIF Specification (RFC)](https://github.com/laude-institute/harbor/blob/main/docs/rfcs/0001-trajectory-format.md)
 - [Opik Harbor Integration](https://www.comet.com/docs/opik/integrations/harbor)
 - [tbench.ai Dashboard](https://www.tbench.ai/docs/dashboard)
-- [Harbor Task Tutorial](https://www.tbench.ai/docs/task-tutorial)
+- [Harbor Task Tutorial](https://www.tbench.ai/docs/task-tutorial))
