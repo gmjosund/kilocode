@@ -74,7 +74,7 @@ import { ProviderProvider } from "../src/context/provider"
 import { ConfigProvider } from "../src/context/config"
 import { NotificationsProvider } from "../src/context/notifications"
 import { SessionProvider, useSession } from "../src/context/session"
-import { WorktreeModeProvider } from "../src/context/worktree-mode"
+import { WorktreeModeProvider, useWorktreeMode } from "../src/context/worktree-mode"
 import { ChatView } from "../src/components/chat"
 import { NewWorktreeDialog } from "./NewWorktreeDialog"
 import { LanguageBridge, DataBridge } from "../src/App"
@@ -358,6 +358,10 @@ const AgentManagerContent: Component = () => {
   let pendingCounter = 0
   const PENDING_PREFIX = "pending:"
   const [activePendingId, setActivePendingId] = createSignal<string | undefined>()
+
+  // Sync activePendingId into WorktreeMode context so PromptInput can key drafts per pending tab
+  const worktreeCtx = useWorktreeMode()
+  createEffect(() => worktreeCtx?.setPendingId(activePendingId()))
 
   // Inline delete confirmation: tracks which worktree is awaiting a second click/press
   const [pendingDelete, setPendingDelete] = createSignal<string | null>(null)
