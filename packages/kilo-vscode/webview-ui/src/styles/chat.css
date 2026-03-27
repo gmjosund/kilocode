@@ -123,6 +123,15 @@
 }
 
 /* ============================================
+   Task Header – Active Toggle
+   ============================================ */
+
+[data-component="task-header"] [data-active] {
+  background-color: var(--background-alt);
+  color: var(--text-base);
+}
+
+/* ============================================
    Task Header Todos
    ============================================ */
 

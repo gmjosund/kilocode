@@ -96,6 +96,7 @@ export const TaskHeader: Component<TaskHeaderProps> = (props) => {
                 disabled={!hasMessages()}
                 onClick={() => props.setPromptOpen?.((v) => !v)}
                 aria-label={language.t("context.systemPrompt.title")}
+                data-active={props.promptOpen?.() ? "" : undefined}
               />
             </Tooltip>
           </Show>
