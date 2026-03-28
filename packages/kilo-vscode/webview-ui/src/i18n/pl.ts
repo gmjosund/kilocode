@@ -1153,7 +1153,7 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.env": "Środowisko",
   "settings.agentBehaviour.mcpDetail.disabled": "Ten serwer jest wyłączony.",
   "settings.agentBehaviour.mcpEmpty":
-    "Brak skonfigurowanych serwerów MCP. Edytuj plik konfiguracyjny opencode, aby dodać serwery MCP.",
+    "Brak skonfigurowanych serwerów MCP. Edytuj kilo.jsonc, aby dodać serwery MCP, lub poproś agenta o dodanie.",
   "settings.agentBehaviour.workflowsPlaceholder": "Przepływy pracy zarządzane są za pomocą plików przepływów pracy.",
   "settings.agentBehaviour.workflows.description":
     "Przepływy pracy to niestandardowe komendy slash zdefiniowane w konfiguracji. Wpisz /command-name na czacie, aby je uruchomić. Komendy konfiguruje się w opencode.json w sekcji 'command'.",

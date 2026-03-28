@@ -1121,7 +1121,7 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "参数",
   "settings.agentBehaviour.mcpDetail.env": "环境",
   "settings.agentBehaviour.mcpDetail.disabled": "此服务器已禁用。",
-  "settings.agentBehaviour.mcpEmpty": "未配置 MCP 服务器。编辑 opencode 配置文件以添加 MCP 服务器。",
+  "settings.agentBehaviour.mcpEmpty": "未配置 MCP 服务器。编辑 kilo.jsonc 以添加 MCP 服务器，或让 Agent 帮您添加。",
   "settings.agentBehaviour.workflowsPlaceholder": "工作流通过工作区中的工作流文件管理。",
   "settings.agentBehaviour.workflows.description":
     "工作流是在配置中定义的自定义斜杠命令。在聊天中输入 /command-name 来调用它们。命令在 opencode.json 的 'command' 部分中配置。",

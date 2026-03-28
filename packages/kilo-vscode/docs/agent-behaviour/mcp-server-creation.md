@@ -6,21 +6,21 @@ The legacy MCP Servers sub-tab (842 lines) had full server lifecycle management.
 
 ## Side-by-Side Comparison
 
-| Feature                 | Legacy                           | New                                                           |
-| ----------------------- | -------------------------------- | ------------------------------------------------------------- |
-| View server list        | Name + source badge + status dot | Name + command/URL                                            |
-| Add server              | Via edit config file buttons     | Not available                                                 |
-| Remove server           | Delete button + confirmation     | Remove button + confirmation                                  |
-| Edit server config      | Via edit config file buttons     | Not available                                                 |
-| Connection status       | Colored dot (green/yellow/red)   | Not displayed                                                 |
-| Enable/disable toggle   | `ToggleSwitch` per server        | Not available                                                 |
-| Restart/refresh         | Per-server refresh button        | Not available                                                 |
-| Refresh all             | "Refresh All MCP Servers" button | Not available                                                 |
-| Edit Global MCP config  | Button to open file              | Not available                                                 |
-| Edit Project MCP config | Button to open file              | Not available                                                 |
-| Network timeout         | Per-server dropdown (15s–60min)  | Not available                                                 |
-| Server source badge     | Shows "global" / "project"       | Not displayed                                                 |
-| Empty state             | N/A                              | "No MCP servers configured. Edit the opencode config file..." |
+| Feature                 | Legacy                           | New                                                                                                   |
+| ----------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| View server list        | Name + source badge + status dot | Name + command/URL                                                                                    |
+| Add server              | Via edit config file buttons     | Not available                                                                                         |
+| Remove server           | Delete button + confirmation     | Remove button + confirmation                                                                          |
+| Edit server config      | Via edit config file buttons     | Not available                                                                                         |
+| Connection status       | Colored dot (green/yellow/red)   | Not displayed                                                                                         |
+| Enable/disable toggle   | `ToggleSwitch` per server        | Not available                                                                                         |
+| Restart/refresh         | Per-server refresh button        | Not available                                                                                         |
+| Refresh all             | "Refresh All MCP Servers" button | Not available                                                                                         |
+| Edit Global MCP config  | Button to open file              | Not available                                                                                         |
+| Edit Project MCP config | Button to open file              | Not available                                                                                         |
+| Network timeout         | Per-server dropdown (15s–60min)  | Not available                                                                                         |
+| Server source badge     | Shows "global" / "project"       | Not displayed                                                                                         |
+| Empty state             | N/A                              | "No MCP servers configured. Edit kilo.jsonc to add MCP servers, or ask the agent to add one for you." |
 
 ### Expandable Server Detail (Legacy Only)
 

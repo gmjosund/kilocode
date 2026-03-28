@@ -1173,7 +1173,7 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.env": "Environnement",
   "settings.agentBehaviour.mcpDetail.disabled": "Ce serveur est désactivé.",
   "settings.agentBehaviour.mcpEmpty":
-    "Aucun serveur MCP configuré. Modifiez le fichier de configuration opencode pour ajouter des serveurs MCP.",
+    "Aucun serveur MCP configuré. Modifiez kilo.jsonc pour ajouter des serveurs MCP, ou demandez à l'agent d'en ajouter un.",
   "settings.agentBehaviour.workflowsPlaceholder":
     "Les workflows sont gérés via les fichiers de workflow dans votre espace de travail.",
   "settings.agentBehaviour.workflows.description":

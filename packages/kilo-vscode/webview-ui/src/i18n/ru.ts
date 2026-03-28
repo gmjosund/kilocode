@@ -1154,7 +1154,7 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.env": "Окружение",
   "settings.agentBehaviour.mcpDetail.disabled": "Этот сервер отключён.",
   "settings.agentBehaviour.mcpEmpty":
-    "MCP-серверы не настроены. Отредактируйте файл конфигурации opencode для добавления MCP-серверов.",
+    "MCP-серверы не настроены. Отредактируйте kilo.jsonc для добавления MCP-серверов или попросите агента добавить сервер.",
   "settings.agentBehaviour.workflowsPlaceholder": "Рабочие процессы управляются через файлы рабочих процессов.",
   "settings.agentBehaviour.workflows.description":
     "Рабочие процессы — это пользовательские слэш-команды, определённые в вашей конфигурации. Введите /command-name в чате, чтобы вызвать их. Команды настраиваются в opencode.json в разделе 'command'.",

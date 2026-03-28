@@ -1135,7 +1135,7 @@ export const dict = {
   "settings.agentBehaviour.addMcp.url": "Server-URL",
   "settings.agentBehaviour.addMcp.url.placeholder": "e.g. http://localhost:3000/sse",
   "settings.agentBehaviour.mcpEmpty":
-    "Geen MCP-servers geconfigureerd. Bewerk het opencode configuratiebestand om MCP-servers toe te voegen.",
+    "Geen MCP-servers geconfigureerd. Bewerk kilo.jsonc om MCP-servers toe te voegen, of vraag de agent er een toe te voegen.",
   "settings.agentBehaviour.workflowsPlaceholder": "Workflows worden beheerd via workflowbestanden in je workspace.",
   "settings.agentBehaviour.workflows.description":
     "Workflows zijn aangepaste slash-commando's gedefinieerd in je configuratie. Typ /command-name in de chat om ze aan te roepen. Commando's worden geconfigureerd in opencode.json onder de sectie 'command'.",

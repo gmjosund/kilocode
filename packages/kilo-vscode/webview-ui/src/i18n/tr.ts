@@ -1131,7 +1131,7 @@ export const dict = {
   "settings.agentBehaviour.addMcp.url": "Sunucu URL'si",
   "settings.agentBehaviour.addMcp.url.placeholder": "e.g. http://localhost:3000/sse",
   "settings.agentBehaviour.mcpEmpty":
-    "Yapılandırılmış MCP sunucusu yok. MCP sunucuları eklemek için opencode yapılandırma dosyasını düzenleyin.",
+    "Yapılandırılmış MCP sunucusu yok. MCP sunucuları eklemek için kilo.jsonc dosyasını düzenleyin veya ajandan ekleme yapmasını isteyin.",
   "settings.agentBehaviour.workflowsPlaceholder": "İş akışları çalışma alanınızdaki iş akışı dosyaları ile yönetilir.",
   "settings.agentBehaviour.workflows.description":
     "İş akışları, yapılandırmanızda tanımlanan özel eğik çizgi komutlarıdır. Çağırmak için sohbette /command-name yazın. Komutlar opencode.json dosyasındaki 'command' bölümünde yapılandırılır.",

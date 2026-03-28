@@ -1147,7 +1147,7 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.env": "環境",
   "settings.agentBehaviour.mcpDetail.disabled": "このサーバーは無効です。",
   "settings.agentBehaviour.mcpEmpty":
-    "MCPサーバーが設定されていません。opencode設定ファイルを編集してMCPサーバーを追加してください。",
+    "MCPサーバーが設定されていません。kilo.jsonc を編集してMCPサーバーを追加するか、エージェントに追加を依頼してください。",
   "settings.agentBehaviour.workflowsPlaceholder":
     "ワークフローはワークスペース内のワークフローファイルを通じて管理されます。",
   "settings.agentBehaviour.workflows.description":
