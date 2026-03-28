@@ -241,7 +241,10 @@ const AgentListCommand = cmd({
         })
 
         for (const agent of sortedAgents) {
-          process.stdout.write(`${agent.name} (${agent.mode})` + EOL)
+          // kilocode_change start - show display name when it differs from internal name
+          const label = agent.displayName ? `${agent.displayName} [${agent.name}]` : agent.name
+          process.stdout.write(`${label} (${agent.mode})` + EOL)
+          // kilocode_change end
           process.stdout.write(`  ${JSON.stringify(agent.permission, null, 2)}` + EOL)
         }
       },

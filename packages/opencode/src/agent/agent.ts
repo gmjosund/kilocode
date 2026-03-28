@@ -193,6 +193,7 @@ export namespace Agent {
       },
       orchestrator: {
         name: "orchestrator",
+        displayName: "Orchestrator - Deprecated", // kilocode_change
         description: "Coordinate complex tasks by delegating to specialized agents in parallel.",
         prompt: PROMPT_ORCHESTRATOR,
         options: {},

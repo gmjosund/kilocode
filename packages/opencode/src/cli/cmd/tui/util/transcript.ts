@@ -5,6 +5,7 @@ export type TranscriptOptions = {
   thinking: boolean
   toolDetails: boolean
   assistantMetadata: boolean
+  agentDisplayNames?: Record<string, string> // kilocode_change - map agent name → display name
 }
 
 export type SessionInfo = {
@@ -46,7 +47,7 @@ export function formatMessage(msg: UserMessage | AssistantMessage, parts: Part[]
   if (msg.role === "user") {
     result += `## User\n\n`
   } else {
-    result += formatAssistantHeader(msg, options.assistantMetadata)
+    result += formatAssistantHeader(msg, options.assistantMetadata, options.agentDisplayNames)
   }
 
   for (const part of parts) {
@@ -56,7 +57,11 @@ export function formatMessage(msg: UserMessage | AssistantMessage, parts: Part[]
   return result
 }
 
-export function formatAssistantHeader(msg: AssistantMessage, includeMetadata: boolean): string {
+export function formatAssistantHeader(
+  msg: AssistantMessage,
+  includeMetadata: boolean,
+  agentDisplayNames?: Record<string, string>,
+): string {
   if (!includeMetadata) {
     return `## Assistant\n\n`
   }
@@ -64,7 +69,10 @@ export function formatAssistantHeader(msg: AssistantMessage, includeMetadata: bo
   const duration =
     msg.time.completed && msg.time.created ? ((msg.time.completed - msg.time.created) / 1000).toFixed(1) + "s" : ""
 
-  return `## Assistant (${Locale.titlecase(msg.agent)} · ${msg.modelID}${duration ? ` · ${duration}` : ""})\n\n`
+  // kilocode_change - resolve display name from map, falling back to titlecased agent name
+  const agent = agentDisplayNames?.[msg.agent] ?? Locale.titlecase(msg.agent)
+
+  return `## Assistant (${agent} · ${msg.modelID}${duration ? ` · ${duration}` : ""})\n\n`
 }
 
 export function formatPart(part: Part, options: TranscriptOptions): string {

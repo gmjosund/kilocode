@@ -876,6 +876,14 @@ export function Session() {
           const sessionData = session()
           if (!sessionData) return
           const sessionMessages = messages()
+          // kilocode_change start - pass agent display names to transcript
+          const names = Object.fromEntries(
+            local.agent
+              .list()
+              .filter((a) => a.displayName)
+              .map((a) => [a.name, a.displayName!]),
+          )
+          // kilocode_change end
           const transcript = formatTranscript(
             sessionData,
             sessionMessages.map((msg) => ({ info: msg, parts: sync.data.part[msg.id] ?? [] })),
@@ -883,6 +891,7 @@ export function Session() {
               thinking: showThinking(),
               toolDetails: showDetails(),
               assistantMetadata: showAssistantMetadata(),
+              agentDisplayNames: names,
             },
           )
           await Clipboard.copy(transcript)
@@ -920,6 +929,14 @@ export function Session() {
 
           if (options === null) return
 
+          // kilocode_change start - pass agent display names to transcript
+          const names = Object.fromEntries(
+            local.agent
+              .list()
+              .filter((a) => a.displayName)
+              .map((a) => [a.name, a.displayName!]),
+          )
+          // kilocode_change end
           const transcript = formatTranscript(
             sessionData,
             sessionMessages.map((msg) => ({ info: msg, parts: sync.data.part[msg.id] ?? [] })),
@@ -927,6 +944,7 @@ export function Session() {
               thinking: options.thinking,
               toolDetails: options.toolDetails,
               assistantMetadata: options.assistantMetadata,
+              agentDisplayNames: names,
             },
           )
 
@@ -1437,7 +1455,11 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
               >
                 ▣{" "}
               </span>{" "}
-              <span style={{ fg: theme.text }}>{Locale.titlecase(props.message.mode)}</span>
+              <span style={{ fg: theme.text }}>
+                {local.agent.list().find((a) => a.name === props.message.mode)?.displayName ??
+                  Locale.titlecase(props.message.mode)}
+              </span>
+              {/* kilocode_change */}
               <span style={{ fg: theme.textMuted }}> · {props.message.modelID}</span>
               <Show when={duration()}>
                 <span style={{ fg: theme.textMuted }}> · {Locale.duration(duration())}</span>
