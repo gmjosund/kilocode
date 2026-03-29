@@ -32,6 +32,7 @@ import type {
   MigrationCustomModeInfo,
   MigrationResultItem,
 } from "./legacy-types"
+import { migrateSession } from "./session-migration-service"
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -211,6 +212,24 @@ export async function migrate(
     }
     if (Object.keys(agentConfig).length > 0) {
       await client.global.config.update({ config: { agent: agentConfig } })
+    }
+  }
+
+  if (selections.sessions?.length) {
+    for (const id of selections.sessions) {
+      onProgress(id, "migrating")
+      const result = await migrateSession({
+        id,
+        context,
+        client,
+      })
+      results.push({
+        item: id,
+        category: "session",
+        status: result.ok ? "success" : "error",
+        message: result.ok ? "Session migrated" : "Session migration failed",
+      })
+      onProgress(id, result.ok ? "success" : "error", result.ok ? "Session migrated" : "Session migration failed")
     }
   }
 

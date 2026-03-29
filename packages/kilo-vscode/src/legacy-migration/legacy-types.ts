@@ -319,13 +319,14 @@ export interface MigrationSelections {
   providers: string[]
   mcpServers: string[]
   customModes: string[]
+  sessions?: string[]
   defaultModel: boolean
   settings: MigrationSettingsSelections
 }
 
 export interface MigrationResultItem {
   item: string
-  category: "provider" | "mcpServer" | "customMode" | "defaultModel" | "settings"
+  category: "provider" | "mcpServer" | "customMode" | "defaultModel" | "settings" | "session"
   status: "success" | "warning" | "error"
   message?: string
 }
