@@ -154,9 +154,11 @@ export function createAutoScroll(options: AutoScrollOptions) {
         return
       }
       if (!active()) {
+        // When idle, still follow bottom if user hasn't scrolled away.
+        // This handles late-arriving content (syntax highlighting, markdown
+        // rendering) that resizes after the settling period ends.
         if (!store.userScrolled && el && distanceFromBottom(el) > threshold()) {
           scrollToBottomNow("auto")
-          return
         }
         return
       }
@@ -184,7 +186,7 @@ export function createAutoScroll(options: AutoScrollOptions) {
       settling = true
       settleTimer = setTimeout(() => {
         settling = false
-      }, 300)
+      }, 800)
     }),
   )
 
