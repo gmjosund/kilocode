@@ -106,6 +106,34 @@ describe("legacy migration parts", () => {
     expect(list).toEqual([])
   })
 
+  it("keeps part message ids aligned with imported message ids when skipped entries exist", () => {
+    const list = parsePartsFromConversation(
+      [
+        {
+          role: "user",
+          content: "hello",
+          ts: 1,
+        },
+        {
+          role: "system",
+          content: "ignored",
+          ts: 2,
+        } as unknown as LegacyApiMessage,
+        {
+          role: "assistant",
+          content: "hi",
+          ts: 3,
+        },
+      ],
+      id,
+      item,
+    )
+
+    const ids = list.map((x) => x.messageID)
+
+    expect(ids.some((x) => x === "msg_legacy-task-1_2")).toBe(false)
+  })
+
   it("uses non-colliding ids for reasoning and normal content parts in the same message", () => {
     const list = parsePartsFromConversation(
       [

@@ -32,7 +32,8 @@ export function parsePartsFromConversation(
   id: string,
   item?: LegacyHistoryItem,
 ): Array<NonNullable<Part["body"]>> {
-  return conversation.flatMap((entry, index) => parseParts(entry, index, id, conversation, item))
+  const list = conversation.filter((entry) => entry.role === "user" || entry.role === "assistant")
+  return list.flatMap((entry, index) => parseParts(entry, index, id, list, item))
 }
 
 function parseParts(
@@ -42,9 +43,6 @@ function parseParts(
   conversation: LegacyApiMessage[],
   item?: LegacyHistoryItem,
 ): Array<NonNullable<Part["body"]>> {
-  // Other legacy message roles are not imported as messages, so they must not produce parts either.
-  if (entry.role !== "user" && entry.role !== "assistant") return []
-
   const messageID = createMessageID(id, index)
   const sessionID = createSessionID(id)
   const created = entry.ts ?? item?.ts ?? 0
