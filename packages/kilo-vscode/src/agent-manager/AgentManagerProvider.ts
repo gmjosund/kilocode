@@ -175,16 +175,14 @@ export class AgentManagerProvider implements Disposable {
     await state.load()
     manager.cleanupOrphanedTempDirs()
 
-    // Do not auto-remove stale worktrees on load.
-    // Presence checks run in the shared poller and require explicit user cleanup.
-
-    // Register all worktree sessions with the session provider
-    for (const worktree of state.getWorktrees()) {
-      for (const session of state.getSessions(worktree.id)) {
-        this.panel?.sessions.setSessionDirectory(session.id, worktree.path)
-        this.panel?.sessions.trackSession(session.id)
+    // Register all sessions (worktree + non-worktree) with the session provider
+    for (const wt of state.getWorktrees()) {
+      for (const s of state.getSessions(wt.id)) {
+        this.panel?.sessions.setSessionDirectory(s.id, wt.path)
+        this.panel?.sessions.trackSession(s.id)
       }
     }
+    for (const s of state.getSessions()) if (!s.worktreeId) this.panel?.sessions.trackSession(s.id)
 
     // Push full state to webview
     this.pushState()
@@ -209,8 +207,12 @@ export class AgentManagerProvider implements Disposable {
     if (m.type === "agentManager.removeStaleWorktree") return this.onRemoveStaleWorktree(m.worktreeId)
     if (m.type === "agentManager.promoteSession") return this.onPromoteSession(m.sessionId)
     if (m.type === "agentManager.openLocally") {
-      if (!this.panel) return null
-      this.panel.sessions.clearSessionDirectory(m.sessionId)
+      this.panel?.sessions.clearSessionDirectory(m.sessionId)
+      const st = this.getStateManager()
+      if (st?.getSession(m.sessionId)) {
+        st.moveSession(m.sessionId, null)
+        this.pushState()
+      }
       return null
     }
     if (m.type === "continueInWorktree") {
@@ -222,6 +224,17 @@ export class AgentManagerProvider implements Disposable {
     if (m.type === "agentManager.addSessionToWorktree") return this.onAddSessionToWorktree(m.worktreeId)
     if (m.type === "agentManager.forkSession") return this.onForkSession(m.sessionId, m.worktreeId)
     if (m.type === "agentManager.closeSession") return this.onCloseSession(m.sessionId)
+    if (m.type === "agentManager.persistSession" || m.type === "agentManager.forgetSession") {
+      const persist = m.type === "agentManager.persistSession"
+      void this.stateReady?.then(() => {
+        const st = this.getStateManager()
+        if (!st) return
+        if (persist) {
+          if (!st.getSession(m.sessionId)) st.addSession(m.sessionId, null)
+        } else st.removeSession(m.sessionId)
+      })
+      return null
+    }
     if (m.type === "agentManager.configureSetupScript") {
       void this.configureSetupScript()
       return null
