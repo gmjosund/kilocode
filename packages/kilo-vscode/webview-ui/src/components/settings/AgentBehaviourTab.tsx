@@ -88,6 +88,21 @@ const AgentBehaviourTab: Component = () => {
     ...agentNames().map((name) => ({ value: name, label: name })),
   ])
 
+  const invalidDefaultAgent = createMemo(() => {
+    const name = config().default_agent?.trim()
+    if (!name) return undefined
+    return agentNames().includes(name) ? undefined : name
+  })
+
+  const selectedDefaultAgent = createMemo<SelectOption | undefined>(() => {
+    const name = config().default_agent ?? ""
+    const match = defaultAgentOptions().find((o) => o.value === name)
+    if (match) return match
+    const invalid = invalidDefaultAgent()
+    if (!invalid) return undefined
+    return { value: invalid, label: invalid }
+  })
+
   const instructions = () => config().instructions ?? []
 
   const addInstruction = () => {
@@ -273,9 +288,15 @@ const AgentBehaviourTab: Component = () => {
           >
             <Select
               options={defaultAgentOptions()}
-              current={defaultAgentOptions().find((o) => o.value === (config().default_agent ?? ""))}
+              current={selectedDefaultAgent()}
               value={(o) => o.value}
               label={(o) => o.label}
+              valueClass={invalidDefaultAgent() ? "settings-select-invalid" : undefined}
+              children={(o) => (
+                <span class={invalidDefaultAgent() === o?.value ? "settings-select-invalid" : undefined}>
+                  {o?.label ?? ""}
+                </span>
+              )}
               onSelect={(o) => {
                 if (!o) return
                 const next = o.value || undefined

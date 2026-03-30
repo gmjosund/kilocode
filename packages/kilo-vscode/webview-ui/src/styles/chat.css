@@ -3092,6 +3092,17 @@ body.vscode-light
   }
 }
 
+.settings-select-invalid {
+  color: var(--vscode-errorForeground, #f14c4c);
+}
+
+[data-component="select"] .settings-select-invalid,
+[data-component="select"] [data-slot="select-select-trigger-value"] .settings-select-invalid,
+[data-component="select-content"] .settings-select-invalid,
+[data-component="select-content"] [data-slot="select-select-item-label"] .settings-select-invalid {
+  color: var(--vscode-errorForeground, #f14c4c) !important;
+}
+
 /* Wider inputs inside cards with data-variant="wide-input" (e.g. edit mode config) */
 [data-variant="wide-input"] [data-slot="settings-row-input"] {
   flex: 1 1 0%;
