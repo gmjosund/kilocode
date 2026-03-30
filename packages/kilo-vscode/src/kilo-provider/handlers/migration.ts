@@ -28,6 +28,7 @@ export interface MigrationContext {
   readonly client: KiloClient | null
   readonly extensionContext: MigrationExtensionContext | undefined
   postMessage(msg: unknown): void
+  refreshSessions(): void
   cachedLegacyData: LegacyMigrationData | null
   migrationCheckInFlight: boolean
   disposeGlobal(): Promise<void>
@@ -127,6 +128,7 @@ export async function handleStartLegacyMigration(
         "completed",
       )
       ctx.broadcastComplete()
+      ctx.refreshSessions()
     }
 
     ctx.postMessage({ type: "legacyMigrationComplete", results })
