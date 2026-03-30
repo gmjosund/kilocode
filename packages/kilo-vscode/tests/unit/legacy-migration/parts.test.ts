@@ -89,4 +89,20 @@ describe("legacy migration parts", () => {
 
     expect(items.some((x) => x.includes("Created 3 Python files with web development content"))).toBe(true)
   })
+
+  it("does not create parts for skipped legacy entries like system messages", () => {
+    const list = parsePartsFromConversation(
+      [
+        {
+          role: "system",
+          content: "ignored",
+          ts: 1774861015000,
+        } as unknown as LegacyApiMessage,
+      ],
+      id,
+      item,
+    )
+
+    expect(list).toEqual([])
+  })
 })

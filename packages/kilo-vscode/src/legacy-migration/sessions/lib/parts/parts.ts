@@ -42,6 +42,9 @@ function parseParts(
   conversation: LegacyApiMessage[],
   item?: LegacyHistoryItem,
 ): Array<NonNullable<Part["body"]>> {
+  // Other legacy message roles are not imported as messages, so they must not produce parts either.
+  if (entry.role !== "user" && entry.role !== "assistant") return []
+
   const messageID = createMessageID(id, index)
   const sessionID = createSessionID(id)
   const created = entry.ts ?? item?.ts ?? 0
