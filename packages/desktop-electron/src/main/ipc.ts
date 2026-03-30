@@ -123,7 +123,7 @@ export function registerIpcHandlers(deps: Deps) {
     await new Promise<void>((resolve, reject) => {
       const [cmd, args] =
         process.platform === "darwin" ? (["open", ["-a", app, path]] as const) : ([app, [path]] as const)
-      execFile(cmd, args, (err) => (err ? reject(err) : resolve()))
+      execFile(cmd, args, { windowsHide: true }, (err) => (err ? reject(err) : resolve()))
     })
   })
 

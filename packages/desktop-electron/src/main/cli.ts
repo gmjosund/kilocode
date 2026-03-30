@@ -107,7 +107,7 @@ export function syncCli() {
 
   let version = ""
   try {
-    version = execFileSync(installPath, ["--version"]).toString().trim()
+    version = execFileSync(installPath, ["--version"], { windowsHide: true }).toString().trim()
   } catch {
     return
   }
