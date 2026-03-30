@@ -1714,6 +1714,9 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
   private async handleRestartMcp(name: string): Promise<void> {
     if (!this.client) return
+    // Skip restart for servers that are disabled in the runtime status
+    const cached = this.cachedMcpStatusMessage as { status?: Record<string, { status?: string }> } | null
+    if (cached?.status?.[name]?.status === "disabled") return
     const directory = this.getWorkspaceDirectory()
     try {
       await this.client.mcp.disconnect({ name, directory }).catch(() => {})
