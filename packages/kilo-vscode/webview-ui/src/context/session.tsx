@@ -69,6 +69,10 @@ interface SessionContextValue {
   currentSession: Accessor<SessionInfo | undefined>
   setCurrentSessionID: (id: string | undefined) => void
 
+  // True for one frame after session switch — consumers should show a
+  // lightweight placeholder instead of the full message list.
+  deferRender: Accessor<boolean>
+
   // All sessions (sorted most recent first)
   sessions: Accessor<SessionInfo[]>
 
@@ -204,6 +208,11 @@ export const SessionProvider: ParentComponent = (props) => {
 
   // Current session ID
   const [currentSessionID, setCurrentSessionID] = createSignal<string | undefined>()
+
+  // Deferred rendering: true for one frame after session switch to break the
+  // synchronous reactive cascade (matches desktop app pattern).
+  const [deferRender, setDeferRender] = createSignal(false)
+  let deferGen = 0
 
   // Per-session status map — keyed by sessionID
   const [statusMap, setStatusMap] = createStore<Record<string, SessionStatusInfo>>({})
@@ -1495,9 +1504,19 @@ export const SessionProvider: ParentComponent = (props) => {
       console.warn("[Kilo New] Cannot select cloud preview session via selectSession")
       return
     }
+    // Defer rendering for one frame so the browser can paint the tab switch
+    // before the heavy message list mounts (matches desktop app pattern).
+    // Use a generation token so stale callbacks from rapid switches are ignored.
+    const gen = ++deferGen
+    setDeferRender(true)
     setCurrentSessionID(id)
     setLoading(!loaded().has(id))
     vscode.postMessage({ type: "loadMessages", sessionID: id })
+    requestAnimationFrame(() =>
+      setTimeout(() => {
+        if (gen === deferGen) setDeferRender(false)
+      }, 0),
+    )
   }
 
   function selectCloudSession(cloudSessionId: string) {
@@ -1655,6 +1674,7 @@ export const SessionProvider: ParentComponent = (props) => {
     currentSessionID,
     currentSession,
     setCurrentSessionID,
+    deferRender,
     sessions,
     status,
     statusInfo,

@@ -7,7 +7,7 @@
  * Shows recent sessions in the empty state for quick resumption.
  */
 
-import { Component, For, Show, createEffect, createMemo, onCleanup, JSX } from "solid-js"
+import { Component, For, Show, createEffect, createMemo, createSignal, on, onCleanup, JSX } from "solid-js"
 import { Icon } from "@kilocode/kilo-ui/icon"
 import { Spinner } from "@kilocode/kilo-ui/spinner"
 import { useDialog } from "@kilocode/kilo-ui/context/dialog"
@@ -57,6 +57,16 @@ export const MessageList: Component<MessageListProps> = (props) => {
   window.addEventListener("resumeAutoScroll", onResumeAutoScroll)
   onCleanup(() => window.removeEventListener("resumeAutoScroll", onResumeAutoScroll))
 
+  // Scroll to bottom on session switch. The deferRender + staging mechanism
+  // unmounts and remounts the list, losing scrollTop. Resume auto-scroll
+  // after each staging step so the view follows the bottom as turns mount.
+  createEffect(
+    on(
+      () => session.currentSessionID(),
+      () => autoScroll.resume(),
+    ),
+  )
+
   let loaded = false
   createEffect(() => {
     if (!loaded && server.isConnected() && session.sessions().length === 0) {
@@ -72,6 +82,83 @@ export const MessageList: Component<MessageListProps> = (props) => {
     if (!b) return allUserMessages()
     return allUserMessages().filter((m) => m.id < b)
   })
+  // --- History windowing ---
+  // Only render the most recent N user turns. Older turns are revealed when
+  // the user scrolls near the top (matching the desktop app pattern).
+  const TURN_INIT = 10
+  const TURN_BATCH = 8
+  const [windowSize, setWindowSize] = createSignal(TURN_INIT)
+
+  // Single effect for session switch: reset window AND start staged mounting.
+  // Must be one effect to guarantee ordering (window resets before staging reads it).
+  const STAGE_INIT = 1
+  const STAGE_BATCH = 3
+  const [staged, setStaged] = createSignal(Infinity) // Infinity = no staging limit
+  let stageGen = 0
+  onCleanup(() => {
+    ++stageGen
+  }) // Cancel any in-flight staging rAF chain on unmount
+
+  createEffect(
+    on(
+      () => session.currentSessionID(),
+      () => {
+        // 1. Reset window size
+        setWindowSize(TURN_INIT)
+
+        // 2. Start staged mounting with cancellation token
+        const gen = ++stageGen
+        // Read windowed length after window reset (Solid batches within the effect)
+        const total = Math.min(TURN_INIT, userMessages().length)
+        if (total <= STAGE_INIT) {
+          setStaged(Infinity)
+          return
+        }
+        setStaged(STAGE_INIT)
+        let current = STAGE_INIT
+        const step = () => {
+          if (gen !== stageGen) return
+          current = Math.min(current + STAGE_BATCH, total)
+          setStaged(current)
+          if (current < total) requestAnimationFrame(step)
+          else setStaged(Infinity)
+        }
+        requestAnimationFrame(step)
+      },
+    ),
+  )
+
+  const windowed = createMemo(() => {
+    const all = userMessages()
+    const size = windowSize()
+    return size >= all.length ? all : all.slice(all.length - size)
+  })
+
+  // Whether older turns exist above the window
+  const hasMore = () => windowSize() < userMessages().length
+
+  const revealMore = () => {
+    if (!hasMore()) return
+    const el = scrollEl
+    if (!el) {
+      setWindowSize((s) => Math.min(s + TURN_BATCH, userMessages().length))
+      return
+    }
+    const before = el.scrollHeight
+    setWindowSize((s) => Math.min(s + TURN_BATCH, userMessages().length))
+    // Adjust scrollTop before next paint so the viewport doesn't jump
+    queueMicrotask(() => {
+      el.scrollTop += el.scrollHeight - before
+    })
+  }
+
+  const rendered = createMemo(() => {
+    const all = windowed()
+    const cap = staged()
+    if (cap >= all.length) return all
+    return all.slice(all.length - cap)
+  })
+
   const isEmpty = () => userMessages().length === 0 && !session.loading() && !boundary()
 
   const recent = createMemo(() =>
@@ -80,13 +167,9 @@ export const MessageList: Component<MessageListProps> = (props) => {
       .slice(0, 3),
   )
 
-  const activeUserID = createMemo(() => getActiveUserMessageID(session.messages(), session.statusInfo()))
+  let scrollEl: HTMLDivElement | undefined
 
-  const activeUserIndex = createMemo(() => {
-    const active = activeUserID()
-    if (!active) return -1
-    return userMessages().findIndex((msg) => msg.id === active)
-  })
+  const activeUserID = createMemo(() => getActiveUserMessageID(session.messages(), session.statusInfo()))
 
   return (
     <div class="message-list-container">
@@ -97,8 +180,14 @@ export const MessageList: Component<MessageListProps> = (props) => {
         </div>
       </Show>
       <div
-        ref={autoScroll.scrollRef}
-        onScroll={autoScroll.handleScroll}
+        ref={(el: HTMLDivElement) => {
+          autoScroll.scrollRef(el)
+          scrollEl = el
+        }}
+        onScroll={() => {
+          autoScroll.handleScroll()
+          if (scrollEl && scrollEl.scrollTop < 200 && hasMore()) revealMore()
+        }}
         class="message-list"
         role="log"
         aria-live="polite"
@@ -139,13 +228,19 @@ export const MessageList: Component<MessageListProps> = (props) => {
               </button>
             </div>
           </Show>
-          <Show when={!session.loading()}>
-            <For each={userMessages()}>
-              {(msg, index) => {
+          <Show when={!session.loading() && !session.deferRender()}>
+            <Show when={hasMore()}>
+              <button class="load-more-turns" onClick={revealMore}>
+                <Icon name="arrow-up" size="small" />
+                {language.t("session.messages.loadMore") ?? "Load older messages"}
+              </button>
+            </Show>
+            <For each={rendered()}>
+              {(msg) => {
                 const queued = createMemo(() => {
-                  const active = activeUserIndex()
-                  if (active === -1) return false
-                  return index() > active
+                  const active = activeUserID()
+                  if (!active) return false
+                  return msg.id > active
                 })
 
                 return (
@@ -165,7 +260,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
         </div>
       </div>
 
-      <Show when={autoScroll.userScrolled()}>
+      <Show when={autoScroll.userScrolled() && staged() >= windowed().length && !session.deferRender()}>
         <button
           class="scroll-to-bottom-button"
           onClick={() => autoScroll.resume()}

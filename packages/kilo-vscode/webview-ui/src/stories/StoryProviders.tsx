@@ -136,6 +136,7 @@ export function mockSessionValue(overrides?: {
       updatedAt: new Date().toISOString(),
     }),
     setCurrentSessionID: noop,
+    deferRender: () => false,
     sessions: () => [],
     status: () => status,
     statusInfo: () => ({ type: status }),
