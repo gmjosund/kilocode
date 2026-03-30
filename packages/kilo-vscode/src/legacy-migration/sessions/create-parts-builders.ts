@@ -1,5 +1,5 @@
 import type { KilocodeSessionImportPartData as Part } from "@kilocode/sdk/v2"
-import { record } from "./create-parts-util"
+import { cleanLegacyTaskText, record } from "./create-parts-util"
 
 type Body = NonNullable<Part["body"]>
 type Data = Body["data"]
@@ -51,9 +51,10 @@ export function createSimpleTextPart(
   created: number,
   text: string,
 ): NonNullable<Part["body"]> {
+  const value = cleanLegacyTaskText(text)
   const data: Text = {
     type: "text",
-    text,
+    text: value,
     time: {
       start: created,
       end: created,
@@ -76,9 +77,10 @@ export function createTextPartWithinMessage(
   created: number,
   text: string,
 ): NonNullable<Part["body"]> {
+  const value = cleanLegacyTaskText(text)
   const data: Text = {
     type: "text",
-    text,
+    text: value,
     time: {
       start: created,
       end: created,

@@ -98,3 +98,14 @@ export function getText(input: unknown) {
     .trim()
   return text || undefined
 }
+
+export function cleanLegacyTaskText(input: string) {
+  // Legacy sometimes stores the real user prompt wrapped inside <task>...</task>, followed by
+  // extra <environment_details>...</environment_details> prompt scaffolding. We only want the
+  // actual task text to appear in the migrated conversation, so if a <task> block exists we keep
+  // just that inner text and drop the wrapper plus the extra environment block.
+  const task = input.match(/<task>([\s\S]*?)<\/task>/i)?.[1]?.trim()
+  if (task) return task
+
+  return input
+}
