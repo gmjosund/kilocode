@@ -1,4 +1,4 @@
-import { Database } from "../../storage/db"
+import { Database, eq } from "../../storage/db"
 import { ProjectTable } from "../../project/project.sql"
 import { SessionTable, MessageTable, PartTable } from "../../session/session.sql"
 import { SessionImportType } from "./types"
@@ -7,10 +7,15 @@ const key = (input: unknown) => [input] as never
 
 export namespace SessionImportService {
   export async function project(input: SessionImportType.Project): Promise<SessionImportType.Result> {
+    // If this worktree already has a project in kilo.db, reuse that project's id so migrated
+    // sessions end up attached to the same project as sessions created later by normal Kilo flows.
+    const row = Database.use((db) => db.select().from(ProjectTable).where(eq(ProjectTable.worktree, input.worktree)).get())
+    const id = row?.id ?? input.id
+
     Database.use((db) => {
       db.insert(ProjectTable)
         .values({
-          id: input.id,
+          id,
           worktree: input.worktree,
           vcs: input.vcs,
           name: input.name,
@@ -38,7 +43,7 @@ export namespace SessionImportService {
         })
         .run()
     })
-    return { ok: true, id: input.id }
+    return { ok: true, id }
   }
 
   export async function session(input: SessionImportType.Session): Promise<SessionImportType.Result> {
