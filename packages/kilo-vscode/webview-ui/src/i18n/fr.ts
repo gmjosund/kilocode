@@ -268,6 +268,7 @@ export const dict = {
   "mcp.status.connected": "connecté",
   "mcp.status.failed": "échoué",
   "mcp.status.needs_auth": "nécessite auth",
+  "mcp.status.needs_registration": "nécessite enregistrement client",
   "mcp.status.disabled": "désactivé",
 
   "dialog.fork.empty": "Aucun message à partir duquel bifurquer",
@@ -762,6 +763,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Nom d'affichage",
   "provider.custom.models.remove": "Supprimer le modèle",
   "provider.custom.models.add": "Ajouter un modèle",
+  "provider.custom.models.fetch": "Récupérer les modèles",
+  "provider.custom.models.fetching": "Récupération\u2026",
+  "provider.custom.models.fetch.error": "Échec de la récupération des modèles : {{error}}",
+  "provider.custom.models.fetch.authError": "Échec de l'authentification. Vérifiez la clé API ci-dessus et réessayez.",
+  "provider.custom.models.fetch.empty": "Aucun modèle trouvé sur ce serveur.",
+  "provider.custom.models.fetch.added": "{{count}} modèle(s) ajouté(s).",
+  "provider.custom.models.fetch.allExist": "Tous les modèles récupérés sont déjà ajoutés.",
+  "provider.custom.models.fetch.selectAll": "Tout sélectionner",
+  "provider.custom.models.fetch.deselectAll": "Tout désélectionner",
+  "provider.custom.models.fetch.found": "{{count}} modèles trouvés",
+  "provider.custom.models.fetch.showing": "Affichage de {{shown}} sur {{total}}",
+  "provider.custom.models.fetch.search": "Rechercher des modèles\u2026",
+  "provider.custom.models.fetch.add": "Ajouter {{count}} modèle(s)",
+  "provider.custom.edit.title": "Modifier le fournisseur",
   "provider.custom.headers.label": "En-têtes (optionnel)",
   "provider.custom.headers.key.label": "En-tête",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -974,8 +989,22 @@ export const dict = {
     "Pour les questions de facturation ou de compte, contactez le support client à",
   "settings.aboutKiloCode.resetSettings.title": "Réinitialiser les paramètres",
   "settings.aboutKiloCode.resetSettings.description":
-    "Réinitialiser tous les paramètres de l'extension Kilo Code à leurs valeurs par défaut. Cela n'affecte pas la configuration CLI ou backend.",
+    "Ceci réinitialise uniquement les paramètres spécifiques à l'extension VS Code à leurs valeurs par défaut. Les paramètres partagés avec le CLI, tels que les modes et les règles d'approbation automatique, sont stockés dans la configuration du CLI et ne seront pas réinitialisés.",
   "settings.aboutKiloCode.resetSettings.button": "Réinitialiser tous les paramètres",
+  "settings.aboutKiloCode.settingsTransfer.title": "Transfert des paramètres",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Exportez ou importez vos paramètres pour les transférer entre instances VS Code.",
+  "settings.aboutKiloCode.exportSettings": "Exporter",
+  "settings.aboutKiloCode.importSettings": "Importer",
+  "settings.aboutKiloCode.importSettings.invalidJson":
+    "Fichier JSON invalide. Veuillez sélectionner un fichier de paramètres valide.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Le fichier ne contient pas de paramètres Kilo valides.",
+  "settings.aboutKiloCode.importSettings.tooLarge":
+    "Le fichier est trop volumineux. Les fichiers de paramètres doivent faire moins de 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Ce fichier a été exporté depuis une version plus récente de Kilo. Certains paramètres pourraient être ignorés.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Paramètres importés. Vérifiez les modifications ci-dessus, puis cliquez sur Enregistrer.",
 
   "settings.agentBehaviour.subtab.modes": "Modes",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1144,8 +1173,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Arguments",
   "settings.agentBehaviour.mcpDetail.env": "Environnement",
   "settings.agentBehaviour.mcpDetail.disabled": "Ce serveur est désactivé.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Parcourir le Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "Aucun serveur MCP configuré. Modifiez le fichier de configuration opencode pour ajouter des serveurs MCP.",
+    "Aucun serveur MCP configuré. Ajoutez des serveurs MCP dans kilo.jsonc ou demandez à l'agent de les ajouter.",
   "settings.agentBehaviour.workflowsPlaceholder":
     "Les workflows sont gérés via les fichiers de workflow dans votre espace de travail.",
   "settings.agentBehaviour.workflows.description":

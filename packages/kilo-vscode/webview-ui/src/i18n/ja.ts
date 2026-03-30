@@ -266,6 +266,7 @@ export const dict = {
   "mcp.status.connected": "接続済み",
   "mcp.status.failed": "失敗",
   "mcp.status.needs_auth": "認証が必要",
+  "mcp.status.needs_registration": "クライアント登録が必要",
   "mcp.status.disabled": "無効",
 
   "dialog.fork.empty": "フォーク元のメッセージがありません",
@@ -750,6 +751,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "表示名",
   "provider.custom.models.remove": "モデルを削除",
   "provider.custom.models.add": "モデルを追加",
+  "provider.custom.models.fetch": "モデルを取得",
+  "provider.custom.models.fetching": "取得中\u2026",
+  "provider.custom.models.fetch.error": "モデルの取得に失敗しました: {{error}}",
+  "provider.custom.models.fetch.authError": "認証に失敗しました。上記のAPIキーを確認して再試行してください。",
+  "provider.custom.models.fetch.empty": "このサーバーにモデルが見つかりません。",
+  "provider.custom.models.fetch.added": "{{count}}個のモデルを追加しました。",
+  "provider.custom.models.fetch.allExist": "取得したモデルはすべて既に追加されています。",
+  "provider.custom.models.fetch.selectAll": "すべて選択",
+  "provider.custom.models.fetch.deselectAll": "すべて選択解除",
+  "provider.custom.models.fetch.found": "{{count}}個のモデルが見つかりました",
+  "provider.custom.models.fetch.showing": "{{total}}件中{{shown}}件を表示",
+  "provider.custom.models.fetch.search": "モデルを検索\u2026",
+  "provider.custom.models.fetch.add": "{{count}}個のモデルを追加",
+  "provider.custom.edit.title": "プロバイダーを編集",
   "provider.custom.headers.label": "ヘッダー（任意）",
   "provider.custom.headers.key.label": "ヘッダー",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -958,8 +973,21 @@ export const dict = {
     "請求やアカウントに関するご質問は、カスタマーサポートまでお問い合わせください",
   "settings.aboutKiloCode.resetSettings.title": "設定をリセット",
   "settings.aboutKiloCode.resetSettings.description":
-    "Kilo Code拡張機能のすべての設定をデフォルト値にリセットします。CLIやバックエンドの設定には影響しません。",
+    "これはVS Code拡張機能固有の設定のみをデフォルト値にリセットします。モードや自動承認ルールなど、CLIと共有される設定はCLI設定ファイルに保存されており、リセットされません。",
   "settings.aboutKiloCode.resetSettings.button": "すべての設定をリセット",
+  "settings.aboutKiloCode.settingsTransfer.title": "設定の移行",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "VS Code インスタンス間で設定を転送するには、エクスポートまたはインポートしてください。",
+  "settings.aboutKiloCode.exportSettings": "エクスポート",
+  "settings.aboutKiloCode.importSettings": "インポート",
+  "settings.aboutKiloCode.importSettings.invalidJson":
+    "無効な JSON ファイルです。有効な設定ファイルを選択してください。",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "ファイルに有効な Kilo の設定が含まれていません。",
+  "settings.aboutKiloCode.importSettings.tooLarge": "ファイルが大きすぎます。設定ファイルは 1 MB 以下にしてください。",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "このファイルはより新しいバージョンの Kilo からエクスポートされたものです。一部の設定が無視される場合があります。",
+  "settings.aboutKiloCode.importSettings.success":
+    "設定をインポートしました。上記の変更内容を確認してから、保存をクリックしてください。",
 
   "settings.agentBehaviour.subtab.modes": "モード",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1119,8 +1147,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "引数",
   "settings.agentBehaviour.mcpDetail.env": "環境",
   "settings.agentBehaviour.mcpDetail.disabled": "このサーバーは無効です。",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "マーケットプレイスを閲覧",
   "settings.agentBehaviour.mcpEmpty":
-    "MCPサーバーが設定されていません。opencode設定ファイルを編集してMCPサーバーを追加してください。",
+    "MCPサーバーが設定されていません。kilo.jsoncでMCPサーバーを追加するか、エージェントに追加を依頼してください。",
   "settings.agentBehaviour.workflowsPlaceholder":
     "ワークフローはワークスペース内のワークフローファイルを通じて管理されます。",
   "settings.agentBehaviour.workflows.description":

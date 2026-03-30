@@ -7,6 +7,7 @@ export namespace RemoteProtocol {
     id: z.string(),
     status: z.string(),
     title: z.string(),
+    parentSessionId: z.string().optional(),
     gitUrl: z.string().optional(),
     gitBranch: z.string().optional(),
   })

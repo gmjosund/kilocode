@@ -268,6 +268,7 @@ export const dict = {
   "mcp.status.connected": "verbonden",
   "mcp.status.failed": "mislukt",
   "mcp.status.needs_auth": "authenticatie vereist",
+  "mcp.status.needs_registration": "clientregistratie vereist",
   "mcp.status.disabled": "uitgeschakeld",
 
   "dialog.fork.empty": "Geen berichten om van af te splitsen",
@@ -750,6 +751,21 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Weergavenaam",
   "provider.custom.models.remove": "Model verwijderen",
   "provider.custom.models.add": "Model toevoegen",
+  "provider.custom.models.fetch": "Modellen ophalen",
+  "provider.custom.models.fetching": "Ophalen\u2026",
+  "provider.custom.models.fetch.error": "Kan modellen niet ophalen: {{error}}",
+  "provider.custom.models.fetch.authError":
+    "Authenticatie mislukt. Controleer de API-sleutel hierboven en probeer het opnieuw.",
+  "provider.custom.models.fetch.empty": "Geen modellen gevonden op deze server.",
+  "provider.custom.models.fetch.added": "{{count}} model(len) toegevoegd.",
+  "provider.custom.models.fetch.allExist": "Alle opgehaalde modellen zijn al toegevoegd.",
+  "provider.custom.models.fetch.selectAll": "Alles selecteren",
+  "provider.custom.models.fetch.deselectAll": "Alles deselecteren",
+  "provider.custom.models.fetch.found": "{{count}} modellen gevonden",
+  "provider.custom.models.fetch.showing": "{{shown}} van {{total}} weergegeven",
+  "provider.custom.models.fetch.search": "Modellen zoeken\u2026",
+  "provider.custom.models.fetch.add": "{{count}} model(len) toevoegen",
+  "provider.custom.edit.title": "Provider bewerken",
   "provider.custom.headers.label": "Headers (optioneel)",
   "provider.custom.headers.key.label": "Header",
   "provider.custom.headers.key.placeholder": "Header-Naam",
@@ -958,8 +974,22 @@ export const dict = {
     "Voor vragen over facturering of je account, neem contact op met Klantenservice op",
   "settings.aboutKiloCode.resetSettings.title": "Instellingen resetten",
   "settings.aboutKiloCode.resetSettings.description":
-    "Reset alle instellingen van de Kilo Code extensie naar hun standaardwaarden. Dit heeft geen invloed op CLI of backend configuratie.",
+    "Dit reset alleen VS Code-extensiespecifieke instellingen naar hun standaardwaarden. Instellingen die gedeeld worden met de CLI, zoals modi en regels voor automatisch goedkeuren, worden opgeslagen in de CLI-configuratie en worden niet gereset.",
   "settings.aboutKiloCode.resetSettings.button": "Alle instellingen resetten",
+  "settings.aboutKiloCode.settingsTransfer.title": "Instellingen overdragen",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Exporteer of importeer uw instellingen om ze tussen VS Code-instanties over te dragen.",
+  "settings.aboutKiloCode.exportSettings": "Exporteren",
+  "settings.aboutKiloCode.importSettings": "Importeren",
+  "settings.aboutKiloCode.importSettings.invalidJson":
+    "Ongeldig JSON-bestand. Selecteer een geldig instellingenbestand.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Het bestand bevat geen geldige Kilo-instellingen.",
+  "settings.aboutKiloCode.importSettings.tooLarge":
+    "Het bestand is te groot. Instellingenbestanden moeten kleiner zijn dan 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Dit bestand is geëxporteerd vanuit een nieuwere versie van Kilo. Sommige instellingen worden mogelijk genegeerd.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Instellingen geïmporteerd. Controleer de bovenstaande wijzigingen en klik vervolgens op Opslaan.",
 
   "settings.agentBehaviour.subtab.modes": "Modi",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1105,8 +1135,9 @@ export const dict = {
   "settings.agentBehaviour.addMcp.args.placeholder": "e.g.\n-y\n@modelcontextprotocol/server-filesystem\n/tmp",
   "settings.agentBehaviour.addMcp.url": "Server-URL",
   "settings.agentBehaviour.addMcp.url.placeholder": "e.g. http://localhost:3000/sse",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Bladeren door Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "Geen MCP-servers geconfigureerd. Bewerk het opencode configuratiebestand om MCP-servers toe te voegen.",
+    "Geen MCP-servers geconfigureerd. Voeg MCP-servers toe in kilo.jsonc of vraag de agent om ze toe te voegen.",
   "settings.agentBehaviour.workflowsPlaceholder": "Workflows worden beheerd via workflowbestanden in je workspace.",
   "settings.agentBehaviour.workflows.description":
     "Workflows zijn aangepaste slash-commando's gedefinieerd in je configuratie. Typ /command-name in de chat om ze aan te roepen. Commando's worden geconfigureerd in opencode.json onder de sectie 'command'.",

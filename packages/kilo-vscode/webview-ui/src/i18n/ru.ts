@@ -267,6 +267,7 @@ export const dict = {
   "mcp.status.connected": "подключено",
   "mcp.status.failed": "ошибка",
   "mcp.status.needs_auth": "требуется авторизация",
+  "mcp.status.needs_registration": "требуется регистрация клиента",
   "mcp.status.disabled": "отключено",
 
   "dialog.fork.empty": "Нет сообщений для ответвления",
@@ -758,6 +759,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Отображаемое имя",
   "provider.custom.models.remove": "Удалить модель",
   "provider.custom.models.add": "Добавить модель",
+  "provider.custom.models.fetch": "Получить модели",
+  "provider.custom.models.fetching": "Загрузка\u2026",
+  "provider.custom.models.fetch.error": "Не удалось получить модели: {{error}}",
+  "provider.custom.models.fetch.authError": "Ошибка аутентификации. Проверьте API-ключ выше и попробуйте снова.",
+  "provider.custom.models.fetch.empty": "На этом сервере модели не найдены.",
+  "provider.custom.models.fetch.added": "Добавлено {{count}} модель(ей).",
+  "provider.custom.models.fetch.allExist": "Все полученные модели уже добавлены.",
+  "provider.custom.models.fetch.selectAll": "Выбрать все",
+  "provider.custom.models.fetch.deselectAll": "Снять выбор",
+  "provider.custom.models.fetch.found": "Найдено {{count}} моделей",
+  "provider.custom.models.fetch.showing": "Показано {{shown}} из {{total}}",
+  "provider.custom.models.fetch.search": "Поиск моделей\u2026",
+  "provider.custom.models.fetch.add": "Добавить {{count}} модель(ей)",
+  "provider.custom.edit.title": "Редактировать провайдера",
   "provider.custom.headers.label": "Заголовки (необязательно)",
   "provider.custom.headers.key.label": "Заголовок",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -965,8 +980,20 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "По вопросам оплаты или аккаунта обращайтесь в службу поддержки по адресу",
   "settings.aboutKiloCode.resetSettings.title": "Сброс настроек",
   "settings.aboutKiloCode.resetSettings.description":
-    "Сбросить все настройки расширения Kilo Code до значений по умолчанию. Это не влияет на конфигурацию CLI или бэкенда.",
+    "Это сбрасывает только настройки, специфичные для расширения VS Code, до значений по умолчанию. Настройки, общие с CLI, такие как режимы и правила автоматического утверждения, хранятся в конфигурации CLI и не будут сброшены.",
   "settings.aboutKiloCode.resetSettings.button": "Сбросить все настройки",
+  "settings.aboutKiloCode.settingsTransfer.title": "Перенос настроек",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Экспортируйте или импортируйте настройки для переноса между экземплярами VS Code.",
+  "settings.aboutKiloCode.exportSettings": "Экспорт",
+  "settings.aboutKiloCode.importSettings": "Импорт",
+  "settings.aboutKiloCode.importSettings.invalidJson": "Недопустимый файл JSON. Выберите корректный файл настроек.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Файл не содержит допустимых настроек Kilo.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "Файл слишком большой. Файлы настроек должны быть менее 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Этот файл был экспортирован из более новой версии Kilo. Некоторые настройки могут быть проигнорированы.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Настройки импортированы. Просмотрите изменения выше и нажмите «Сохранить».",
 
   "settings.agentBehaviour.subtab.modes": "Режимы",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1127,8 +1154,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Аргументы",
   "settings.agentBehaviour.mcpDetail.env": "Окружение",
   "settings.agentBehaviour.mcpDetail.disabled": "Этот сервер отключён.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Обзор Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "MCP-серверы не настроены. Отредактируйте файл конфигурации opencode для добавления MCP-серверов.",
+    "MCP-серверы не настроены. Добавьте MCP-серверы в kilo.jsonc или попросите агента добавить их.",
   "settings.agentBehaviour.workflowsPlaceholder": "Рабочие процессы управляются через файлы рабочих процессов.",
   "settings.agentBehaviour.workflows.description":
     "Рабочие процессы — это пользовательские слэш-команды, определённые в вашей конфигурации. Введите /command-name в чате, чтобы вызвать их. Команды настраиваются в opencode.json в разделе 'command'.",

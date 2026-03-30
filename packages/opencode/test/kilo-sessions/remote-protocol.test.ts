@@ -17,6 +17,18 @@ describe("RemoteProtocol", () => {
     }
   })
 
+  test("heartbeat with parentSessionId parses", () => {
+    const msg = {
+      type: "heartbeat",
+      sessions: [{ id: "ses_child", status: "busy", title: "Sub task", parentSessionId: "ses_root" }],
+    }
+    const result = RemoteProtocol.Heartbeat.safeParse(msg)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sessions[0].parentSessionId).toBe("ses_root")
+    }
+  })
+
   test("valid event parses", () => {
     const msg = {
       type: "event",

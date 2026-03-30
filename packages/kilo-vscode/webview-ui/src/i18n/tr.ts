@@ -267,6 +267,7 @@ export const dict = {
   "mcp.status.connected": "bağlı",
   "mcp.status.failed": "başarısız",
   "mcp.status.needs_auth": "kimlik doğrulama gerekli",
+  "mcp.status.needs_registration": "istemci kaydı gerekli",
   "mcp.status.disabled": "devre dışı",
 
   "dialog.fork.empty": "Dallandırılacak mesaj yok",
@@ -753,6 +754,21 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Görünen Ad",
   "provider.custom.models.remove": "Modeli kaldır",
   "provider.custom.models.add": "Model ekle",
+  "provider.custom.models.fetch": "Modelleri getir",
+  "provider.custom.models.fetching": "Getiriliyor\u2026",
+  "provider.custom.models.fetch.error": "Modeller getirilemedi: {{error}}",
+  "provider.custom.models.fetch.authError":
+    "Kimlik doğrulama başarısız oldu. Yukarıdaki API anahtarını kontrol edin ve tekrar deneyin.",
+  "provider.custom.models.fetch.empty": "Bu sunucuda model bulunamadı.",
+  "provider.custom.models.fetch.added": "{{count}} model eklendi.",
+  "provider.custom.models.fetch.allExist": "Getirilen tüm modeller zaten eklenmiş.",
+  "provider.custom.models.fetch.selectAll": "Tümünü seç",
+  "provider.custom.models.fetch.deselectAll": "Tümünün seçimini kaldır",
+  "provider.custom.models.fetch.found": "{{count}} model bulundu",
+  "provider.custom.models.fetch.showing": "{{total}} modelden {{shown}} tanesi gösteriliyor",
+  "provider.custom.models.fetch.search": "Model ara\u2026",
+  "provider.custom.models.fetch.add": "{{count}} model ekle",
+  "provider.custom.edit.title": "Sağlayıcıyı düzenle",
   "provider.custom.headers.label": "Başlıklar (isteğe bağlı)",
   "provider.custom.headers.key.label": "Başlık",
   "provider.custom.headers.key.placeholder": "Başlık-Adı",
@@ -961,8 +977,20 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "Faturalama veya hesap soruları için Müşteri Desteği ile iletişime geçin:",
   "settings.aboutKiloCode.resetSettings.title": "Ayarları Sıfırla",
   "settings.aboutKiloCode.resetSettings.description":
-    "Tüm Kilo Code uzantı ayarlarını varsayılan değerlerine sıfırla. Bu, CLI veya arka uç yapılandırmasını etkilemez.",
+    "Bu, yalnızca VS Code uzantısına özgü ayarları varsayılan değerlerine sıfırlar. Modlar ve otomatik onay kuralları gibi CLI ile paylaşılan ayarlar, CLI yapılandırmasında depolanır ve sıfırlanmaz.",
   "settings.aboutKiloCode.resetSettings.button": "Tüm Ayarları Sıfırla",
+  "settings.aboutKiloCode.settingsTransfer.title": "Ayar Aktarımı",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Ayarlarınızı VS Code örnekleri arasında aktarmak için dışa veya içe aktarın.",
+  "settings.aboutKiloCode.exportSettings": "Dışa Aktar",
+  "settings.aboutKiloCode.importSettings": "İçe Aktar",
+  "settings.aboutKiloCode.importSettings.invalidJson": "Geçersiz JSON dosyası. Lütfen geçerli bir ayar dosyası seçin.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Dosya geçerli Kilo ayarları içermiyor.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "Dosya çok büyük. Ayar dosyaları 1 MB altında olmalıdır.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Bu dosya Kilo'nun daha yeni bir sürümünden dışa aktarılmış. Bazı ayarlar göz ardı edilebilir.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Ayarlar içe aktarıldı. Yukarıdaki değişiklikleri gözden geçirin, ardından Kaydet'e tıklayın.",
 
   "settings.agentBehaviour.subtab.modes": "Modlar",
   "settings.agentBehaviour.subtab.agents": "Ajanlar",
@@ -1103,8 +1131,9 @@ export const dict = {
   "settings.agentBehaviour.addMcp.args.placeholder": "e.g.\n-y\n@modelcontextprotocol/server-filesystem\n/tmp",
   "settings.agentBehaviour.addMcp.url": "Sunucu URL'si",
   "settings.agentBehaviour.addMcp.url.placeholder": "e.g. http://localhost:3000/sse",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Marketplace'e Göz At",
   "settings.agentBehaviour.mcpEmpty":
-    "Yapılandırılmış MCP sunucusu yok. MCP sunucuları eklemek için opencode yapılandırma dosyasını düzenleyin.",
+    "Yapılandırılmış MCP sunucusu yok. kilo.jsonc dosyasına MCP sunucuları ekleyin veya ajanın eklemesini isteyin.",
   "settings.agentBehaviour.workflowsPlaceholder": "İş akışları çalışma alanınızdaki iş akışı dosyaları ile yönetilir.",
   "settings.agentBehaviour.workflows.description":
     "İş akışları, yapılandırmanızda tanımlanan özel eğik çizgi komutlarıdır. Çağırmak için sohbette /command-name yazın. Komutlar opencode.json dosyasındaki 'command' bölümünde yapılandırılır.",

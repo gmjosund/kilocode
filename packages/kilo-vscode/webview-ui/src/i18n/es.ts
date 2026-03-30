@@ -267,6 +267,7 @@ export const dict = {
   "mcp.status.connected": "conectado",
   "mcp.status.failed": "fallido",
   "mcp.status.needs_auth": "necesita auth",
+  "mcp.status.needs_registration": "necesita registro de cliente",
   "mcp.status.disabled": "deshabilitado",
 
   "dialog.fork.empty": "No hay mensajes desde donde bifurcar",
@@ -757,6 +758,21 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Nombre para mostrar",
   "provider.custom.models.remove": "Eliminar modelo",
   "provider.custom.models.add": "Añadir modelo",
+  "provider.custom.models.fetch": "Obtener modelos",
+  "provider.custom.models.fetching": "Obteniendo\u2026",
+  "provider.custom.models.fetch.error": "Error al obtener modelos: {{error}}",
+  "provider.custom.models.fetch.authError":
+    "Autenticación fallida. Verifica la clave de API arriba e intenta de nuevo.",
+  "provider.custom.models.fetch.empty": "No se encontraron modelos en este servidor.",
+  "provider.custom.models.fetch.added": "Se añadieron {{count}} modelo(s).",
+  "provider.custom.models.fetch.allExist": "Todos los modelos obtenidos ya están añadidos.",
+  "provider.custom.models.fetch.selectAll": "Seleccionar todo",
+  "provider.custom.models.fetch.deselectAll": "Deseleccionar todo",
+  "provider.custom.models.fetch.found": "{{count}} modelos encontrados",
+  "provider.custom.models.fetch.showing": "Mostrando {{shown}} de {{total}}",
+  "provider.custom.models.fetch.search": "Buscar modelos\u2026",
+  "provider.custom.models.fetch.add": "Añadir {{count}} modelo(s)",
+  "provider.custom.edit.title": "Editar proveedor",
   "provider.custom.headers.label": "Headers (opcional)",
   "provider.custom.headers.key.label": "Header",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -965,8 +981,22 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "Para preguntas de facturación o cuenta, contacta al Soporte al Cliente en",
   "settings.aboutKiloCode.resetSettings.title": "Restablecer configuración",
   "settings.aboutKiloCode.resetSettings.description":
-    "Restablecer todas las configuraciones de la extensión Kilo Code a sus valores predeterminados. Esto no afecta la configuración del CLI o del backend.",
+    "Esto restablece únicamente las configuraciones específicas de la extensión VS Code a sus valores predeterminados. Las configuraciones compartidas con el CLI, como los modos y las reglas de aprobación automática, se almacenan en la configuración del CLI y no serán restablecidas.",
   "settings.aboutKiloCode.resetSettings.button": "Restablecer toda la configuración",
+  "settings.aboutKiloCode.settingsTransfer.title": "Transferencia de ajustes",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Exporta o importa tus ajustes para transferirlos entre instancias de VS Code.",
+  "settings.aboutKiloCode.exportSettings": "Exportar",
+  "settings.aboutKiloCode.importSettings": "Importar",
+  "settings.aboutKiloCode.importSettings.invalidJson":
+    "Archivo JSON no válido. Seleccione un archivo de ajustes válido.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "El archivo no contiene ajustes válidos de Kilo.",
+  "settings.aboutKiloCode.importSettings.tooLarge":
+    "El archivo es demasiado grande. Los archivos de ajustes deben ser menores de 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Este archivo fue exportado desde una versión más reciente de Kilo. Algunos ajustes podrían ignorarse.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Ajustes importados. Revise los cambios anteriores y luego haga clic en Guardar.",
 
   "settings.agentBehaviour.subtab.modes": "Modos",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1131,8 +1161,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Argumentos",
   "settings.agentBehaviour.mcpDetail.env": "Entorno",
   "settings.agentBehaviour.mcpDetail.disabled": "Este servidor está deshabilitado.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Explorar Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "No hay servidores MCP configurados. Edite el archivo de configuración de opencode para añadir servidores MCP.",
+    "No hay servidores MCP configurados. Añada servidores MCP en kilo.jsonc o pida al agente que los añada.",
   "settings.agentBehaviour.workflowsPlaceholder":
     "Los flujos de trabajo se gestionan mediante archivos de flujo de trabajo en su espacio de trabajo.",
   "settings.agentBehaviour.workflows.description":

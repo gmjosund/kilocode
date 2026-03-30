@@ -270,6 +270,7 @@ export const dict = {
   "mcp.status.connected": "연결됨",
   "mcp.status.failed": "실패",
   "mcp.status.needs_auth": "인증 필요",
+  "mcp.status.needs_registration": "클라이언트 등록 필요",
   "mcp.status.disabled": "비활성화됨",
 
   "dialog.fork.empty": "분기할 메시지 없음",
@@ -751,6 +752,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "표시 이름",
   "provider.custom.models.remove": "모델 제거",
   "provider.custom.models.add": "모델 추가",
+  "provider.custom.models.fetch": "모델 가져오기",
+  "provider.custom.models.fetching": "가져오는 중\u2026",
+  "provider.custom.models.fetch.error": "모델을 가져오지 못했습니다: {{error}}",
+  "provider.custom.models.fetch.authError": "인증에 실패했습니다. 위의 API 키를 확인하고 다시 시도하세요.",
+  "provider.custom.models.fetch.empty": "이 서버에서 모델을 찾을 수 없습니다.",
+  "provider.custom.models.fetch.added": "{{count}}개 모델이 추가되었습니다.",
+  "provider.custom.models.fetch.allExist": "가져온 모든 모델이 이미 추가되어 있습니다.",
+  "provider.custom.models.fetch.selectAll": "모두 선택",
+  "provider.custom.models.fetch.deselectAll": "모두 선택 해제",
+  "provider.custom.models.fetch.found": "{{count}}개 모델 발견",
+  "provider.custom.models.fetch.showing": "{{total}}개 중 {{shown}}개 표시",
+  "provider.custom.models.fetch.search": "모델 검색\u2026",
+  "provider.custom.models.fetch.add": "{{count}}개 모델 추가",
+  "provider.custom.edit.title": "공급자 편집",
   "provider.custom.headers.label": "헤더 (선택사항)",
   "provider.custom.headers.key.label": "헤더",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -957,8 +972,20 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "결제 또는 계정 관련 문의는 고객 지원팀에 문의하세요",
   "settings.aboutKiloCode.resetSettings.title": "설정 초기화",
   "settings.aboutKiloCode.resetSettings.description":
-    "Kilo Code 확장 프로그램의 모든 설정을 기본값으로 초기화합니다. CLI 또는 백엔드 구성에는 영향을 미치지 않습니다.",
+    "이 기능은 VS Code 확장 프로그램 전용 설정만 기본값으로 초기화합니다. 모드 및 자동 승인 규칙과 같이 CLI와 공유되는 설정은 CLI 구성에 저장되며 초기화되지 않습니다.",
   "settings.aboutKiloCode.resetSettings.button": "모든 설정 초기화",
+  "settings.aboutKiloCode.settingsTransfer.title": "설정 이전",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "VS Code 인스턴스 간에 설정을 전송하려면 내보내기 또는 가져오기하세요.",
+  "settings.aboutKiloCode.exportSettings": "내보내기",
+  "settings.aboutKiloCode.importSettings": "가져오기",
+  "settings.aboutKiloCode.importSettings.invalidJson":
+    "유효하지 않은 JSON 파일입니다. 올바른 설정 파일을 선택해 주세요.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "파일에 유효한 Kilo 설정이 포함되어 있지 않습니다.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "파일이 너무 큽니다. 설정 파일은 1 MB 이하여야 합니다.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "이 파일은 더 최신 버전의 Kilo에서 내보낸 것입니다. 일부 설정이 무시될 수 있습니다.",
+  "settings.aboutKiloCode.importSettings.success": "설정을 가져왔습니다. 위의 변경 사항을 확인한 후 저장을 클릭하세요.",
 
   "settings.agentBehaviour.subtab.modes": "모드",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1114,8 +1141,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "인수",
   "settings.agentBehaviour.mcpDetail.env": "환경",
   "settings.agentBehaviour.mcpDetail.disabled": "이 서버는 비활성화되어 있습니다.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "마켓플레이스 둘러보기",
   "settings.agentBehaviour.mcpEmpty":
-    "MCP 서버가 구성되지 않았습니다. opencode 구성 파일을 편집하여 MCP 서버를 추가하세요.",
+    "MCP 서버가 구성되지 않았습니다. kilo.jsonc에서 MCP 서버를 추가하거나 에이전트에게 추가를 요청하세요.",
   "settings.agentBehaviour.workflowsPlaceholder": "워크플로우는 워크스페이스의 워크플로우 파일을 통해 관리됩니다.",
   "settings.agentBehaviour.workflows.description":
     "워크플로우는 구성에서 정의된 사용자 정의 슬래시 명령입니다. 채팅에서 /command-name을 입력하여 실행합니다. 명령은 opencode.json의 'command' 섹션에서 구성됩니다.",

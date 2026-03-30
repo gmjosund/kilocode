@@ -160,8 +160,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("kilo-code.new.agentManagerOpen", () => {
       agentManagerProvider.openPanel()
     }),
-    vscode.commands.registerCommand("kilo-code.new.marketplaceButtonClicked", () => {
-      settingsEditorProvider.openPanel("marketplace")
+    vscode.commands.registerCommand("kilo-code.new.marketplaceButtonClicked", (directory?: string) => {
+      settingsEditorProvider.openPanel("marketplace", undefined, directory)
     }),
     vscode.commands.registerCommand("kilo-code.new.historyButtonClicked", () => {
       provider.postMessage({ type: "action", action: "historyButtonClicked" })
@@ -182,7 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
     }),
     // legacy-migration start
     vscode.commands.registerCommand("kilo-code.new.openMigrationWizard", () => {
-      provider.postMessage({ type: "navigate", view: "migration" })
+      provider.postMessage({ type: "migrationState", needed: true })
     }),
     // legacy-migration end
     vscode.commands.registerCommand("kilo-code.new.generateTerminalCommand", async () => {

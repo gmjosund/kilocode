@@ -270,6 +270,7 @@ export const dict = {
   "mcp.status.connected": "tilkoblet",
   "mcp.status.failed": "mislyktes",
   "mcp.status.needs_auth": "trenger autentisering",
+  "mcp.status.needs_registration": "trenger klientregistrering",
   "mcp.status.disabled": "deaktivert",
 
   "dialog.fork.empty": "Ingen meldinger å forgrene fra",
@@ -755,6 +756,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Visningsnavn",
   "provider.custom.models.remove": "Fjern modell",
   "provider.custom.models.add": "Legg til modell",
+  "provider.custom.models.fetch": "Hent modeller",
+  "provider.custom.models.fetching": "Henter\u2026",
+  "provider.custom.models.fetch.error": "Kunne ikke hente modeller: {{error}}",
+  "provider.custom.models.fetch.authError": "Autentisering mislyktes. Sjekk API-nøkkelen ovenfor og prøv igjen.",
+  "provider.custom.models.fetch.empty": "Ingen modeller funnet på denne serveren.",
+  "provider.custom.models.fetch.added": "{{count}} modell(er) lagt til.",
+  "provider.custom.models.fetch.allExist": "Alle hentede modeller er allerede lagt til.",
+  "provider.custom.models.fetch.selectAll": "Velg alle",
+  "provider.custom.models.fetch.deselectAll": "Fjern alle valg",
+  "provider.custom.models.fetch.found": "{{count}} modeller funnet",
+  "provider.custom.models.fetch.showing": "Viser {{shown}} av {{total}}",
+  "provider.custom.models.fetch.search": "Søk etter modeller\u2026",
+  "provider.custom.models.fetch.add": "Legg til {{count}} modell(er)",
+  "provider.custom.edit.title": "Rediger leverandør",
   "provider.custom.headers.label": "Headere (valgfritt)",
   "provider.custom.headers.key.label": "Header",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -962,8 +977,20 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "For fakturerings- eller kontospørsmål, kontakt kundestøtte på",
   "settings.aboutKiloCode.resetSettings.title": "Tilbakestill innstillinger",
   "settings.aboutKiloCode.resetSettings.description":
-    "Tilbakestill alle Kilo Code-utvidelsesinnstillinger til standardverdier. Dette påvirker ikke CLI- eller backend-konfigurasjon.",
+    "Dette tilbakestiller kun VS Code-utvidelsesspecifikke innstillinger til standardverdiene. Innstillinger som deles med CLI, som modi og regler for automatisk godkjenning, lagres i CLI-konfigurasjonen og vil ikke tilbakestilles.",
   "settings.aboutKiloCode.resetSettings.button": "Tilbakestill alle innstillinger",
+  "settings.aboutKiloCode.settingsTransfer.title": "Overføring av innstillinger",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Eksporter eller importer innstillingene dine for å overføre dem mellom VS Code-instanser.",
+  "settings.aboutKiloCode.exportSettings": "Eksporter",
+  "settings.aboutKiloCode.importSettings": "Importer",
+  "settings.aboutKiloCode.importSettings.invalidJson": "Ugyldig JSON-fil. Vennligst velg en gyldig innstillingsfil.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Filen inneholder ikke gyldige Kilo-innstillinger.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "Filen er for stor. Innstillingsfiler må være under 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Denne filen ble eksportert fra en nyere versjon av Kilo. Noen innstillinger kan bli ignorert.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Innstillinger importert. Gjennomgå endringene ovenfor, og klikk deretter på Lagre.",
 
   "settings.agentBehaviour.subtab.modes": "Moduser",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1122,8 +1149,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Argumenter",
   "settings.agentBehaviour.mcpDetail.env": "Miljø",
   "settings.agentBehaviour.mcpDetail.disabled": "Denne serveren er deaktivert.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Bla gjennom Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "Ingen MCP-servere konfigurert. Rediger opencode-konfigurasjonsfilen for å legge til MCP-servere.",
+    "Ingen MCP-servere konfigurert. Legg til MCP-servere i kilo.jsonc, eller be agenten om å legge dem til.",
   "settings.agentBehaviour.workflowsPlaceholder": "Arbeidsflyter administreres via arbeidsflytfiler i arbeidsområdet.",
   "settings.agentBehaviour.workflows.description":
     "Arbeidsflyter er egendefinerte skråstrekkommandoer definert i konfigurasjonen din. Skriv /command-name i chatten for å kjøre dem. Kommandoer konfigureres i opencode.json under seksjonen 'command'.",

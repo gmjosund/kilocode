@@ -267,6 +267,7 @@ export const dict = {
   "mcp.status.connected": "połączono",
   "mcp.status.failed": "niepowodzenie",
   "mcp.status.needs_auth": "wymaga autoryzacji",
+  "mcp.status.needs_registration": "wymaga rejestracji klienta",
   "mcp.status.disabled": "wyłączone",
 
   "dialog.fork.empty": "Brak wiadomości do rozwidlenia",
@@ -755,6 +756,21 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Nazwa wyświetlana",
   "provider.custom.models.remove": "Usuń model",
   "provider.custom.models.add": "Dodaj model",
+  "provider.custom.models.fetch": "Pobierz modele",
+  "provider.custom.models.fetching": "Pobieranie\u2026",
+  "provider.custom.models.fetch.error": "Nie udało się pobrać modeli: {{error}}",
+  "provider.custom.models.fetch.authError":
+    "Uwierzytelnianie nie powiodło się. Sprawdź klucz API powyżej i spróbuj ponownie.",
+  "provider.custom.models.fetch.empty": "Nie znaleziono modeli na tym serwerze.",
+  "provider.custom.models.fetch.added": "Dodano {{count}} model(i).",
+  "provider.custom.models.fetch.allExist": "Wszystkie pobrane modele są już dodane.",
+  "provider.custom.models.fetch.selectAll": "Zaznacz wszystkie",
+  "provider.custom.models.fetch.deselectAll": "Odznacz wszystkie",
+  "provider.custom.models.fetch.found": "Znaleziono {{count}} modeli",
+  "provider.custom.models.fetch.showing": "Wyświetlanie {{shown}} z {{total}}",
+  "provider.custom.models.fetch.search": "Szukaj modeli\u2026",
+  "provider.custom.models.fetch.add": "Dodaj {{count}} model(i)",
+  "provider.custom.edit.title": "Edytuj dostawcę",
   "provider.custom.headers.label": "Nagłówki (opcjonalnie)",
   "provider.custom.headers.key.label": "Nagłówek",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -962,8 +978,20 @@ export const dict = {
     "W sprawach rozliczeń lub konta skontaktuj się z obsługą klienta pod adresem",
   "settings.aboutKiloCode.resetSettings.title": "Resetuj ustawienia",
   "settings.aboutKiloCode.resetSettings.description":
-    "Zresetuj wszystkie ustawienia rozszerzenia Kilo Code do wartości domyślnych. Nie wpływa to na konfigurację CLI ani backendu.",
+    "To resetuje tylko ustawienia specyficzne dla rozszerzenia VS Code do ich domyślnych wartości. Ustawienia współdzielone z CLI, takie jak tryby i reguły automatycznego zatwierdzania, są przechowywane w konfiguracji CLI i nie zostaną zresetowane.",
   "settings.aboutKiloCode.resetSettings.button": "Resetuj wszystkie ustawienia",
+  "settings.aboutKiloCode.settingsTransfer.title": "Przenoszenie ustawień",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Eksportuj lub importuj ustawienia, aby przenosić je między instancjami VS Code.",
+  "settings.aboutKiloCode.exportSettings": "Eksportuj",
+  "settings.aboutKiloCode.importSettings": "Importuj",
+  "settings.aboutKiloCode.importSettings.invalidJson": "Nieprawidłowy plik JSON. Wybierz prawidłowy plik ustawień.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Plik nie zawiera prawidłowych ustawień Kilo.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "Plik jest za duży. Pliki ustawień muszą mieć mniej niż 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Ten plik został wyeksportowany z nowszej wersji Kilo. Niektóre ustawienia mogą zostać zignorowane.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Ustawienia zaimportowane. Przejrzyj powyższe zmiany, a następnie kliknij Zapisz.",
 
   "settings.agentBehaviour.subtab.modes": "Tryby",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1125,8 +1153,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Argumenty",
   "settings.agentBehaviour.mcpDetail.env": "Środowisko",
   "settings.agentBehaviour.mcpDetail.disabled": "Ten serwer jest wyłączony.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Przeglądaj Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "Brak skonfigurowanych serwerów MCP. Edytuj plik konfiguracyjny opencode, aby dodać serwery MCP.",
+    "Brak skonfigurowanych serwerów MCP. Dodaj serwery MCP w kilo.jsonc lub poproś agenta o ich dodanie.",
   "settings.agentBehaviour.workflowsPlaceholder": "Przepływy pracy zarządzane są za pomocą plików przepływów pracy.",
   "settings.agentBehaviour.workflows.description":
     "Przepływy pracy to niestandardowe komendy slash zdefiniowane w konfiguracji. Wpisz /command-name na czacie, aby je uruchomić. Komendy konfiguruje się w opencode.json w sekcji 'command'.",

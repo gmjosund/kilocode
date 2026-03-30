@@ -267,6 +267,7 @@ export const dict = {
   "mcp.status.connected": "forbundet",
   "mcp.status.failed": "mislykkedes",
   "mcp.status.needs_auth": "kræver godkendelse",
+  "mcp.status.needs_registration": "kræver klientregistrering",
   "mcp.status.disabled": "deaktiveret",
 
   "dialog.fork.empty": "Ingen beskeder at forgrene fra",
@@ -751,6 +752,20 @@ export const dict = {
   "provider.custom.models.name.placeholder": "Visningsnavn",
   "provider.custom.models.remove": "Fjern model",
   "provider.custom.models.add": "Tilføj model",
+  "provider.custom.models.fetch": "Hent modeller",
+  "provider.custom.models.fetching": "Henter\u2026",
+  "provider.custom.models.fetch.error": "Kunne ikke hente modeller: {{error}}",
+  "provider.custom.models.fetch.authError": "Godkendelse mislykkedes. Kontrollér API-nøglen ovenfor, og prøv igen.",
+  "provider.custom.models.fetch.empty": "Ingen modeller fundet på denne server.",
+  "provider.custom.models.fetch.added": "{{count}} model(ler) tilføjet.",
+  "provider.custom.models.fetch.allExist": "Alle hentede modeller er allerede tilføjet.",
+  "provider.custom.models.fetch.selectAll": "Vælg alle",
+  "provider.custom.models.fetch.deselectAll": "Fravælg alle",
+  "provider.custom.models.fetch.found": "{{count}} modeller fundet",
+  "provider.custom.models.fetch.showing": "Viser {{shown}} af {{total}}",
+  "provider.custom.models.fetch.search": "Søg modeller\u2026",
+  "provider.custom.models.fetch.add": "Tilføj {{count}} model(ler)",
+  "provider.custom.edit.title": "Rediger udbyder",
   "provider.custom.headers.label": "Headers (valgfrit)",
   "provider.custom.headers.key.label": "Header",
   "provider.custom.headers.key.placeholder": "Header-Name",
@@ -959,8 +974,20 @@ export const dict = {
   "settings.aboutKiloCode.support.prefix": "For fakturerings- eller kontospørgsmål, kontakt kundesupport på",
   "settings.aboutKiloCode.resetSettings.title": "Nulstil indstillinger",
   "settings.aboutKiloCode.resetSettings.description":
-    "Nulstil alle Kilo Code-udvidelsesindstillinger til standardværdierne. Dette påvirker ikke CLI- eller backend-konfiguration.",
+    "Dette nulstiller kun VS Code-udvidelsesspecifikke indstillinger til deres standardværdier. Indstillinger der deles med CLI, såsom tilstande og regler for automatisk godkendelse, er gemt i CLI-konfigurationen og vil ikke blive nulstillet.",
   "settings.aboutKiloCode.resetSettings.button": "Nulstil alle indstillinger",
+  "settings.aboutKiloCode.settingsTransfer.title": "Overførsel af indstillinger",
+  "settings.aboutKiloCode.settingsTransfer.description":
+    "Eksportér eller importér dine indstillinger for at overføre dem mellem VS Code-instanser.",
+  "settings.aboutKiloCode.exportSettings": "Eksportér",
+  "settings.aboutKiloCode.importSettings": "Importér",
+  "settings.aboutKiloCode.importSettings.invalidJson": "Ugyldig JSON-fil. Vælg venligst en gyldig indstillingsfil.",
+  "settings.aboutKiloCode.importSettings.invalidConfig": "Filen indeholder ikke gyldige Kilo-indstillinger.",
+  "settings.aboutKiloCode.importSettings.tooLarge": "Filen er for stor. Indstillingsfiler skal være under 1 MB.",
+  "settings.aboutKiloCode.importSettings.newerVersion":
+    "Denne fil blev eksporteret fra en nyere version af Kilo. Nogle indstillinger kan blive ignoreret.",
+  "settings.aboutKiloCode.importSettings.success":
+    "Indstillinger importeret. Gennemgå ændringerne ovenfor, og klik derefter på Gem.",
 
   "settings.agentBehaviour.subtab.modes": "Tilstande",
   "settings.agentBehaviour.subtab.agents": "Agents",
@@ -1119,8 +1146,9 @@ export const dict = {
   "settings.agentBehaviour.mcpDetail.args": "Argumenter",
   "settings.agentBehaviour.mcpDetail.env": "Miljø",
   "settings.agentBehaviour.mcpDetail.disabled": "Denne server er deaktiveret.",
+  "settings.agentBehaviour.mcpBrowseMarketplace": "Gennemse Marketplace",
   "settings.agentBehaviour.mcpEmpty":
-    "Ingen MCP-servere konfigureret. Rediger opencode-konfigurationsfilen for at tilføje MCP-servere.",
+    "Ingen MCP-servere konfigureret. Tilføj MCP-servere i kilo.jsonc, eller bed agenten om at tilføje dem.",
   "settings.agentBehaviour.workflowsPlaceholder": "Workflows administreres via workflow-filer i dit arbejdsområde.",
   "settings.agentBehaviour.workflows.description":
     "Workflows er brugerdefinerede slash-kommandoer defineret i din konfiguration. Skriv /command-name i chatten for at aktivere dem. Kommandoer konfigureres i opencode.json under sektionen 'command'.",

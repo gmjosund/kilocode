@@ -249,6 +249,7 @@ export namespace KiloSessions {
               id,
               status: statuses[id]?.type ?? "idle",
               title: session.title,
+              parentSessionId: session.parentID,
               gitUrl,
               gitBranch,
             }
