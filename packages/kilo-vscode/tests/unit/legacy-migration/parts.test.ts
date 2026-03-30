@@ -6,9 +6,7 @@ type Data = ReturnType<typeof parsePartsFromConversation>[number]["data"]
 type Text = Extract<Data, { type: "text" }>
 
 function text(list: ReturnType<typeof parsePartsFromConversation>) {
-  return list
-    .filter((x): x is (typeof list)[number] & { data: Text } => x.data.type === "text")
-    .map((x) => x.data.text)
+  return list.filter((x): x is (typeof list)[number] & { data: Text } => x.data.type === "text").map((x) => x.data.text)
 }
 
 const id = "019d3df5-d5d9-73dc-bc2c-43a6304ac62c"
@@ -70,7 +68,9 @@ describe("legacy migration parts", () => {
     const items = text(list)
 
     expect(items.some((x) => x.includes("In this folder I need you to create 3 python files"))).toBe(true)
-    expect(items.some((x) => x.includes("I'll create 3 Python files with web development-oriented content."))).toBe(true)
+    expect(items.some((x) => x.includes("I'll create 3 Python files with web development-oriented content."))).toBe(
+      true,
+    )
   })
 
   it("drops standalone environment_details blocks but keeps the real task text", async () => {

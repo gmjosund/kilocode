@@ -8,7 +8,11 @@ type Data = Body["data"]
 type User = Extract<Data, { role: "user" }>
 type Assistant = Extract<Data, { role: "assistant" }>
 
-export async function createMessages(id: string, dir: string, item?: LegacyHistoryItem): Promise<Array<NonNullable<Message["body"]>>> {
+export async function createMessages(
+  id: string,
+  dir: string,
+  item?: LegacyHistoryItem,
+): Promise<Array<NonNullable<Message["body"]>>> {
   const file = await getApiConversationHistory(id, dir)
   const conversation = parseFile(file)
 

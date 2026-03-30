@@ -51,7 +51,10 @@ export function mergeToolUseAndResult(
 }
 
 export function thereIsNoToolResult(conversation: LegacyApiMessage[], id: string | undefined) {
-  return !conversation.some((entry) => Array.isArray(entry.content) && entry.content.some((part) => isToolResult(part) && part.tool_use_id === id))
+  return !conversation.some(
+    (entry) =>
+      Array.isArray(entry.content) && entry.content.some((part) => isToolResult(part) && part.tool_use_id === id),
+  )
 }
 
 function getToolUseFromConversation(conversation: LegacyApiMessage[], id: string | undefined) {

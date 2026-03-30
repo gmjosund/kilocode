@@ -97,11 +97,7 @@ export async function detectLegacyData(context: vscode.ExtensionContext): Promis
     Boolean(settings.autocomplete)
 
   const hasData =
-    providers.length > 0 ||
-    mcpServers.length > 0 ||
-    modes.length > 0 ||
-    hasSettings ||
-    sessions.length > 0
+    providers.length > 0 || mcpServers.length > 0 || modes.length > 0 || hasSettings || sessions.length > 0
 
   return {
     providers,
@@ -126,7 +122,9 @@ async function readSessionsInGlobalStorage(context: vscode.ExtensionContext) {
 
 async function readSessionsToMigrate(context: vscode.ExtensionContext, sessions: string[]) {
   if (sessions.length === 0) return []
-  return sessions.filter((id) => !context.globalState.get<boolean>(`kilo.migratedSession.${createSessionID(id)}`, false))
+  return sessions.filter(
+    (id) => !context.globalState.get<boolean>(`kilo.migratedSession.${createSessionID(id)}`, false),
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -232,7 +230,11 @@ export async function migrate(
         status: result.ok ? "success" : "error",
         message: result.ok ? "Session migrated" : "Session migration failed",
       })
-      onProgress("Chat sessions", result.ok ? "success" : "error", result.ok ? "Session migrated" : "Session migration failed")
+      onProgress(
+        "Chat sessions",
+        result.ok ? "success" : "error",
+        result.ok ? "Session migrated" : "Session migration failed",
+      )
     }
   }
 

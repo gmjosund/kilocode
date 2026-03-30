@@ -31,7 +31,8 @@ export function getReasoningText(input: LegacyApiMessage) {
     .flatMap((item) => {
       if (!item || typeof item !== "object") return []
       if (typeof (item as { text?: unknown }).text === "string") return [(item as { text: string }).text]
-      if (typeof (item as { reasoning?: unknown }).reasoning === "string") return [(item as { reasoning: string }).reasoning]
+      if (typeof (item as { reasoning?: unknown }).reasoning === "string")
+        return [(item as { reasoning: string }).reasoning]
       return []
     })
     .join("\n")
@@ -49,20 +50,22 @@ export function isEnvironmentDetails(input: string) {
   return /^\s*<environment_details>[\s\S]*<\/environment_details>\s*$/i.test(input)
 }
 
-export function isCompletionResult(input: unknown): input is { type?: string; name?: string; input: { result: string } } {
+export function isCompletionResult(
+  input: unknown,
+): input is { type?: string; name?: string; input: { result: string } } {
   return Boolean(
     input &&
-      typeof input === "object" &&
-      "type" in input &&
-      input.type === "tool_use" &&
-      "name" in input &&
-      input.name === "attempt_completion" &&
-      "input" in input &&
-      input.input &&
-      typeof input.input === "object" &&
-      "result" in input.input &&
-      typeof input.input.result === "string" &&
-      input.input.result,
+    typeof input === "object" &&
+    "type" in input &&
+    input.type === "tool_use" &&
+    "name" in input &&
+    input.name === "attempt_completion" &&
+    "input" in input &&
+    input.input &&
+    typeof input.input === "object" &&
+    "result" in input.input &&
+    typeof input.input.result === "string" &&
+    input.input.result,
   )
 }
 

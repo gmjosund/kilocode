@@ -5,9 +5,7 @@ import type { LegacyApiMessage } from "../../../src/legacy-migration/sessions/li
 type Tool = Extract<ReturnType<typeof parsePartsFromConversation>[number]["data"], { type: "tool" }>
 
 function tools(list: ReturnType<typeof parsePartsFromConversation>) {
-  return list
-    .filter((x): x is (typeof list)[number] & { data: Tool } => x.data.type === "tool")
-    .map((x) => x.data)
+  return list.filter((x): x is (typeof list)[number] & { data: Tool } => x.data.type === "tool").map((x) => x.data)
 }
 
 const id = "legacy-task-1"

@@ -16,7 +16,11 @@ import {
 } from "./parts-util"
 import { mergeToolUseAndResult, thereIsNoToolResult } from "./merge-tools"
 
-export async function createParts(id: string, dir: string, item?: LegacyHistoryItem): Promise<Array<NonNullable<Part["body"]>>> {
+export async function createParts(
+  id: string,
+  dir: string,
+  item?: LegacyHistoryItem,
+): Promise<Array<NonNullable<Part["body"]>>> {
   const file = await getApiConversationHistory(id, dir)
   const conversation = parseFile(file)
 

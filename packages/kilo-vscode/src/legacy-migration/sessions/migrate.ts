@@ -12,12 +12,15 @@ export async function migrate(id: string, context: vscode.ExtensionContext, clie
   try {
     const project = await client.kilocode.sessionImport.project(payload.project, { throwOnError: true })
     const projectID = project.data?.id ?? payload.project.id
-    await client.kilocode.sessionImport.session({
-      ...payload.session,
-      projectID,
-      query_directory: payload.session.directory,
-      body_directory: payload.session.directory,
-    }, { throwOnError: true })
+    await client.kilocode.sessionImport.session(
+      {
+        ...payload.session,
+        projectID,
+        query_directory: payload.session.directory,
+        body_directory: payload.session.directory,
+      },
+      { throwOnError: true },
+    )
 
     for (const msg of payload.messages) {
       await client.kilocode.sessionImport.message(msg, { throwOnError: true })

@@ -13,7 +13,6 @@ const item = {
 }
 
 describe("legacy migration parser", () => {
-
   it("uses the final deterministic ids expected for migration", () => {
     const project = createProject(item)
     const session = createSession(id, item, project.id)
