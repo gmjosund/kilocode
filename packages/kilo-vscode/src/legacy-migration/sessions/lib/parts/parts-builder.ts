@@ -8,7 +8,7 @@ type Reasoning = Extract<Data, { type: "reasoning" }>
 type Tool = Extract<Data, { type: "tool" }>
 type ToolCompleted = Extract<Tool["state"], { status: "completed" }>
 
-export function createToolUse(
+export function toTool(
   partID: string,
   messageID: string,
   sessionID: string,
@@ -44,7 +44,7 @@ export function createToolUse(
   }
 }
 
-export function createSimpleText(
+export function toText(
   partID: string,
   messageID: string,
   sessionID: string,
@@ -70,7 +70,7 @@ export function createSimpleText(
   }
 }
 
-export function createTextWithinMessage(
+export function toTextWithinMessage(
   partID: string,
   messageID: string,
   sessionID: string,
@@ -96,7 +96,7 @@ export function createTextWithinMessage(
   }
 }
 
-export function createReasoning(
+export function toReasoning(
   partID: string,
   messageID: string,
   sessionID: string,

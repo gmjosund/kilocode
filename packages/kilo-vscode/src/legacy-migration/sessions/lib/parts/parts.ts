@@ -1,8 +1,8 @@
 import type { KilocodeSessionImportPartData as Part } from "@kilocode/sdk/v2"
 import type { LegacyApiMessage, LegacyHistoryItem } from "../legacy-types"
-import { getApiConversationHistory, parseFile } from "../api-history"
+import { getApiConversationHistory, parseFile } from "../legacy-conversation"
 import { createMessageID, createPartID, createSessionID } from "../ids"
-import { createReasoning, createSimpleText, createTextWithinMessage, createToolUse } from "./parts-builder"
+import { toReasoning, toText, toTextWithinMessage, toTool } from "./parts-builder"
 import {
   isCompletionResult,
   isEnvironmentDetails,
@@ -38,7 +38,7 @@ function parseParts(
     // Ignore raw <environment_details> blocks because they are legacy prompt scaffolding,
     // not actual user-visible conversation content we want to preserve in the migrated session.
     if (isEnvironmentDetails(entry.content)) return []
-    return [createSimpleText(createPartID(id, index, 0), messageID, sessionID, created, entry.content)]
+    return [toText(createPartID(id, index, 0), messageID, sessionID, created, entry.content)]
   }
 
   if (!Array.isArray(entry.content)) return []
@@ -46,14 +46,14 @@ function parseParts(
   const parts: Array<NonNullable<Part["body"]>> = []
 
   if (isReasoning(entry)) {
-    parts.push(createReasoning(createPartID(id, index, 0), messageID, sessionID, created, entry.text))
+    parts.push(toReasoning(createPartID(id, index, 0), messageID, sessionID, created, entry.text))
   }
 
   // Some providers store thinking outside normal content blocks, so this handles those provider-specific fields.
   if (isProviderSpecificReasoning(entry)) {
     const reasoning = getReasoningText(entry)
     if (reasoning) {
-      parts.push(createReasoning(createPartID(id, index, 1), messageID, sessionID, created, reasoning))
+      parts.push(toReasoning(createPartID(id, index, 1), messageID, sessionID, created, reasoning))
     }
   }
 
@@ -65,7 +65,7 @@ function parseParts(
       // Ignore standalone <environment_details> text blocks for the same reason: they describe
       // editor/runtime context for the old prompt, but they are not meaningful chat content.
       if (isEnvironmentDetails(part.text)) return
-      parts.push(createTextWithinMessage(partID, messageID, sessionID, created, part.text))
+      parts.push(toTextWithinMessage(partID, messageID, sessionID, created, part.text))
       return
     }
 
@@ -73,12 +73,12 @@ function parseParts(
     // Treat it like a regular assistant text part so the migrated session keeps that final visible answer.
     if (isCompletionResult(part)) {
       const text = part.input.result
-      parts.push(createTextWithinMessage(partID, messageID, sessionID, created, text))
+      parts.push(toTextWithinMessage(partID, messageID, sessionID, created, text))
       return
     }
 
     if (isToolUse(part) && thereIsNoToolResult(conversation, part.id)) {
-      parts.push(createToolUse(partID, messageID, sessionID, created, part))
+      parts.push(toTool(partID, messageID, sessionID, created, part))
       return
     }
 

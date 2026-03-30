@@ -1,6 +1,6 @@
 import type { KilocodeSessionImportMessageData as Message } from "@kilocode/sdk/v2"
 import type { LegacyApiMessage, LegacyHistoryItem } from "./legacy-types"
-import { getApiConversationHistory, parseFile } from "./api-history"
+import { getApiConversationHistory, parseFile } from "./legacy-conversation"
 import { createMessageID, createSessionID } from "./ids"
 
 type Body = NonNullable<Message["body"]>
