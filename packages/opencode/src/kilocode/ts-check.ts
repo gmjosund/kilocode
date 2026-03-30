@@ -30,6 +30,7 @@ export namespace TsCheck {
       stdout: "pipe",
       stderr: "pipe",
       env: { ...process.env },
+      windowsHide: true,
     })
 
     const TIMEOUT = 30_000
