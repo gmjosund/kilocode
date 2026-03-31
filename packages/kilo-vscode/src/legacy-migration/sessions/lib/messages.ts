@@ -1,23 +1,11 @@
 import type { KilocodeSessionImportMessageData as Message } from "@kilocode/sdk/v2"
 import type { LegacyApiMessage, LegacyHistoryItem } from "./legacy-types"
-import { getApiConversationHistory, parseFile } from "./legacy-conversation"
 import { createMessageID, createSessionID } from "./ids"
 
 type Body = NonNullable<Message["body"]>
 type Data = Body["data"]
 type User = Extract<Data, { role: "user" }>
 type Assistant = Extract<Data, { role: "assistant" }>
-
-export async function createMessages(
-  id: string,
-  dir: string,
-  item?: LegacyHistoryItem,
-): Promise<Array<NonNullable<Message["body"]>>> {
-  const file = await getApiConversationHistory(id, dir)
-  const conversation = parseFile(file)
-
-  return parseMessagesFromConversation(conversation, id, item)
-}
 
 export function parseMessagesFromConversation(
   conversation: LegacyApiMessage[],

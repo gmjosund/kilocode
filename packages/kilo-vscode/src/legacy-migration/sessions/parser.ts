@@ -5,8 +5,9 @@ import type {
   KilocodeSessionImportProjectData as Project,
   KilocodeSessionImportSessionData as Session,
 } from "@kilocode/sdk/v2"
-import { createMessages } from "./lib/messages"
-import { createParts } from "./lib/parts/parts"
+import { getApiConversationHistory, parseFile } from "./lib/legacy-conversation"
+import { parseMessagesFromConversation } from "./lib/messages"
+import { parsePartsFromConversation } from "./lib/parts/parts"
 import { createProject } from "./lib/project"
 import { createSession } from "./lib/session"
 
@@ -20,8 +21,10 @@ export interface NormalizedSession {
 export async function parseSession(id: string, dir: string, item?: LegacyHistoryItem): Promise<NormalizedSession> {
   const project = createProject(item)
   const session = createSession(id, item, project.id)
-  const messages = await createMessages(id, dir, item)
-  const parts = await createParts(id, dir, item)
+  const file = await getApiConversationHistory(id, dir)
+  const conversation = parseFile(file)
+  const messages = parseMessagesFromConversation(conversation, id, item)
+  const parts = parsePartsFromConversation(conversation, id, item)
 
   return {
     project,

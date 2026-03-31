@@ -1,6 +1,5 @@
 import type { KilocodeSessionImportPartData as Part } from "@kilocode/sdk/v2"
 import type { LegacyApiMessage, LegacyHistoryItem } from "../legacy-types"
-import { getApiConversationHistory, parseFile } from "../legacy-conversation"
 import { createExtraPartID, createMessageID, createPartID, createSessionID } from "../ids"
 import { toReasoning, toText, toTextWithinMessage, toTool } from "./parts-builder"
 import {
@@ -15,17 +14,6 @@ import {
   isToolUse,
 } from "./parts-util"
 import { mergeToolUseAndResult, thereIsNoToolResult } from "./merge-tools"
-
-export async function createParts(
-  id: string,
-  dir: string,
-  item?: LegacyHistoryItem,
-): Promise<Array<NonNullable<Part["body"]>>> {
-  const file = await getApiConversationHistory(id, dir)
-  const conversation = parseFile(file)
-
-  return parsePartsFromConversation(conversation, id, item)
-}
 
 export function parsePartsFromConversation(
   conversation: LegacyApiMessage[],
