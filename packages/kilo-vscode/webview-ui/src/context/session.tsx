@@ -1038,13 +1038,20 @@ export const SessionProvider: ParentComponent = (props) => {
     batch(() => {
       // Reconcile: remove sessions not in the loaded list to prevent stale
       // entries from other projects accumulating in the store.
+      // However, preserve sessions that have a messages entry — these were
+      // added via sessionCreated (locally active) and may have been created
+      // after this loadSessions request was sent. Deleting them would cause
+      // a race where the server hadn't persisted the session yet when the
+      // HTTP list response arrived, wiping a session the user just created.
       const ids = new Set(loaded.map((s) => s.id))
       setStore(
         "sessions",
         produce((sessions) => {
           for (const id of Object.keys(sessions)) {
             if (id.startsWith("cloud:")) continue
-            if (!ids.has(id)) delete sessions[id]
+            if (ids.has(id)) continue
+            if (store.messages[id] !== undefined) continue
+            delete sessions[id]
           }
         }),
       )
