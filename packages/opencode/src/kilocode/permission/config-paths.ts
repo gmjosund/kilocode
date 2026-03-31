@@ -58,16 +58,24 @@ export namespace ConfigProtection {
     return child === parent || child.startsWith(parent + path.sep)
   }
 
+  /** Check if the portion of `child` after `parent/` starts with an excluded subdir. */
+  function excludedAbsolute(child: string, parent: string): boolean {
+    const remainder = child.slice(parent.length + 1) // strip parent + sep
+    return EXCLUDED_SUBDIRS.some((sub) => remainder.startsWith(sub))
+  }
+
   /** Check if an absolute path is inside a known CLI config directory. */
   export function isAbsolute(filepath: string): boolean {
     const resolved = path.resolve(filepath)
 
     // ~/.config/kilo/ (XDG config)
-    if (within(resolved, path.resolve(Global.Path.config))) return true
+    const cfg = path.resolve(Global.Path.config)
+    if (within(resolved, cfg) && !excludedAbsolute(resolved, cfg)) return true
 
     // ~/.kilo/ and ~/.kilocode/ (legacy global dirs)
     for (const dir of KilocodePaths.globalDirs()) {
-      if (within(resolved, path.resolve(dir))) return true
+      const abs = path.resolve(dir)
+      if (within(resolved, abs) && !excludedAbsolute(resolved, abs)) return true
     }
 
     return false
