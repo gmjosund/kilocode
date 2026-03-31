@@ -20,6 +20,10 @@ interface ServerContextValue {
   vscodeLanguage: Accessor<string | undefined>
   languageOverride: Accessor<string | undefined>
   workspaceDirectory: Accessor<string>
+  /** True when the backend has signalled that this extension version is too old. */
+  upgradeRequired: Accessor<boolean>
+  /** Call when an UPGRADE_REQUIRED / HTTP 426 error is received from any source. */
+  setUpgradeRequired: () => void
 }
 
 export const ServerContext = createContext<ServerContextValue>()
@@ -39,6 +43,7 @@ export const ServerProvider: ParentComponent = (props) => {
   const [vscodeLanguage, setVscodeLanguage] = createSignal<string | undefined>()
   const [languageOverride, setLanguageOverride] = createSignal<string | undefined>()
   const [workspaceDirectory, setWorkspaceDirectory] = createSignal<string>("")
+  const [upgradeRequired, markUpgradeRequired] = createSignal(false)
 
   onMount(() => {
     const unsubscribe = vscode.onMessage((message: ExtensionMessage) => {
@@ -151,6 +156,8 @@ export const ServerProvider: ParentComponent = (props) => {
     vscodeLanguage,
     languageOverride,
     workspaceDirectory,
+    upgradeRequired,
+    setUpgradeRequired: () => markUpgradeRequired(true),
   }
 
   return <ServerContext.Provider value={value}>{props.children}</ServerContext.Provider>

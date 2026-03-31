@@ -47,6 +47,7 @@ import { computeStatus, calcTotalCost, calcContextUsage } from "./session-utils"
 import { Identifier } from "../utils/id"
 import { resolveModelSelection } from "./model-selection"
 import { KILO_AUTO, parseModelString } from "../../../src/shared/provider-model"
+import { isUpgradeRequiredError, parseSessionError } from "../utils/errorUtils"
 
 const RECENT_LIMIT = 5
 
@@ -650,6 +651,10 @@ export const SessionProvider: ParentComponent = (props) => {
 
         case "sessionError": {
           if (message.error?.name === "MessageAbortedError") break
+          // Detect force-upgrade errors and set the global flag
+          if (isUpgradeRequiredError(parseSessionError(message.error))) {
+            server.setUpgradeRequired()
+          }
           const sid = message.sessionID ?? currentSessionID()
           if (!sid) break
           // Find the last user message in this session to use as parentID
