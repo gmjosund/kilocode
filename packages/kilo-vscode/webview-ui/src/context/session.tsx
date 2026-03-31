@@ -43,7 +43,13 @@ import type {
   McpStatusEntry,
 } from "../types/messages"
 import { removeSessionPermissions, upsertPermission } from "./permission-queue"
-import { computeStatus, calcTotalCost, calcContextUsage } from "./session-utils"
+import {
+  computeStatus,
+  calcContextUsage,
+  buildFamilyCosts,
+  buildFamilyLabels,
+  buildCostBreakdown,
+} from "./session-utils"
 import { Identifier } from "../utils/id"
 import { resolveModelSelection } from "./model-selection"
 import { KILO_AUTO, parseModelString } from "../../../src/shared/provider-model"
@@ -1624,41 +1630,14 @@ export const SessionProvider: ParentComponent = (props) => {
   const familyCosts = createMemo<Map<string, number>>(() => {
     const id = currentSessionID()
     if (!id) return new Map()
-    const costs = new Map<string, number>()
-    for (const sid of sessionFamily(id)) {
-      const cost = calcTotalCost(store.messages[sid] ?? [])
-      if (cost > 0) costs.set(sid, cost)
-    }
-    return costs
+    return buildFamilyCosts(sessionFamily(id), store.messages)
   })
 
   /** Child session labels — only reads store.parts (not message costs). */
   const familyLabels = createMemo<Map<string, string>>(() => {
     const id = currentSessionID()
     if (!id) return new Map()
-    const labels = new Map<string, string>()
-    const family = sessionFamily(id)
-    for (const sid of family) {
-      const msgs = store.messages[sid]
-      if (!msgs) continue
-      for (const msg of msgs) {
-        const parts = store.parts[msg.id]
-        if (!parts) continue
-        for (const p of parts) {
-          if (p.type !== "tool") continue
-          const tp = p as {
-            tool: string
-            state?: { input?: { description?: string; subagent_type?: string }; metadata?: { sessionId?: string } }
-          }
-          const child = tp.state?.metadata?.sessionId
-          if (!child || !family.has(child)) continue
-          const raw = tp.state?.input?.subagent_type || tp.state?.input?.description || tp.tool
-          const desc = raw.length > 24 ? raw.slice(0, 22) + "…" : raw
-          if (!labels.has(child)) labels.set(child, desc)
-        }
-      }
-    }
-    return labels
+    return buildFamilyLabels(sessionFamily(id), store.messages as any, store.parts as any)
   })
 
   /** Combined cost breakdown with labels. */
@@ -1666,13 +1645,7 @@ export const SessionProvider: ParentComponent = (props) => {
     const id = currentSessionID()
     const costs = familyCosts()
     if (!id || costs.size === 0) return []
-    const labels = familyLabels()
-    const items: Array<{ label: string; cost: number }> = []
-    for (const [sid, cost] of costs) {
-      const label = sid === id ? language.t("context.stats.thisSession") : (labels.get(sid) ?? sid.slice(0, 8))
-      items.push({ label, cost })
-    }
-    return items
+    return buildCostBreakdown(id, costs, familyLabels(), language.t("context.stats.thisSession"))
   })
 
   // Status text derived from last assistant message parts
