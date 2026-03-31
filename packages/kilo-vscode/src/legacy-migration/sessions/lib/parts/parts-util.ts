@@ -122,3 +122,11 @@ export function cleanLegacyTaskText(input: string) {
 export function isLegacySystemErrorText(input: string) {
   return input.trimStart().startsWith("[ERROR]")
 }
+
+export function getFeedbackText(input: unknown) {
+  const text = getText(input)
+  if (!text) return undefined
+  const match = text.match(/<feedback>([\s\S]*?)<\/feedback>/i)
+  const value = match?.[1]?.trim()
+  return value || undefined
+}
