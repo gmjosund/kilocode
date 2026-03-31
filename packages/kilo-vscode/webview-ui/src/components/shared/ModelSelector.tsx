@@ -246,6 +246,16 @@ export const ModelSelectorBase: Component<ModelSelectorBaseProps> = (props) => {
   window.addEventListener("openModelPicker", onTrigger)
   onCleanup(() => window.removeEventListener("openModelPicker", onTrigger))
 
+  // When favorites change via broadcast from another webview, clear stale
+  // indices so the picker doesn't highlight or preview a wrong row.
+  const onExtFav = () => {
+    setSelectedIndex(-1)
+    setPreActiveIdx(-1)
+    setPreviewIdx(-1)
+  }
+  window.addEventListener("favoritesChanged", onExtFav)
+  onCleanup(() => window.removeEventListener("favoritesChanged", onExtFav))
+
   function pick(model: EnrichedModel) {
     props.onSelect(model.providerID, model.id)
     setOpen(false)
