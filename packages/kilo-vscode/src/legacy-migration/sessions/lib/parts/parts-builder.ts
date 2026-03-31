@@ -70,32 +70,6 @@ export function toText(
   }
 }
 
-export function toTextWithinMessage(
-  partID: string,
-  messageID: string,
-  sessionID: string,
-  created: number,
-  text: string,
-): NonNullable<Part["body"]> {
-  const value = cleanLegacyTaskText(text)
-  const data: Text = {
-    type: "text",
-    text: value,
-    time: {
-      start: created,
-      end: created,
-    },
-  }
-
-  return {
-    id: partID,
-    messageID,
-    sessionID,
-    timeCreated: created,
-    data,
-  }
-}
-
 export function toReasoning(
   partID: string,
   messageID: string,

@@ -1,7 +1,7 @@
 import type { KilocodeSessionImportPartData as Part } from "@kilocode/sdk/v2"
 import type { LegacyApiMessage, LegacyHistoryItem } from "../legacy-types"
 import { createExtraPartID, createMessageID, createPartID, createSessionID } from "../ids"
-import { toReasoning, toText, toTextWithinMessage, toTool } from "./parts-builder"
+import { toReasoning, toText, toTool } from "./parts-builder"
 import {
   isCompletionResult,
   isEnvironmentDetails,
@@ -68,7 +68,7 @@ function parseParts(
       // Ignore standalone <environment_details> text blocks for the same reason: they describe
       // editor/runtime context for the old prompt, but they are not meaningful chat content.
       if (isEnvironmentDetails(part.text)) return
-      parts.push(toTextWithinMessage(partID, messageID, sessionID, created, part.text))
+      parts.push(toText(partID, messageID, sessionID, created, part.text))
       return
     }
 
@@ -76,7 +76,7 @@ function parseParts(
     // Treat it like a regular assistant text part so the migrated session keeps that final visible answer.
     if (isCompletionResult(part)) {
       const text = part.input.result
-      parts.push(toTextWithinMessage(partID, messageID, sessionID, created, text))
+      parts.push(toText(partID, messageID, sessionID, created, text))
       return
     }
 
