@@ -1993,6 +1993,7 @@ export interface RequestRecentsMessage {
 
 export interface ToggleFavoriteRequest {
   type: "toggleFavorite"
+  action: "add" | "remove"
   providerID: string
   modelID: string
 }

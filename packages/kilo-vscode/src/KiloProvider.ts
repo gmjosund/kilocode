@@ -836,15 +836,17 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
           break
         }
         case "toggleFavorite": {
-          // Merge against authoritative globalState to avoid lost-update races
-          // when multiple webviews toggle favorites simultaneously.
+          // Apply explicit add/remove against authoritative globalState to avoid
+          // lost-update races when multiple webviews act simultaneously.
           const current = validateFavorites(this.extensionContext?.globalState.get("favoriteModels"))
           const key = `${message.providerID}/${message.modelID}`
-          const idx = current.findIndex((f) => `${f.providerID}/${f.modelID}` === key)
+          const exists = current.some((f) => `${f.providerID}/${f.modelID}` === key)
           const favorites =
-            idx >= 0
-              ? current.filter((_, i) => i !== idx)
-              : [...current, { providerID: message.providerID, modelID: message.modelID }]
+            message.action === "add" && !exists
+              ? [...current, { providerID: message.providerID, modelID: message.modelID }]
+              : message.action === "remove" && exists
+                ? current.filter((f) => `${f.providerID}/${f.modelID}` !== key)
+                : current
           await this.extensionContext?.globalState.update("favoriteModels", favorites)
           this.connectionService.notifyFavoritesChanged(favorites)
           break

@@ -503,10 +503,12 @@ export const ModelSelectorBase: Component<ModelSelectorBaseProps> = (props) => {
                                     const scroll = listRef?.scrollTop
                                     suppressScroll = true
                                     session!.toggleFavorite(model.providerID, model.id)
-                                    // Clear keyboard selection — the model moved to a
-                                    // different group so any numeric index is stale.
+                                    // Clear all numeric indices — the model moved to a
+                                    // different group so any index is stale. This also
+                                    // prevents the expanded preview from jumping.
                                     setSelectedIndex(-1)
                                     setPreActiveIdx(-1)
+                                    setPreviewIdx(-1)
                                     if (scroll !== undefined) {
                                       queueMicrotask(() => {
                                         if (listRef) listRef.scrollTop = scroll
