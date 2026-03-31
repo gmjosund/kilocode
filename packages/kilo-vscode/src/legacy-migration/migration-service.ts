@@ -833,7 +833,7 @@ function convertCustomMode(mode: LegacyCustomMode): AgentConfig {
   const prompt = [mode.roleDefinition, mode.customInstructions].filter(Boolean).join("\n\n")
   return {
     mode: "primary",
-    description: mode.customInstructions ?? mode.roleDefinition?.slice(0, 120),
+    description: mode.description ?? mode.whenToUse ?? mode.roleDefinition?.slice(0, 120),
     prompt,
     permission: convertCustomModePermissions(mode.groups),
   }
@@ -1210,6 +1210,7 @@ export function buildMergedNativeMode(
         roleDefinition: defaults.roleDefinition,
         customInstructions: defaults.customInstructions,
         whenToUse: defaults.whenToUse,
+        description: defaults.description,
         groups: [...defaults.groups],
       }
 
