@@ -115,6 +115,7 @@ export namespace LSP {
             return {
               process: spawn(item.command[0], item.command.slice(1), {
                 cwd: root,
+                windowsHide: true,
                 env: {
                   ...process.env,
                   ...item.env,
