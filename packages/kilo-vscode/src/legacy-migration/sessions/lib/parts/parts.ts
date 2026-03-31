@@ -51,7 +51,7 @@ function parseParts(
   }
 
   // Some providers store thinking outside normal content blocks, so this handles those provider-specific fields.
-  if (isProviderSpecificReasoning(entry)) {
+  if (!isReasoning(entry) && isProviderSpecificReasoning(entry)) {
     const reasoning = getReasoningText(entry)
     if (reasoning) {
       parts.push(

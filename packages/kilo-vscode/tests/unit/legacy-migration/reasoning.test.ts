@@ -76,4 +76,24 @@ describe("legacy migration reasoning", () => {
     expect(out[0]).toContain("First inspect the repo.")
     expect(out[0]).toContain("Then summarize the structure.")
   })
+
+  it("prefers explicit reasoning entries over provider-specific reasoning fields when both exist", () => {
+    const list = parsePartsFromConversation(
+      [
+        {
+          role: "assistant",
+          type: "reasoning",
+          text: "I should inspect the files first.",
+          reasoning_content: "I should inspect the files first.",
+          content: [],
+          ts: 1774861015000,
+        } as unknown as LegacyApiMessage,
+      ],
+      id,
+      item,
+    )
+
+    const out = reasoning(list)
+    expect(out).toEqual(["I should inspect the files first."])
+  })
 })
