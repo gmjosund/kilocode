@@ -96,7 +96,7 @@
 - <https://opencode.ai/>
   <!-- packages/opencode/src/cli/cmd/generate.ts -->
 - <https://opencode.ai/auth>
-  <!-- packages/opencode/src/cli/cmd/auth.ts -->
+  <!-- packages/opencode/src/cli/cmd/providers.ts -->
 - <https://opencode.ai/docs/agents>
   <!-- packages/opencode/src/config/config.ts -->
 - <https://opencode.ai/docs/commands>
@@ -104,7 +104,7 @@
 - <https://opencode.ai/docs/config#precedence-order>
   <!-- packages/opencode/src/config/config.ts -->
 - <https://opencode.ai/docs/providers/#cloudflare-ai-gateway>
-  <!-- packages/opencode/src/cli/cmd/auth.ts -->
+  <!-- packages/opencode/src/cli/cmd/providers.ts -->
 - <https://opencode.ai/install>
   <!-- packages/opencode/src/installation/index.ts -->
 - <https://opencode.ai/tui.json>
@@ -154,7 +154,7 @@
 - <https://v5.ai-sdk.dev/providers/ai-sdk-providers/xai>
   <!-- packages/opencode/src/provider/transform.ts -->
 - <https://vercel.link/ai-gateway-token>
-  <!-- packages/opencode/src/cli/cmd/auth.ts -->
+  <!-- packages/opencode/src/cli/cmd/providers.ts -->
 - <https://www.eclipse.org/downloads/download.php?file=/jdtls/snapshots/jdt-language-server-latest.tar.gz>
   <!-- packages/opencode/src/lsp/server.ts -->
 - <https://www.morphllm.com/>
