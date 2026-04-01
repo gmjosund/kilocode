@@ -6,8 +6,8 @@ import { APICallError, convertToModelMessages, LoadAPIKeyError, type ModelMessag
 import { LSP } from "../lsp"
 import { Snapshot } from "@/snapshot"
 import { fn } from "@/util/fn"
-import { Database, eq, desc, inArray } from "@/storage/db"
-import { MessageTable, PartTable } from "./session.sql"
+import { Database, NotFoundError, and, desc, eq, inArray, lt, or } from "@/storage/db"
+import { MessageTable, PartTable, SessionTable } from "./session.sql"
 import { ProviderTransform } from "@/provider/transform"
 import { STATUS_CODES } from "http"
 import { Storage } from "@/storage/storage"
@@ -506,7 +506,7 @@ export namespace MessageV2 {
 
   // kilocode_change start - strip bloated metadata fields from stored parts to prevent multi-MB payloads
   // This handles both legacy data that was stored with full file contents and keeps the API response lean.
-  function stripPartMetadata(part: Part): Part {
+  export function stripPartMetadata(part: Part): Part { // kilocode_change - exported for testing
     if (part.type !== "tool") return part
     const { state } = part
     if (state.status !== "completed" && state.status !== "running") return part
@@ -539,7 +539,7 @@ export namespace MessageV2 {
     return { ...part, state: { ...state, metadata: next } } as Part
   }
 
-  function stripMessageMetadata(info: Info): Info {
+  export function stripMessageMetadata(info: Info): Info { // kilocode_change - exported for testing
     // Strip summary.diffs before/after from user messages (can be 20+ MB)
     if (info.role !== "user") return info
     const user = info as User
@@ -559,6 +559,70 @@ export namespace MessageV2 {
     } as Info
   }
   // kilocode_change end
+
+  const Cursor = z.object({
+    id: MessageID.zod,
+    time: z.number(),
+  })
+  type Cursor = z.infer<typeof Cursor>
+
+  export const cursor = {
+    encode(input: Cursor) {
+      return Buffer.from(JSON.stringify(input)).toString("base64url")
+    },
+    decode(input: string) {
+      return Cursor.parse(JSON.parse(Buffer.from(input, "base64url").toString("utf8")))
+    },
+  }
+
+  // kilocode_change - apply stripping inside helpers so all read paths are covered
+  const info = (row: typeof MessageTable.$inferSelect) =>
+    stripMessageMetadata({
+      ...row.data,
+      id: row.id,
+      sessionID: row.session_id,
+    } as MessageV2.Info)
+
+  const part = (row: typeof PartTable.$inferSelect) =>
+    stripPartMetadata({
+      ...row.data,
+      id: row.id,
+      sessionID: row.session_id,
+      messageID: row.message_id,
+    } as MessageV2.Part)
+  // kilocode_change end
+
+  const older = (row: Cursor) =>
+    or(
+      lt(MessageTable.time_created, row.time),
+      and(eq(MessageTable.time_created, row.time), lt(MessageTable.id, row.id)),
+    )
+
+  async function hydrate(rows: (typeof MessageTable.$inferSelect)[]) {
+    const ids = rows.map((row) => row.id)
+    const partByMessage = new Map<string, MessageV2.Part[]>()
+    if (ids.length > 0) {
+      const partRows = Database.use((db) =>
+        db
+          .select()
+          .from(PartTable)
+          .where(inArray(PartTable.message_id, ids))
+          .orderBy(PartTable.message_id, PartTable.id)
+          .all(),
+      )
+      for (const row of partRows) {
+        const next = part(row)
+        const list = partByMessage.get(row.message_id)
+        if (list) list.push(next)
+        else partByMessage.set(row.message_id, [next])
+      }
+    }
+
+    return rows.map((row) => ({
+      info: info(row),
+      parts: partByMessage.get(row.id) ?? [],
+    }))
+  }
 
   export function toModelMessages(
     input: WithParts[],
@@ -795,56 +859,61 @@ export namespace MessageV2 {
     )
   }
 
-  export const stream = fn(SessionID.zod, async function* (sessionID) {
-    const size = 50
-    let offset = 0
-    while (true) {
+  export const page = fn(
+    z.object({
+      sessionID: SessionID.zod,
+      limit: z.number().int().positive(),
+      before: z.string().optional(),
+    }),
+    async (input) => {
+      const before = input.before ? cursor.decode(input.before) : undefined
+      const where = before
+        ? and(eq(MessageTable.session_id, input.sessionID), older(before))
+        : eq(MessageTable.session_id, input.sessionID)
       const rows = Database.use((db) =>
         db
           .select()
           .from(MessageTable)
-          .where(eq(MessageTable.session_id, sessionID))
-          .orderBy(desc(MessageTable.time_created))
-          .limit(size)
-          .offset(offset)
+          .where(where)
+          .orderBy(desc(MessageTable.time_created), desc(MessageTable.id))
+          .limit(input.limit + 1)
           .all(),
       )
-      if (rows.length === 0) break
-
-      const ids = rows.map((row) => row.id)
-      const partsByMessage = new Map<string, MessageV2.Part[]>()
-      if (ids.length > 0) {
-        const partRows = Database.use((db) =>
-          db
-            .select()
-            .from(PartTable)
-            .where(inArray(PartTable.message_id, ids))
-            .orderBy(PartTable.message_id, PartTable.id)
-            .all(),
+      if (rows.length === 0) {
+        const row = Database.use((db) =>
+          db.select({ id: SessionTable.id }).from(SessionTable).where(eq(SessionTable.id, input.sessionID)).get(),
         )
-        for (const row of partRows) {
-          const part = stripPartMetadata({
-            ...row.data,
-            id: row.id,
-            sessionID: row.session_id,
-            messageID: row.message_id,
-          } as MessageV2.Part) // kilocode_change - strip bloated metadata on read
-          const list = partsByMessage.get(row.message_id)
-          if (list) list.push(part)
-          else partsByMessage.set(row.message_id, [part])
+        if (!row) throw new NotFoundError({ message: `Session not found: ${input.sessionID}` })
+        return {
+          items: [] as MessageV2.WithParts[],
+          more: false,
         }
       }
 
-      for (const row of rows) {
-        const info = stripMessageMetadata({ ...row.data, id: row.id, sessionID: row.session_id } as MessageV2.Info) // kilocode_change
-        yield {
-          info,
-          parts: partsByMessage.get(row.id) ?? [],
-        }
+      const more = rows.length > input.limit
+      const page = more ? rows.slice(0, input.limit) : rows
+      const items = await hydrate(page)
+      items.reverse()
+      const tail = page.at(-1)
+      return {
+        items,
+        more,
+        cursor: more && tail ? cursor.encode({ id: tail.id, time: tail.time_created }) : undefined,
       }
+    },
+  )
 
-      offset += rows.length
-      if (rows.length < size) break
+  export const stream = fn(SessionID.zod, async function* (sessionID) {
+    const size = 50
+    let before: string | undefined
+    while (true) {
+      const next = await page({ sessionID, limit: size, before })
+      if (next.items.length === 0) break
+      for (let i = next.items.length - 1; i >= 0; i--) {
+        yield next.items[i]
+      }
+      if (!next.more || !next.cursor) break
+      before = next.cursor
     }
   })
 
@@ -852,15 +921,7 @@ export namespace MessageV2 {
     const rows = Database.use((db) =>
       db.select().from(PartTable).where(eq(PartTable.message_id, message_id)).orderBy(PartTable.id).all(),
     )
-    return rows.map(
-      (row) =>
-        stripPartMetadata({
-          ...row.data,
-          id: row.id,
-          sessionID: row.session_id,
-          messageID: row.message_id,
-        } as MessageV2.Part), // kilocode_change - strip bloated metadata on read
-    )
+    return rows.map((row) => part(row)) // kilocode_change - stripping applied inside part() helper
   })
 
   export const get = fn(
@@ -869,11 +930,16 @@ export namespace MessageV2 {
       messageID: MessageID.zod,
     }),
     async (input): Promise<WithParts> => {
-      const row = Database.use((db) => db.select().from(MessageTable).where(eq(MessageTable.id, input.messageID)).get())
-      if (!row) throw new Error(`Message not found: ${input.messageID}`)
-      const info = stripMessageMetadata({ ...row.data, id: row.id, sessionID: row.session_id } as MessageV2.Info) // kilocode_change
+      const row = Database.use((db) =>
+        db
+          .select()
+          .from(MessageTable)
+          .where(and(eq(MessageTable.id, input.messageID), eq(MessageTable.session_id, input.sessionID)))
+          .get(),
+      )
+      if (!row) throw new NotFoundError({ message: `Message not found: ${input.messageID}` })
       return {
-        info,
+        info: info(row),
         parts: await parts(input.messageID),
       }
     },

@@ -40,6 +40,8 @@ import { iife } from "@/util/iife"
 import { Account } from "@/account"
 import { ConfigPaths } from "./paths"
 import { Filesystem } from "@/util/filesystem"
+import { Process } from "@/util/process"
+import { Lock } from "@/util/lock"
 
 import { ModesMigrator } from "../kilocode/modes-migrator" // kilocode_change
 import { fetchOrganizationModes } from "@kilocode/kilo-gateway" // kilocode_change
@@ -415,6 +417,7 @@ export namespace Config {
 
     // Install any additional dependencies defined in the package.json
     // This allows local plugins and custom tools to use external packages
+    using _ = await Lock.write("bun-install")
     await BunProc.run(
       [
         "install",
@@ -423,6 +426,26 @@ export namespace Config {
       ],
       { cwd: dir },
     ).catch((err) => {
+      if (err instanceof Process.RunFailedError) {
+        const detail = {
+          dir,
+          cmd: err.cmd,
+          code: err.code,
+          stdout: err.stdout.toString(),
+          stderr: err.stderr.toString(),
+        }
+        if (Flag.KILO_STRICT_CONFIG_DEPS) {
+          log.error("failed to install dependencies", detail)
+          throw err
+        }
+        log.warn("failed to install dependencies", detail)
+        return
+      }
+
+      if (Flag.KILO_STRICT_CONFIG_DEPS) {
+        log.error("failed to install dependencies", { dir, error: err })
+        throw err
+      }
       log.warn("failed to install dependencies", { dir, error: err })
     })
   }

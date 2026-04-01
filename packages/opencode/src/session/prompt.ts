@@ -51,6 +51,7 @@ import { Truncate } from "@/tool/truncation"
 import { Identifier } from "../id/id"
 import { PlanFollowup } from "@/kilocode/plan-followup" // kilocode_change
 import { environmentDetails } from "@/kilocode/editor-context" // kilocode_change
+import { decodeDataUrl } from "@/util/data-url"
 
 // @ts-ignore
 globalThis.AI_SDK_LOG_WARNINGS = false
@@ -1169,7 +1170,7 @@ export namespace SessionPrompt {
                     sessionID: input.sessionID,
                     type: "text",
                     synthetic: true,
-                    text: Buffer.from(part.url, "base64url").toString(),
+                    text: decodeDataUrl(part.url),
                   },
                   {
                     ...part,

@@ -25,7 +25,7 @@ storybook-static
 /result
 refs
 Session.vim
-opencode.json
+/opencode.json
 a.out
 target
 .scripts
