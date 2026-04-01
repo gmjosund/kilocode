@@ -238,6 +238,7 @@ export namespace Agent {
               "*": "deny",
               [path.join(".kilo", "plans", "*.md")]: "allow", // kilocode_change
               [path.join(".opencode", "plans", "*.md")]: "allow", // kilocode_change: .opencode fallback
+              [path.join("plans", "*.md")]: "allow", // kilocode_change: allow root-level plans/ folder
               [path.relative(Instance.worktree, path.join(Global.Path.data, path.join("plans", "*.md")))]: "allow",
             },
           }),

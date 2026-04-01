@@ -123,6 +123,8 @@ test("plan agent denies edits except .kilo/plans/* and .opencode/plans/*", async
       expect(PermissionNext.evaluate("edit", ".kilo/plans/foo.md", plan!.permission).action).toBe("allow")
       // .opencode/plans/ is also allowed as backward compat fallback
       expect(PermissionNext.evaluate("edit", ".opencode/plans/foo.md", plan!.permission).action).toBe("allow")
+      // root-level plans/ folder is also allowed
+      expect(PermissionNext.evaluate("edit", "plans/foo.md", plan!.permission).action).toBe("allow")
     },
   })
 })
