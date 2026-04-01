@@ -638,6 +638,12 @@ export const SessionProvider: ParentComponent = (props) => {
           handleQuestionError(message.requestID)
           break
 
+        case "clearPendingPrompts":
+          setPermissions([])
+          setQuestions([])
+          setRespondingPermissions(new Set<string>())
+          break
+
         case "sessionsLoaded":
           handleSessionsLoaded(message.sessions)
           break
