@@ -770,7 +770,8 @@ export const dict = {
   "provider.custom.models.cacheRead.label": "Cijena čitanja keša",
   "provider.custom.models.cacheWrite.label": "Cijena upisa keša",
   "provider.custom.models.optional.placeholder": "Opcionalno",
-  "provider.custom.models.optional.description": "Ostavite prazno za zadane postavke provajdera",  "provider.custom.models.fetch": "Preuzmi modele",
+  "provider.custom.models.optional.description": "Ostavite prazno za zadane postavke provajdera",
+  "provider.custom.models.fetch": "Preuzmi modele",
   "provider.custom.models.fetching": "Preuzimanje\u2026",
   "provider.custom.models.fetch.error": "Preuzimanje modela nije uspjelo: {{error}}",
   "provider.custom.models.fetch.authError":

@@ -766,7 +766,8 @@ export const dict = {
   "provider.custom.models.cacheRead.label": "Önbellek okuma fiyatı",
   "provider.custom.models.cacheWrite.label": "Önbellek yazma fiyatı",
   "provider.custom.models.optional.placeholder": "İsteğe bağlı",
-  "provider.custom.models.optional.description": "Sağlayıcı varsayılanlarını kullanmak için boş bırakın",  "provider.custom.models.fetch": "Modelleri getir",
+  "provider.custom.models.optional.description": "Sağlayıcı varsayılanlarını kullanmak için boş bırakın",
+  "provider.custom.models.fetch": "Modelleri getir",
   "provider.custom.models.fetching": "Getiriliyor\u2026",
   "provider.custom.models.fetch.error": "Modeller getirilemedi: {{error}}",
   "provider.custom.models.fetch.authError":

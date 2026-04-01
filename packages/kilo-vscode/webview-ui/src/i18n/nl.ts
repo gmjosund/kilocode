@@ -763,7 +763,8 @@ export const dict = {
   "provider.custom.models.cacheRead.label": "Cache-leesprijs",
   "provider.custom.models.cacheWrite.label": "Cache-schrijfprijs",
   "provider.custom.models.optional.placeholder": "Optioneel",
-  "provider.custom.models.optional.description": "Laat leeg om providerstandaarden te gebruiken",  "provider.custom.models.fetch": "Modellen ophalen",
+  "provider.custom.models.optional.description": "Laat leeg om providerstandaarden te gebruiken",
+  "provider.custom.models.fetch": "Modellen ophalen",
   "provider.custom.models.fetching": "Ophalen\u2026",
   "provider.custom.models.fetch.error": "Kan modellen niet ophalen: {{error}}",
   "provider.custom.models.fetch.authError":

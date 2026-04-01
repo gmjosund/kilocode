@@ -768,7 +768,8 @@ export const dict = {
   "provider.custom.models.cacheRead.label": "Cena odczytu cache",
   "provider.custom.models.cacheWrite.label": "Cena zapisu cache",
   "provider.custom.models.optional.placeholder": "Opcjonalne",
-  "provider.custom.models.optional.description": "Pozostaw puste, aby użyć domyślnych ustawień dostawcy",  "provider.custom.models.fetch": "Pobierz modele",
+  "provider.custom.models.optional.description": "Pozostaw puste, aby użyć domyślnych ustawień dostawcy",
+  "provider.custom.models.fetch": "Pobierz modele",
   "provider.custom.models.fetching": "Pobieranie\u2026",
   "provider.custom.models.fetch.error": "Nie udało się pobrać modeli: {{error}}",
   "provider.custom.models.fetch.authError":
