@@ -81,7 +81,10 @@ export class ServerManager {
           KILO_APP_VERSION: this.context.extension.packageJSON.version,
           KILO_VSCODE_VERSION: vscode.version,
         },
-        stdio: ["ignore", "pipe", "pipe"],
+        // stdin is kept open as a keepalive pipe. The CLI watches for EOF on
+        // stdin and shuts itself down. This ensures the server exits even when
+        // the extension host is hard-killed and dispose() is never called.
+        stdio: ["pipe", "pipe", "pipe"],
         detached: true,
       })
       console.log("[Kilo New] ServerManager: 📦 Process spawned with PID:", serverProcess.pid)
@@ -181,7 +184,9 @@ export class ServerManager {
     const proc = this.instance.process
     this.instance = null
 
-    console.log("[Kilo New] ServerManager: 🔴 Disposing — sending SIGTERM to process group, PID:", proc.pid)
+    console.log("[Kilo New] ServerManager: 🔴 Disposing — closing stdin pipe, PID:", proc.pid)
+    // Closing stdin signals the CLI to shut down gracefully via its EOF watcher.
+    proc.stdin?.end()
     ServerManager.killProcess(proc, "SIGTERM")
 
     // SIGKILL fallback after 5s: mirrors the desktop app going straight to

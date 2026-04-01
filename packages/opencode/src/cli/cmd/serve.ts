@@ -39,6 +39,18 @@ export const ServeCommand = cmd({
     process.on("SIGTERM", shutdown)
     process.on("SIGINT", shutdown)
     process.on("SIGHUP", shutdown)
+
+    // When spawned by the VS Code extension, stdin is kept open as a keepalive
+    // pipe. If the extension host is hard-killed (crash, OOM) the write-end of
+    // the pipe is closed by the OS, causing an EOF here. We detect that and
+    // trigger a clean shutdown so no zombie process is left behind.
+    if (process.env["KILO_CLIENT"] === "vscode") {
+      process.stdin.resume()
+      process.stdin.on("end", () => {
+        shutdown().catch(() => {})
+      })
+    }
+
     await new Promise((resolve) => abort.signal.addEventListener("abort", resolve))
     // kilocode_change end
   },
