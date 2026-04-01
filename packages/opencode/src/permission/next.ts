@@ -1,3 +1,7 @@
+// kilocode_change - TODO: upstream v1.2.27 refactored permission logic into ./service.ts (Effect service pattern).
+// This file keeps the v1.2.26 inline implementation because Kilo adds: ConfigProtection (force "ask" for config edits),
+// drainCovered (auto-resolve sibling permissions), saveAlwaysRules (persist to global config), toConfig.
+// These features need to be ported to service.ts in a follow-up task.
 import { Bus } from "@/bus"
 import { BusEvent } from "@/bus/bus-event"
 import { Config } from "@/config/config"
@@ -191,13 +195,24 @@ export namespace PermissionNext {
       // kilocode_change start — force "ask" for config file edits
       const protected_ = ConfigProtection.isRequest(request)
       // kilocode_change end
+      // kilocode_change start — pre-scan: deny takes precedence over ask (upstream v1.2.27 behavior)
       for (const pattern of request.patterns ?? []) {
         const rule = evaluate(request.permission, pattern, ruleset, s.approved)
         log.info("evaluated", { permission: request.permission, pattern, action: rule })
         if (rule.action === "deny")
           throw new DeniedError(ruleset.filter((r) => Wildcard.match(request.permission, r.permission)))
+      }
+      // kilocode_change end
+      let pending = false
+      for (const pattern of request.patterns ?? []) {
+        const rule = evaluate(request.permission, pattern, ruleset, s.approved)
         // kilocode_change start — override "allow" to "ask" for config paths
         if (rule.action === "ask" || (rule.action === "allow" && protected_)) {
+          pending = true
+        }
+        if (rule.action === "allow") continue
+      }
+      if (pending) {
           const id = input.id ?? PermissionID.ascending()
           return new Promise<void>((resolve, reject) => {
             const info: Request = {
@@ -217,8 +232,6 @@ export namespace PermissionNext {
             })
             Bus.publish(Event.Asked, info)
           })
-        }
-        if (rule.action === "allow") continue
       }
     },
   )

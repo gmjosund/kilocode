@@ -1,6 +1,7 @@
 import { Bus } from "@/bus"
 import { Wildcard } from "@/util/wildcard"
 import type { PermissionNext } from "@/permission/next"
+import type { PermissionID } from "@/permission/schema"
 import { ConfigProtection } from "@/kilocode/permission/config-paths"
 
 /**
@@ -10,7 +11,7 @@ import { ConfigProtection } from "@/kilocode/permission/config-paths"
  */
 export async function drainCovered(
   pending: Map<
-    string,
+    PermissionID,
     {
       info: PermissionNext.Request
       ruleset: PermissionNext.Ruleset
@@ -22,7 +23,7 @@ export async function drainCovered(
   evaluate: typeof PermissionNext.evaluate,
   events: typeof PermissionNext.Event,
   DeniedError: typeof PermissionNext.DeniedError,
-  exclude?: string,
+  exclude?: PermissionID,
 ) {
   for (const [id, entry] of pending) {
     if (id === exclude) continue

@@ -485,7 +485,7 @@ describe("saveAlwaysRules", () => {
 
         // The original request should still be pending (needs explicit reply)
         const pending = await PermissionNext.list()
-        expect(pending.some((p) => p.id === "permission_a4")).toBe(true)
+        expect(pending.some((p) => p.id === PermissionID.make("permission_a4"))).toBe(true)
 
         await PermissionNext.reply({ requestID: PermissionID.make("permission_a4"), reply: "once" })
         await expect(askA).resolves.toBeUndefined()
@@ -614,7 +614,7 @@ describe("saveAlwaysRules", () => {
 
         // B should still be pending (curl not covered)
         const pending = await PermissionNext.list()
-        expect(pending.some((p) => p.id === "permission_multi_b2")).toBe(true)
+        expect(pending.some((p) => p.id === PermissionID.make("permission_multi_b2"))).toBe(true)
 
         await PermissionNext.reply({ requestID: PermissionID.make("permission_multi_b2"), reply: "reject" })
         await expect(askB).rejects.toBeInstanceOf(PermissionNext.RejectedError)
