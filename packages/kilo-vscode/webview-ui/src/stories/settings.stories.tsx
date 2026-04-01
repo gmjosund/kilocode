@@ -63,6 +63,7 @@ export const AgentBehaviourAgents: Story = {
     const session = {
       ...mockSessionValue({ id: "agents-story", status: "idle" }),
       agents: () => MOCK_AGENTS,
+      subagents: () => [] as AgentInfo[],
       removeMode: noop,
       removeMcp: noop,
       skills: () => [],
@@ -87,6 +88,7 @@ export const AgentBehaviourEditCustomMode: Story = {
     const session = {
       ...mockSessionValue({ id: "edit-mode-story", status: "idle" }),
       agents: () => MOCK_AGENTS,
+      subagents: () => [] as AgentInfo[],
       removeMode: noop,
       removeMcp: noop,
       skills: () => [],
@@ -179,6 +181,7 @@ export const AgentBehaviourWorkflows: Story = {
     const session = {
       ...mockSessionValue({ id: "workflows-story", status: "idle" }),
       agents: () => MOCK_AGENTS,
+      subagents: () => [] as AgentInfo[],
       removeMode: noop,
       removeMcp: noop,
       skills: () => [],
@@ -201,6 +204,7 @@ export const AgentBehaviourWorkflowsEmpty: Story = {
     const session = {
       ...mockSessionValue({ id: "workflows-empty-story", status: "idle" }),
       agents: () => MOCK_AGENTS,
+      subagents: () => [] as AgentInfo[],
       removeMode: noop,
       removeMcp: noop,
       skills: () => [],
@@ -506,6 +510,7 @@ export const ModeEditExport: Story = {
     const session = {
       ...mockSessionValue({ id: "export-story", status: "idle" }),
       agents: () => MOCK_AGENTS,
+      subagents: () => [] as AgentInfo[],
       removeMode: noop,
       removeMcp: noop,
       skills: () => [],
