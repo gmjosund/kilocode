@@ -108,14 +108,14 @@ export namespace Server {
               path: c.req.path,
             })
           }
-          const timer = log.time("request", {
-            method: c.req.method,
-            path: c.req.path,
-          })
+          const timer = skipLogging
+            ? null
+            : log.time("request", {
+                method: c.req.method,
+                path: c.req.path,
+              })
           await next()
-          if (!skipLogging) {
-            timer.stop()
-          }
+          if (timer) timer.stop()
         })
         .use(
           cors({
