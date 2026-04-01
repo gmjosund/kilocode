@@ -759,7 +759,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "입력 가격",
   "provider.custom.models.outputPrice.label": "출력 가격",
   "provider.custom.models.price.unit": "USD / 100만 토큰",
-  "provider.custom.models.fetch": "모델 가져오기",
+
+  "provider.custom.models.inputLimit.label": "최대 입력 토큰",
+  "provider.custom.models.cacheRead.label": "캐시 읽기 가격",
+  "provider.custom.models.cacheWrite.label": "캐시 쓰기 가격",
+  "provider.custom.models.optional.placeholder": "선택 사항",
+  "provider.custom.models.optional.description": "비워 두면 공급자 기본값을 사용합니다",  "provider.custom.models.fetch": "모델 가져오기",
   "provider.custom.models.fetching": "가져오는 중\u2026",
   "provider.custom.models.fetch.error": "모델을 가져오지 못했습니다: {{error}}",
   "provider.custom.models.fetch.authError": "인증에 실패했습니다. 위의 API 키를 확인하고 다시 시도하세요.",

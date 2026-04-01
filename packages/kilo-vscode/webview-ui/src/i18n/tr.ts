@@ -761,7 +761,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Giriş fiyatı",
   "provider.custom.models.outputPrice.label": "Çıkış fiyatı",
   "provider.custom.models.price.unit": "USD / 1M token",
-  "provider.custom.models.fetch": "Modelleri getir",
+
+  "provider.custom.models.inputLimit.label": "Maksimum giriş tokeni",
+  "provider.custom.models.cacheRead.label": "Önbellek okuma fiyatı",
+  "provider.custom.models.cacheWrite.label": "Önbellek yazma fiyatı",
+  "provider.custom.models.optional.placeholder": "İsteğe bağlı",
+  "provider.custom.models.optional.description": "Sağlayıcı varsayılanlarını kullanmak için boş bırakın",  "provider.custom.models.fetch": "Modelleri getir",
   "provider.custom.models.fetching": "Getiriliyor\u2026",
   "provider.custom.models.fetch.error": "Modeller getirilemedi: {{error}}",
   "provider.custom.models.fetch.authError":

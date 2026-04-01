@@ -759,7 +759,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Inputpris",
   "provider.custom.models.outputPrice.label": "Outputpris",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Hent modeller",
+
+  "provider.custom.models.inputLimit.label": "Maks. input-tokens",
+  "provider.custom.models.cacheRead.label": "Pris for cache-læsning",
+  "provider.custom.models.cacheWrite.label": "Pris for cache-skrivning",
+  "provider.custom.models.optional.placeholder": "Valgfrit",
+  "provider.custom.models.optional.description": "Lad feltet være tomt for at bruge udbyderens standarder",  "provider.custom.models.fetch": "Hent modeller",
   "provider.custom.models.fetching": "Henter\u2026",
   "provider.custom.models.fetch.error": "Kunne ikke hente modeller: {{error}}",
   "provider.custom.models.fetch.authError": "Godkendelse mislykkedes. Kontrollér API-nøglen ovenfor, og prøv igen.",

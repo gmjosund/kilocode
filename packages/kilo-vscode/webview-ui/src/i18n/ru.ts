@@ -766,7 +766,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Цена входа",
   "provider.custom.models.outputPrice.label": "Цена выхода",
   "provider.custom.models.price.unit": "USD / 1M токенов",
-  "provider.custom.models.fetch": "Получить модели",
+
+  "provider.custom.models.inputLimit.label": "Максимум входных токенов",
+  "provider.custom.models.cacheRead.label": "Цена чтения кэша",
+  "provider.custom.models.cacheWrite.label": "Цена записи кэша",
+  "provider.custom.models.optional.placeholder": "Необязательно",
+  "provider.custom.models.optional.description": "Оставьте пустым, чтобы использовать значения провайдера",  "provider.custom.models.fetch": "Получить модели",
   "provider.custom.models.fetching": "Загрузка\u2026",
   "provider.custom.models.fetch.error": "Не удалось получить модели: {{error}}",
   "provider.custom.models.fetch.authError": "Ошибка аутентификации. Проверьте API-ключ выше и попробуйте снова.",

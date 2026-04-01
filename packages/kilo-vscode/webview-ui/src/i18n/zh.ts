@@ -748,7 +748,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "输入价格",
   "provider.custom.models.outputPrice.label": "输出价格",
   "provider.custom.models.price.unit": "USD / 100万 Token",
-  "provider.custom.models.fetch": "获取模型",
+
+  "provider.custom.models.inputLimit.label": "最大输入 Token",
+  "provider.custom.models.cacheRead.label": "缓存读取价格",
+  "provider.custom.models.cacheWrite.label": "缓存写入价格",
+  "provider.custom.models.optional.placeholder": "可选",
+  "provider.custom.models.optional.description": "留空以使用提供商默认值",  "provider.custom.models.fetch": "获取模型",
   "provider.custom.models.fetching": "获取中\u2026",
   "provider.custom.models.fetch.error": "获取模型失败：{{error}}",
   "provider.custom.models.fetch.authError": "认证失败。请检查上方的 API 密钥后重试。",

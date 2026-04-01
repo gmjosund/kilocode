@@ -770,7 +770,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Prix d'entrée",
   "provider.custom.models.outputPrice.label": "Prix de sortie",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Récupérer les modèles",
+
+  "provider.custom.models.inputLimit.label": "Jetons d'entrée max",
+  "provider.custom.models.cacheRead.label": "Prix de lecture du cache",
+  "provider.custom.models.cacheWrite.label": "Prix d’écriture du cache",
+  "provider.custom.models.optional.placeholder": "Optionnel",
+  "provider.custom.models.optional.description": "Laissez vide pour utiliser les valeurs du fournisseur",  "provider.custom.models.fetch": "Récupérer les modèles",
   "provider.custom.models.fetching": "Récupération\u2026",
   "provider.custom.models.fetch.error": "Échec de la récupération des modèles : {{error}}",
   "provider.custom.models.fetch.authError": "Échec de l'authentification. Vérifiez la clé API ci-dessus et réessayez.",

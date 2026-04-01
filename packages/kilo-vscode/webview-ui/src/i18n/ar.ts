@@ -753,7 +753,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "سعر الإدخال",
   "provider.custom.models.outputPrice.label": "سعر الإخراج",
   "provider.custom.models.price.unit": "دولار أمريكي / 1M رمز",
-  "provider.custom.models.fetch": "جلب النماذج",
+
+  "provider.custom.models.inputLimit.label": "الحد الأقصى لرموز الإدخال",
+  "provider.custom.models.cacheRead.label": "سعر قراءة الذاكرة المؤقتة",
+  "provider.custom.models.cacheWrite.label": "سعر كتابة الذاكرة المؤقتة",
+  "provider.custom.models.optional.placeholder": "اختياري",
+  "provider.custom.models.optional.description": "اتركه فارغًا لاستخدام افتراضيات المزود",  "provider.custom.models.fetch": "جلب النماذج",
   "provider.custom.models.fetching": "جارٍ الجلب\u2026",
   "provider.custom.models.fetch.error": "فشل جلب النماذج: {{error}}",
   "provider.custom.models.fetch.authError": "فشلت المصادقة. تحقق من مفتاح API أعلاه وحاول مرة أخرى.",

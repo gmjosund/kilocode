@@ -19,6 +19,10 @@ type Props = {
   onRemove: () => void
 }
 
+function grid() {
+  return { display: "grid", gap: "8px", "grid-template-columns": "repeat(2, minmax(0, 1fr))" }
+}
+
 export const CustomProviderModelFields: Component<Props> = (props) => {
   return (
     <div
@@ -83,7 +87,7 @@ export const CustomProviderModelFields: Component<Props> = (props) => {
         </Collapsible.Trigger>
         <Collapsible.Content>
           <div style={{ display: "flex", "flex-direction": "column", gap: "12px", "margin-top": "12px" }}>
-            <div style={{ display: "grid", gap: "8px", "grid-template-columns": "repeat(2, minmax(0, 1fr))" }}>
+            <div style={grid()}>
               <TextField
                 label={props.t("provider.custom.models.context.label")}
                 placeholder={props.defaults.context}
@@ -101,7 +105,16 @@ export const CustomProviderModelFields: Component<Props> = (props) => {
                 error={props.errors?.output}
               />
             </div>
-            <div style={{ display: "grid", gap: "8px", "grid-template-columns": "repeat(2, minmax(0, 1fr))" }}>
+            <div style={grid()}>
+              <TextField
+                label={props.t("provider.custom.models.inputLimit.label")}
+                placeholder={props.t("provider.custom.models.optional.placeholder")}
+                description={props.t("provider.custom.models.optional.description")}
+                value={props.model.input}
+                onChange={(value) => props.onChange("input", value)}
+                validationState={props.errors?.input ? "invalid" : undefined}
+                error={props.errors?.input}
+              />
               <TextField
                 label={props.t("provider.custom.models.inputPrice.label")}
                 placeholder={props.defaults.inputPrice}
@@ -119,6 +132,26 @@ export const CustomProviderModelFields: Component<Props> = (props) => {
                 onChange={(value) => props.onChange("outputPrice", value)}
                 validationState={props.errors?.outputPrice ? "invalid" : undefined}
                 error={props.errors?.outputPrice}
+              />
+            </div>
+            <div style={grid()}>
+              <TextField
+                label={props.t("provider.custom.models.cacheRead.label")}
+                placeholder={props.t("provider.custom.models.optional.placeholder")}
+                description={props.t("provider.custom.models.price.unit")}
+                value={props.model.cacheRead}
+                onChange={(value) => props.onChange("cacheRead", value)}
+                validationState={props.errors?.cacheRead ? "invalid" : undefined}
+                error={props.errors?.cacheRead}
+              />
+              <TextField
+                label={props.t("provider.custom.models.cacheWrite.label")}
+                placeholder={props.t("provider.custom.models.optional.placeholder")}
+                description={props.t("provider.custom.models.price.unit")}
+                value={props.model.cacheWrite}
+                onChange={(value) => props.onChange("cacheWrite", value)}
+                validationState={props.errors?.cacheWrite ? "invalid" : undefined}
+                error={props.errors?.cacheWrite}
               />
             </div>
           </div>

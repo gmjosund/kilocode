@@ -762,7 +762,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Ціна вводу",
   "provider.custom.models.outputPrice.label": "Ціна виводу",
   "provider.custom.models.price.unit": "USD / 1M токенів",
-  "provider.custom.models.fetch": "Отримати моделі",
+
+  "provider.custom.models.inputLimit.label": "Максимум вхідних токенів",
+  "provider.custom.models.cacheRead.label": "Ціна читання кешу",
+  "provider.custom.models.cacheWrite.label": "Ціна запису кешу",
+  "provider.custom.models.optional.placeholder": "Необов’язково",
+  "provider.custom.models.optional.description": "Залиште порожнім, щоб використовувати значення провайдера",  "provider.custom.models.fetch": "Отримати моделі",
   "provider.custom.models.fetching": "Отримання\u2026",
   "provider.custom.models.fetch.error": "Не вдалося отримати моделі: {{error}}",
   "provider.custom.models.fetch.authError": "Автентифікація не вдалася. Перевірте API-ключ вище і спробуйте ще раз.",

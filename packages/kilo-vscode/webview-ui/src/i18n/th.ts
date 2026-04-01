@@ -756,7 +756,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "ราคาขาเข้า",
   "provider.custom.models.outputPrice.label": "ราคาขาออก",
   "provider.custom.models.price.unit": "USD / 1M โทเค็น",
-  "provider.custom.models.fetch": "ดึงโมเดล",
+
+  "provider.custom.models.inputLimit.label": "โทเค็นอินพุตสูงสุด",
+  "provider.custom.models.cacheRead.label": "ราคาการอ่านแคช",
+  "provider.custom.models.cacheWrite.label": "ราคาการเขียนแคช",
+  "provider.custom.models.optional.placeholder": "ไม่บังคับ",
+  "provider.custom.models.optional.description": "เว้นว่างไว้เพื่อใช้ค่าเริ่มต้นของผู้ให้บริการ",  "provider.custom.models.fetch": "ดึงโมเดล",
   "provider.custom.models.fetching": "กำลังดึง\u2026",
   "provider.custom.models.fetch.error": "ดึงโมเดลล้มเหลว: {{error}}",
   "provider.custom.models.fetch.authError": "การยืนยันตัวตนล้มเหลว ตรวจสอบคีย์ API ด้านบนแล้วลองอีกครั้ง",

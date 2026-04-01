@@ -770,7 +770,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Eingabepreis",
   "provider.custom.models.outputPrice.label": "Ausgabepreis",
   "provider.custom.models.price.unit": "USD / 1M Token",
-  "provider.custom.models.fetch": "Modelle abrufen",
+
+  "provider.custom.models.inputLimit.label": "Maximale Eingabetokens",
+  "provider.custom.models.cacheRead.label": "Cache-Lesepreis",
+  "provider.custom.models.cacheWrite.label": "Cache-Schreibpreis",
+  "provider.custom.models.optional.placeholder": "Optional",
+  "provider.custom.models.optional.description": "Leer lassen, um Anbieterstandards zu verwenden",  "provider.custom.models.fetch": "Modelle abrufen",
   "provider.custom.models.fetching": "Abrufen\u2026",
   "provider.custom.models.fetch.error": "Modelle konnten nicht abgerufen werden: {{error}}",
   "provider.custom.models.fetch.authError":

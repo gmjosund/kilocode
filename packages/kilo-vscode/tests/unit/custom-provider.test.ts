@@ -246,6 +246,52 @@ describe("validateCustomProvider", () => {
     })
   })
 
+  it("includes input and cache overrides in the saved config", () => {
+    const result = validateCustomProvider({
+      form: {
+        providerID: "my-provider",
+        name: "My Provider",
+        baseURL: "https://example.com/v1",
+        apiKey: "",
+        models: [
+          {
+            id: "model-1",
+            name: "Model One",
+            context: "128000",
+            input: "64000",
+            output: "4096",
+            inputPrice: "0",
+            outputPrice: "0",
+            cacheRead: "0.5",
+            cacheWrite: "1.25",
+            open: true,
+          },
+        ],
+        headers: [{ key: "", value: "" }],
+        saving: false,
+      },
+      t,
+      editing: false,
+      disabledProviders: [],
+      existingProviderIDs: new Set(),
+    })
+
+    expect(result.result?.config.models["model-1"]).toEqual({
+      name: "Model One",
+      cost: {
+        input: 0,
+        output: 0,
+        cache_read: 0.5,
+        cache_write: 1.25,
+      },
+      limit: {
+        context: 128000,
+        input: 64000,
+        output: 4096,
+      },
+    })
+  })
+
   it("rejects invalid advanced model values", () => {
     const result = validateCustomProvider({
       form: {

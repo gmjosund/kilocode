@@ -1,13 +1,17 @@
 type Translator = (key: string, params?: Record<string, string | number>) => string
 
+const DEFAULT_CONTEXT = 128000
+const DEFAULT_OUTPUT = 4096
+const DEFAULT_PRICE = 0
+
 // Legacy OpenAI-compatible defaults used a 128k context window and 0 pricing.
 // The current CLI's openai-compatible fallback models use 128k context and 4096
 // output tokens in provider model cache, so the editor mirrors that runtime shape.
 export const DEFAULT_MODEL = {
-  context: "128000",
-  output: "4096",
-  inputPrice: "0",
-  outputPrice: "0",
+  context: DEFAULT_CONTEXT.toString(),
+  output: DEFAULT_OUTPUT.toString(),
+  inputPrice: DEFAULT_PRICE.toString(),
+  outputPrice: DEFAULT_PRICE.toString(),
 }
 
 const OPENAI_COMPATIBLE = "@ai-sdk/openai-compatible"
@@ -117,13 +121,13 @@ function hasErrors(value: FormErrors["models"][number]) {
 
 function hasOverrides(cfg?: ModelConfig) {
   if (!cfg) return false
-  if (cfg.limit?.context !== undefined && cfg.limit.context !== 128000) return true
+  if (cfg.limit?.context !== undefined && cfg.limit.context !== DEFAULT_CONTEXT) return true
   if (cfg.limit?.input !== undefined) return true
-  if (cfg.limit?.output !== undefined && cfg.limit.output !== 4096) return true
-  if (cfg.cost?.input !== undefined && cfg.cost.input !== 0) return true
-  if (cfg.cost?.output !== undefined && cfg.cost.output !== 0) return true
-  if (cfg.cost?.cache_read !== undefined && cfg.cost.cache_read !== 0) return true
-  if (cfg.cost?.cache_write !== undefined && cfg.cost.cache_write !== 0) return true
+  if (cfg.limit?.output !== undefined && cfg.limit.output !== DEFAULT_OUTPUT) return true
+  if (cfg.cost?.input !== undefined && cfg.cost.input !== DEFAULT_PRICE) return true
+  if (cfg.cost?.output !== undefined && cfg.cost.output !== DEFAULT_PRICE) return true
+  if (cfg.cost?.cache_read !== undefined && cfg.cost.cache_read !== DEFAULT_PRICE) return true
+  if (cfg.cost?.cache_write !== undefined && cfg.cost.cache_write !== DEFAULT_PRICE) return true
   return false
 }
 
@@ -190,11 +194,11 @@ export function validateCustomProvider(input: ValidateArgs) {
             seenModels.add(id)
             return undefined
           })()
-    const context = intValue(m.context, input.t, 128000)
+    const context = intValue(m.context, input.t, DEFAULT_CONTEXT)
     const limitInput = intValue(m.input, input.t)
-    const output = intValue(m.output, input.t, 4096)
-    const inputPrice = numValue(m.inputPrice, input.t, 0)
-    const outputPrice = numValue(m.outputPrice, input.t, 0)
+    const output = intValue(m.output, input.t, DEFAULT_OUTPUT)
+    const inputPrice = numValue(m.inputPrice, input.t, DEFAULT_PRICE)
+    const outputPrice = numValue(m.outputPrice, input.t, DEFAULT_PRICE)
     const cacheRead = numValue(m.cacheRead, input.t)
     const cacheWrite = numValue(m.cacheWrite, input.t)
     const errors = {

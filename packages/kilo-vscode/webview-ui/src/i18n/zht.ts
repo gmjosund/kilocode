@@ -750,7 +750,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "輸入價格",
   "provider.custom.models.outputPrice.label": "輸出價格",
   "provider.custom.models.price.unit": "USD / 100萬 Token",
-  "provider.custom.models.fetch": "取得模型",
+
+  "provider.custom.models.inputLimit.label": "最大輸入 Token",
+  "provider.custom.models.cacheRead.label": "快取讀取價格",
+  "provider.custom.models.cacheWrite.label": "快取寫入價格",
+  "provider.custom.models.optional.placeholder": "選填",
+  "provider.custom.models.optional.description": "留空以使用供應商預設值",  "provider.custom.models.fetch": "取得模型",
   "provider.custom.models.fetching": "取得中\u2026",
   "provider.custom.models.fetch.error": "取得模型失敗：{{error}}",
   "provider.custom.models.fetch.authError": "驗證失敗。請檢查上方的 API 金鑰後重試。",

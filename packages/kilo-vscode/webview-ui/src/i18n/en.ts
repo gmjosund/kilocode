@@ -759,7 +759,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Input price",
   "provider.custom.models.outputPrice.label": "Output price",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Fetch models",
+
+  "provider.custom.models.inputLimit.label": "Max input tokens",
+  "provider.custom.models.cacheRead.label": "Cache read price",
+  "provider.custom.models.cacheWrite.label": "Cache write price",
+  "provider.custom.models.optional.placeholder": "Optional",
+  "provider.custom.models.optional.description": "Leave empty to use provider defaults",  "provider.custom.models.fetch": "Fetch models",
   "provider.custom.models.fetching": "Fetching\u2026",
   "provider.custom.models.fetch.error": "Failed to fetch models: {{error}}",
   "provider.custom.models.fetch.authError": "Authentication failed. Check the API key above and try again.",

@@ -760,7 +760,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Preço de entrada",
   "provider.custom.models.outputPrice.label": "Preço de saída",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Buscar modelos",
+
+  "provider.custom.models.inputLimit.label": "Máximo de tokens de entrada",
+  "provider.custom.models.cacheRead.label": "Preço de leitura de cache",
+  "provider.custom.models.cacheWrite.label": "Preço de gravação de cache",
+  "provider.custom.models.optional.placeholder": "Opcional",
+  "provider.custom.models.optional.description": "Deixe em branco para usar os padrões do provedor",  "provider.custom.models.fetch": "Buscar modelos",
   "provider.custom.models.fetching": "Buscando\u2026",
   "provider.custom.models.fetch.error": "Falha ao buscar modelos: {{error}}",
   "provider.custom.models.fetch.authError": "Falha na autenticação. Verifique a chave de API acima e tente novamente.",

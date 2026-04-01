@@ -758,7 +758,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "入力価格",
   "provider.custom.models.outputPrice.label": "出力価格",
   "provider.custom.models.price.unit": "USD / 100万トークン",
-  "provider.custom.models.fetch": "モデルを取得",
+
+  "provider.custom.models.inputLimit.label": "最大入力トークン",
+  "provider.custom.models.cacheRead.label": "キャッシュ読み取り価格",
+  "provider.custom.models.cacheWrite.label": "キャッシュ書き込み価格",
+  "provider.custom.models.optional.placeholder": "任意",
+  "provider.custom.models.optional.description": "空欄のままにするとプロバイダー既定値を使います",  "provider.custom.models.fetch": "モデルを取得",
   "provider.custom.models.fetching": "取得中\u2026",
   "provider.custom.models.fetch.error": "モデルの取得に失敗しました: {{error}}",
   "provider.custom.models.fetch.authError": "認証に失敗しました。上記のAPIキーを確認して再試行してください。",

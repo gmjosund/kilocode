@@ -758,7 +758,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Invoerprijs",
   "provider.custom.models.outputPrice.label": "Uitvoerprijs",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Modellen ophalen",
+
+  "provider.custom.models.inputLimit.label": "Maximale invoertokens",
+  "provider.custom.models.cacheRead.label": "Cache-leesprijs",
+  "provider.custom.models.cacheWrite.label": "Cache-schrijfprijs",
+  "provider.custom.models.optional.placeholder": "Optioneel",
+  "provider.custom.models.optional.description": "Laat leeg om providerstandaarden te gebruiken",  "provider.custom.models.fetch": "Modellen ophalen",
   "provider.custom.models.fetching": "Ophalen\u2026",
   "provider.custom.models.fetch.error": "Kan modellen niet ophalen: {{error}}",
   "provider.custom.models.fetch.authError":

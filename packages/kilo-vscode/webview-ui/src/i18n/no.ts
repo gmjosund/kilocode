@@ -763,7 +763,12 @@ export const dict = {
   "provider.custom.models.inputPrice.label": "Inndata-pris",
   "provider.custom.models.outputPrice.label": "Utdatapris",
   "provider.custom.models.price.unit": "USD / 1M tokens",
-  "provider.custom.models.fetch": "Hent modeller",
+
+  "provider.custom.models.inputLimit.label": "Maks antall input-tokens",
+  "provider.custom.models.cacheRead.label": "Pris for cache-lesing",
+  "provider.custom.models.cacheWrite.label": "Pris for cache-skriving",
+  "provider.custom.models.optional.placeholder": "Valgfritt",
+  "provider.custom.models.optional.description": "La stå tomt for å bruke leverandørens standarder",  "provider.custom.models.fetch": "Hent modeller",
   "provider.custom.models.fetching": "Henter\u2026",
   "provider.custom.models.fetch.error": "Kunne ikke hente modeller: {{error}}",
   "provider.custom.models.fetch.authError": "Autentisering mislyktes. Sjekk API-nøkkelen ovenfor og prøv igjen.",
