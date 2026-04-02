@@ -9,9 +9,9 @@ import { useKeybind } from "../context/keybind"
 import { useTheme } from "../context/theme"
 import { useSDK } from "../context/sdk"
 import { DialogSessionRename } from "./dialog-session-rename"
-import { useKV } from "../context/kv"
 import { createDebouncedSignal } from "../util/signal"
 import { Spinner } from "./spinner"
+import { useToast } from "../ui/toast"
 
 export function DialogSessionList() {
   const dialog = useDialog()
@@ -20,7 +20,7 @@ export function DialogSessionList() {
   const keybind = useKeybind()
   const { theme } = useTheme()
   const sdk = useSDK()
-  const kv = useKV()
+  const toast = useToast()
 
   const [toDelete, setToDelete] = createSignal<string>()
   const [search, setSearch] = createDebouncedSignal("", 150)
@@ -96,6 +96,20 @@ export function DialogSessionList() {
         setToDelete(undefined)
       }}
       onSelect={(option) => {
+        const item = sessions().find((x) => x.id === option.value)
+        const cross =
+          global() &&
+          item &&
+          "project" in item &&
+          item.project?.worktree !== undefined &&
+          item.project.worktree !== sync.data.path.worktree
+        if (cross) {
+          toast.show({
+            message: "Open this session from its own project",
+            variant: "error",
+          })
+          return
+        }
         route.navigate({
           type: "session",
           sessionID: option.value,
