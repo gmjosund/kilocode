@@ -101,6 +101,7 @@ export namespace Server {
           return basicAuth({ username, password })(c, next)
         })
         .use(async (c, next) => {
+          // Skip request logging for high-frequency endpoints to reduce log spam.
           const skipLogging = c.req.path === "/log" || c.req.path === "/telemetry/capture" // kilocode_change
           if (!skipLogging) {
             log.info("request", {
@@ -108,14 +109,14 @@ export namespace Server {
               path: c.req.path,
             })
           }
-          const timer = skipLogging
-            ? null
-            : log.time("request", {
-                method: c.req.method,
-                path: c.req.path,
-              })
+          const timer = log.time("request", {
+            method: c.req.method,
+            path: c.req.path,
+          })
           await next()
-          if (timer) timer.stop()
+          if (!skipLogging) {
+            timer.stop()
+          }
         })
         .use(
           cors({
