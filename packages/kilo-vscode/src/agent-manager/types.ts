@@ -379,6 +379,11 @@ interface StopDiffWatchIn {
   type: "agentManager.stopDiffWatch"
 }
 
+interface OpenSessionsIn {
+  type: "agentManager.openSessions"
+  sessionIDs: string[]
+}
+
 interface OpenFileIn {
   type: "agentManager.openFile"
   sessionId: string
@@ -489,6 +494,7 @@ export type AgentManagerInMessage =
   | ApplyWorktreeDiffIn
   | StartDiffWatchIn
   | StopDiffWatchIn
+  | OpenSessionsIn
   | OpenFileIn
   | GenericOpenFileIn
   | PreviewImageIn

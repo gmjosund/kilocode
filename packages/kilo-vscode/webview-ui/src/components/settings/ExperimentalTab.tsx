@@ -1,10 +1,12 @@
-import { Component, For, Show, createMemo } from "solid-js"
+import { Component, For, Show, createMemo, createSignal, onMount, onCleanup } from "solid-js"
 import { Switch } from "@kilocode/kilo-ui/switch"
 import { Select } from "@kilocode/kilo-ui/select"
 import { TextField } from "@kilocode/kilo-ui/text-field"
 import { Card } from "@kilocode/kilo-ui/card"
 import { useConfig } from "../../context/config"
 import { useLanguage } from "../../context/language"
+import { useVSCode } from "../../context/vscode"
+import type { ExtensionMessage } from "../../types/messages"
 import SettingsRow from "./SettingsRow"
 
 interface ShareOption {
@@ -21,6 +23,8 @@ const SHARE_OPTIONS: ShareOption[] = [
 const ExperimentalTab: Component = () => {
   const { config, updateConfig } = useConfig()
   const language = useLanguage()
+  const vscode = useVSCode()
+  const [remoteStatus, setRemoteStatus] = createSignal<{ enabled: boolean; connected: boolean } | null>(null)
 
   const experimental = createMemo(() => config().experimental ?? {})
 
@@ -30,9 +34,54 @@ const ExperimentalTab: Component = () => {
     })
   }
 
+  const handler = (msg: ExtensionMessage) => {
+    if (msg.type === "remoteStatus" || msg.type === "remoteToggled") {
+      setRemoteStatus({ enabled: msg.enabled, connected: msg.connected })
+    }
+  }
+
+  onMount(() => {
+    const unsub = vscode.onMessage(handler)
+    vscode.postMessage({ type: "requestRemoteStatus" })
+    onCleanup(() => unsub())
+  })
+
   return (
     <div>
       <Card>
+        {/* Remote control */}
+        <SettingsRow
+          title={language.t("settings.experimental.remote.title")}
+          description={language.t("settings.experimental.remote.description")}
+        >
+          <div style={{ display: "flex", "align-items": "center", gap: "8px" }}>
+            <Show when={remoteStatus()?.enabled}>
+              <span
+                style={{
+                  "font-size": "11px",
+                  color: remoteStatus()?.connected
+                    ? "var(--vscode-testing-iconPassed)"
+                    : "var(--vscode-editorWarning-foreground)",
+                }}
+              >
+                {remoteStatus()?.connected
+                  ? language.t("remote.status.connected")
+                  : language.t("remote.status.connecting")}
+              </span>
+            </Show>
+            <Switch
+              checked={config().remote_control ?? false}
+              onChange={(checked) => {
+                updateConfig({ remote_control: checked })
+                vscode.postMessage({ type: "setRemoteEnabled", enabled: checked })
+              }}
+              hideLabel
+            >
+              {language.t("settings.experimental.remote.title")}
+            </Switch>
+          </div>
+        </SettingsRow>
+
         {/* Share mode */}
         <SettingsRow
           title={language.t("settings.experimental.share.title")}

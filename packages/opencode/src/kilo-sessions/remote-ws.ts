@@ -6,7 +6,7 @@ export namespace RemoteWS {
   export type Options = {
     url: string
     getToken: () => Promise<string | undefined>
-    getSessions: () => SessionInfo[] | Promise<SessionInfo[]>
+    getSessions: () => Promise<{ sessions: SessionInfo[]; focused?: string[]; open?: string[] }>
     log: {
       info: (...args: any[]) => void
       error: (...args: any[]) => void
@@ -46,7 +46,7 @@ export namespace RemoteWS {
       stopHeartbeat()
       beat = setInterval(() => {
         void withContext(async () => {
-          send({ type: "heartbeat", sessions: await options.getSessions() })
+          send({ type: "heartbeat", ...(await options.getSessions()) })
         }).catch((err) => {
           options.log.error("remote-ws heartbeat failed", { error: String(err) })
         })

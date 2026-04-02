@@ -1072,6 +1072,23 @@
   }
 }
 
+/* Remote Indicator */
+.remote-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  font-size: 11px;
+  line-height: normal;
+  white-space: nowrap;
+  color: var(--vscode-editorWarning-foreground);
+  cursor: default;
+}
+
+.remote-indicator[data-connected="true"] {
+  color: var(--vscode-testing-iconPassed);
+}
+
 .prompt-input-hint-actions {
   display: flex;
   gap: 4px;

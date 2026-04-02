@@ -91,6 +91,7 @@ type KiloProviderOptions = {
 
 export class KiloProvider implements vscode.WebviewViewProvider, TelemetryPropertiesProvider {
   public static readonly viewType = "kilo-code.SidebarProvider"
+  private readonly instanceId = crypto.randomUUID()
 
   private webview: vscode.Webview | null = null
   private currentSession: Session | null = null
@@ -334,6 +335,11 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
     // Pause stats polling when sidebar is hidden, resume when visible
     webviewView.onDidChangeVisibility(() => {
       this.statsPoller?.setEnabled(webviewView.visible)
+      if (webviewView.visible) {
+        if (this.currentSession) this.connectionService.registerFocused(this.instanceId, this.currentSession.id)
+      } else {
+        this.connectionService.unregisterFocused(this.instanceId)
+      }
     })
 
     // Initialize connection to CLI backend
@@ -550,6 +556,7 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
         case "clearSession":
           this.contextSessionID = this.currentSession?.id ?? this.contextSessionID
           this.currentSession = null
+          this.connectionService.unregisterFocused(this.instanceId)
           break
         case "loadMessages":
           // Don't await: allow parallel loads so rapid session switching
@@ -779,6 +786,15 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
           break
         case "renameSession":
           await this.handleRenameSession(message.sessionID, message.title)
+          break
+        case "toggleRemote":
+          await this.handleToggleRemote()
+          break
+        case "setRemoteEnabled":
+          await this.handleSetRemoteEnabled(message.enabled)
+          break
+        case "requestRemoteStatus":
+          this.sendRemoteStatus().catch((e) => console.error("[Kilo New] sendRemoteStatus failed:", e))
           break
         case "updateSetting":
           await this.handleUpdateSetting(message.key, message.value)
@@ -1188,6 +1204,7 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
   private async handleLoadMessages(sessionID: string): Promise<void> {
     // Track the session so we receive its SSE events
     this.trackedSessionIds.add(sessionID)
+    this.connectionService.registerFocused(this.instanceId, sessionID)
     this.contextSessionID = sessionID
 
     if (!this.client) {
@@ -2026,6 +2043,72 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
   /** Returns the number of sessions currently in "busy" state. */
   private getBusySessionCount(): number {
     return getBusySessionCount(this.sessionStatusMap)
+  }
+
+  private remotePoller: ReturnType<typeof setInterval> | null = null
+
+  private async sendRemoteStatus(): Promise<void> {
+    if (!this.client || this.connectionState !== "connected") return
+    const res = await this.client.remote.status()
+    if (!res.data) return
+    this.postMessage({ type: "remoteStatus", enabled: res.data.enabled, connected: res.data.connected })
+  }
+
+  /**
+   * Poll /remote/status briefly after enabling remote.
+   * The WebSocket connects asynchronously after enableRemote() returns,
+   * so we need to poll until connected (or give up after ~10s).
+   */
+  private pollRemoteUntilConnected(): void {
+    if (this.remotePoller) clearInterval(this.remotePoller)
+    let count = 0
+    this.remotePoller = setInterval(async () => {
+      count++
+      if (count > 10 || !this.client || this.connectionState !== "connected") {
+        if (this.remotePoller) clearInterval(this.remotePoller)
+        this.remotePoller = null
+        return
+      }
+      const res = await this.client.remote.status().catch(() => undefined)
+      if (!res?.data) return
+      this.postMessage({ type: "remoteStatus", enabled: res.data.enabled, connected: res.data.connected })
+      if (res.data.connected || !res.data.enabled) {
+        if (this.remotePoller) clearInterval(this.remotePoller)
+        this.remotePoller = null
+      }
+    }, 1000)
+  }
+
+  private async handleToggleRemote(): Promise<void> {
+    if (!this.client || this.connectionState !== "connected") return
+    try {
+      const { data } = await this.client.remote.status(undefined, { throwOnError: true })
+      await this.handleSetRemoteEnabled(!data.enabled, true)
+    } catch (err) {
+      console.error("[Kilo New] handleToggleRemote failed:", err)
+      this.postMessage({ type: "error", message: "Failed to toggle remote control" })
+    }
+  }
+
+  private async handleSetRemoteEnabled(enabled: boolean, toast = false): Promise<void> {
+    if (!this.client || this.connectionState !== "connected") return
+    try {
+      if (enabled) {
+        await this.client.remote.enable(undefined, { throwOnError: true })
+        this.connectionService.flushViewed()
+        this.pollRemoteUntilConnected()
+      } else {
+        await this.client.remote.disable(undefined, { throwOnError: true })
+      }
+      if (toast) {
+        this.postMessage({ type: "remoteToggled", enabled, connected: false })
+      } else {
+        this.postMessage({ type: "remoteStatus", enabled, connected: false })
+      }
+    } catch (err) {
+      console.error("[Kilo New] handleSetRemoteEnabled failed:", err)
+      this.postMessage({ type: "error", message: `Failed to ${enabled ? "enable" : "disable"} remote control` })
+    }
   }
 
   /**
@@ -2959,6 +3042,8 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
    * Does NOT kill the server — that's the connection service's job.
    */
   dispose(): void {
+    if (this.remotePoller) clearInterval(this.remotePoller)
+    this.connectionService.unregisterFocused(this.instanceId)
     this.statsPoller?.stop()
     this.unsubscribeEvent?.()
     this.unsubscribeState?.()

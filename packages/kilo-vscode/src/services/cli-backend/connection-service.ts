@@ -51,6 +51,12 @@ export class KiloConnectionService {
    */
   private readonly messageSessionIdsByMessageId: Map<string, string> = new Map()
 
+  /** Provider key → single focused session ID. */
+  private readonly focused: Map<string, string> = new Map()
+  /** Provider key → all open (background) session IDs. */
+  private readonly opened: Map<string, string[]> = new Map()
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null
+
   constructor(context: vscode.ExtensionContext) {
     this.serverManager = new ServerManager(context)
   }
@@ -346,6 +352,54 @@ export class KiloConnectionService {
   }
 
   /**
+   * Register the session a provider is actively viewing (focused).
+   * After any change the aggregated set is sent to the server (debounced).
+   */
+  registerFocused(key: string, sessionID: string): void {
+    if (this.focused.get(key) === sessionID) return
+    this.focused.set(key, sessionID)
+    this.flushViewed()
+  }
+
+  /**
+   * Unregister a provider's focused session (e.g. on dispose, hidden, or clearSession).
+   */
+  unregisterFocused(key: string): void {
+    if (!this.focused.has(key)) return
+    this.focused.delete(key)
+    this.flushViewed()
+  }
+
+  /**
+   * Register the open (background tab) session IDs for a provider.
+   * Sessions that appear in both focused and open are reported as focused only.
+   */
+  registerOpen(key: string, ids: string[]): void {
+    const prev = this.opened.get(key)
+    if (prev && prev.length === ids.length && prev.every((v, i) => v === ids[i])) return
+    this.opened.set(key, ids)
+    this.flushViewed()
+  }
+
+  /** Debounced: send the aggregated focused + open session IDs to the server. */
+  flushViewed(): void {
+    if (this.debounceTimer) clearTimeout(this.debounceTimer)
+    this.debounceTimer = setTimeout(() => {
+      this.debounceTimer = null
+      const focus = new Set(this.focused.values())
+      const open = new Set<string>()
+      for (const ids of this.opened.values()) {
+        for (const id of ids) {
+          if (!focus.has(id)) open.add(id)
+        }
+      }
+      this.client?.session
+        .viewed({ focused: [...focus], open: [...open] })
+        .catch((err) => console.warn("[Kilo New] ConnectionService: viewed flush failed:", err))
+    }, 150)
+  }
+
+  /**
    * Clean up everything: kill server, close SSE, clear listeners.
    */
   dispose(): void {
@@ -361,6 +415,12 @@ export class KiloConnectionService {
     this.clearPendingPromptsListeners.clear()
     this.directoryProviders.clear()
     this.messageSessionIdsByMessageId.clear()
+    this.focused.clear()
+    this.opened.clear()
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer)
+      this.debounceTimer = null
+    }
     this.client = null
     this.sseClient = null
     this.config = null

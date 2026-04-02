@@ -25,6 +25,7 @@ import { useImageAttachments, type ImageAttachment } from "../../hooks/useImageA
 import { convertToMentionPath } from "../../utils/path-mentions"
 import { usePromptHistory } from "../../hooks/usePromptHistory"
 import { WandSparkles } from "@kilocode/kilo-ui/lucide"
+import { RemoteIndicator } from "./RemoteIndicator"
 import { fileName, dirName, buildHighlightSegments, atEnd } from "./prompt-input-utils"
 import type { ReviewComment, TextPart } from "../../types/messages"
 import { formatReviewCommentsMarkdown } from "../../utils/review-comment-markdown"
@@ -823,6 +824,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
           <ModeSwitcher />
           <ModelSelector />
           <ThinkingSelector />
+          <RemoteIndicator />
           <Show when={session.hasModelOverride()}>
             <Tooltip value={language.t("prompt.action.resetModel")} placement="top">
               <Button

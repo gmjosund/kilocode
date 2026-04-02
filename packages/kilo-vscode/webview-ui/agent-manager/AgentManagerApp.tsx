@@ -655,6 +655,14 @@ const AgentManagerContent: Component = () => {
     }
   })
 
+  // Report all open (non-pending) session IDs to extension for heartbeat
+  createEffect(() => {
+    const local = localSessionIDs().filter((id) => !isPending(id))
+    const managed = managedSessions().map((ms) => ms.id)
+    const all = [...new Set([...local, ...managed])]
+    vscode.postMessage({ type: "agentManager.openSessions", sessionIDs: all })
+  })
+
   // Drop in-memory review state for worktrees that no longer exist.
   createEffect(() => {
     const ids = new Set(worktrees().map((wt) => wt.id))

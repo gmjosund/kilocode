@@ -2345,15 +2345,16 @@ export class Session2 extends HeyApiClient {
   }
 
   /**
-   * Set viewed session
+   * Set viewed sessions
    *
-   * Notify the server which session the user is currently viewing, or clear it.
+   * Notify the server which sessions the user is currently viewing, or clear all.
    */
   public viewed<ThrowOnError extends boolean = false>(
     parameters?: {
       directory?: string
       workspace?: string
-      sessionID?: string
+      focused?: Array<string>
+      open?: Array<string>
     },
     options?: Options<never, ThrowOnError>,
   ) {
@@ -2364,7 +2365,8 @@ export class Session2 extends HeyApiClient {
           args: [
             { in: "query", key: "directory" },
             { in: "query", key: "workspace" },
-            { in: "body", key: "sessionID" },
+            { in: "body", key: "focused" },
+            { in: "body", key: "open" },
           ],
         },
       ],
