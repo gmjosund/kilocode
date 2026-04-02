@@ -156,7 +156,7 @@ export const BashTool = Tool.define("bash", async () => {
                     .replace(/^["']+|["']+$/g, "") // strip surrounding quotes
                     .replace(/%([^%]+)%/g, (_, n) => process.env[n] ?? `%${n}%`) // cmd.exe %VAR%
                     .replace(/\$env:([^\\/\s]+)/gi, (_, n) => process.env[n] ?? `$env:${n}`) // PS $env:VAR
-                    .replace(/^~[/\\]/, `${process.env.USERPROFILE ?? process.env.HOME ?? "~"}\\`), // PS ~
+                    .replace(/^~(?=$|[/\\])/, process.env.USERPROFILE ?? process.env.HOME ?? "~"), // PS ~
                 )
               : await $`realpath ${arg}`
                   .cwd(cwd)
