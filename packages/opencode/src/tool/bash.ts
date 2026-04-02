@@ -146,9 +146,18 @@ export const BashTool = Tool.define("bash", async () => {
           for (const arg of command.slice(1)) {
             if (arg.startsWith("-") || (command[0] === "chmod" && arg.startsWith("+"))) continue
             // kilocode_change start — use Node.js path resolution on Windows native shells
-            // (realpath is a Unix utility not available in cmd.exe / PowerShell)
+            // (realpath is a Unix utility not available in cmd.exe / PowerShell).
+            // Also expand cmd.exe (%VAR%) and PowerShell ($env:VAR / ~) references so
+            // paths that point outside the worktree are correctly detected.
             const resolved = isWindowsNative
-              ? path.resolve(cwd, arg.replace(/^["']+|["']+$/g, ""))
+              ? path.resolve(
+                  cwd,
+                  arg
+                    .replace(/^["']+|["']+$/g, "") // strip surrounding quotes
+                    .replace(/%([^%]+)%/g, (_, n) => process.env[n] ?? `%${n}%`) // cmd.exe %VAR%
+                    .replace(/\$env:([^\\/\s]+)/gi, (_, n) => process.env[n] ?? `$env:${n}`) // PS $env:VAR
+                    .replace(/^~[/\\]/, `${process.env.USERPROFILE ?? process.env.HOME ?? "~"}\\`), // PS ~
+                )
               : await $`realpath ${arg}`
                   .cwd(cwd)
                   .quiet()
