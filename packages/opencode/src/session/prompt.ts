@@ -2049,7 +2049,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
 
     // kilocode_change start - retry up to 3 times on error or empty title
     for (let attempt = 1; attempt <= 3; attempt++) {
-      const result = await LLM.stream({
+      const text = await LLM.stream({
         agent,
         user: firstRealUser.info as MessageV2.User,
         system: [],
@@ -2061,10 +2061,11 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         retries: 2,
         messages: msgs,
       })
-      const text = await result.text.catch((err) => {
-        log.error("failed to generate title", { error: err, attempt })
-        return undefined
-      })
+        .then((result) => result.text)
+        .catch((err) => {
+          log.error("failed to generate title", { error: err, attempt })
+          return undefined
+        })
       if (!text) continue
       const cleaned = text
         .replace(/<think>[\s\S]*?<\/think>\s*/g, "")
