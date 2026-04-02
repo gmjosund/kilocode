@@ -8,7 +8,7 @@
  */
 
 import type { FileDiff } from "@kilocode/sdk/v2/client"
-import type { Worktree, ManagedSession } from "./WorktreeStateManager"
+import type { Worktree, ManagedSession, Section } from "./WorktreeStateManager"
 import type { WorktreeStats, LocalStats } from "./GitStatsPoller"
 import type { ApplyConflict } from "./GitOps"
 import type { BranchListItem, WorktreeSetupErrorCode } from "./git-import"
@@ -66,6 +66,7 @@ interface StateMessage {
   type: "agentManager.state"
   worktrees: Worktree[]
   sessions: ManagedSession[]
+  sections?: Section[]
   staleWorktreeIds?: string[]
   tabOrder?: Record<string, string[]>
   worktreeOrder?: string[]
@@ -453,6 +454,41 @@ interface ContinueInWorktreeIn {
   sessionId: string
 }
 
+interface CreateSectionIn {
+  type: "agentManager.createSection"
+  name: string
+  color?: string
+  worktreeIds?: string[]
+}
+
+interface RenameSectionIn {
+  type: "agentManager.renameSection"
+  sectionId: string
+  name: string
+}
+
+interface DeleteSectionIn {
+  type: "agentManager.deleteSection"
+  sectionId: string
+}
+
+interface SetSectionColorIn {
+  type: "agentManager.setSectionColor"
+  sectionId: string
+  color: string | null
+}
+
+interface ToggleSectionCollapsedIn {
+  type: "agentManager.toggleSectionCollapsed"
+  sectionId: string
+}
+
+interface MoveToSectionIn {
+  type: "agentManager.moveToSection"
+  worktreeIds: string[]
+  sectionId: string | null
+}
+
 /** All messages the Agent Manager expects from the webview (onMessage input). */
 export type AgentManagerInMessage =
   | CreateWorktreeIn
@@ -498,3 +534,9 @@ export type AgentManagerInMessage =
   | ClearSessionIn
   | AbortIn
   | ContinueInWorktreeIn
+  | CreateSectionIn
+  | RenameSectionIn
+  | DeleteSectionIn
+  | SetSectionColorIn
+  | ToggleSectionCollapsedIn
+  | MoveToSectionIn

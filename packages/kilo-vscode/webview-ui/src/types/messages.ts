@@ -793,6 +793,17 @@ export interface WorktreeState {
   groupId?: string
   /** User-provided display name for the worktree. */
   label?: string
+  /** Section this worktree belongs to, or undefined for ungrouped. */
+  sectionId?: string
+}
+
+export interface SectionState {
+  id: string
+  name: string
+  /** Color label (e.g. "Red", "Blue") or null for default. */
+  color: string | null
+  order: number
+  collapsed: boolean
 }
 
 export interface ManagedSessionState {
@@ -821,6 +832,7 @@ export interface AgentManagerStateMessage {
   type: "agentManager.state"
   worktrees: WorktreeState[]
   sessions: ManagedSessionState[]
+  sections?: SectionState[]
   staleWorktreeIds?: string[]
   tabOrder?: Record<string, string[]>
   worktreeOrder?: string[]
@@ -2035,6 +2047,42 @@ export interface ContinueInWorktreeRequest {
   sessionId: string
 }
 
+// Section management (webview → extension)
+export interface CreateSectionRequest {
+  type: "agentManager.createSection"
+  name: string
+  color?: string
+  worktreeIds?: string[]
+}
+
+export interface RenameSectionRequest {
+  type: "agentManager.renameSection"
+  sectionId: string
+  name: string
+}
+
+export interface DeleteSectionRequest {
+  type: "agentManager.deleteSection"
+  sectionId: string
+}
+
+export interface SetSectionColorRequest {
+  type: "agentManager.setSectionColor"
+  sectionId: string
+  color: string | null
+}
+
+export interface ToggleSectionCollapsedRequest {
+  type: "agentManager.toggleSectionCollapsed"
+  sectionId: string
+}
+
+export interface MoveToSectionRequest {
+  type: "agentManager.moveToSection"
+  worktreeIds: string[]
+  sectionId: string | null
+}
+
 export type ContinueInWorktreeStatus =
   | "capturing"
   | "creating"
@@ -2175,6 +2223,12 @@ export type WebviewMessage =
   | ToggleFavoriteRequest
   | RequestFavoritesMessage
   | ContinueInWorktreeRequest
+  | CreateSectionRequest
+  | RenameSectionRequest
+  | DeleteSectionRequest
+  | SetSectionColorRequest
+  | ToggleSectionCollapsedRequest
+  | MoveToSectionRequest
 
 // ============================================
 // VS Code API type

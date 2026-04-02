@@ -26,6 +26,18 @@ export interface Worktree {
   groupId?: string
   /** User-provided display name for the worktree. */
   label?: string
+  /** Section this worktree belongs to, or undefined for ungrouped. */
+  sectionId?: string
+}
+
+export interface Section {
+  id: string
+  name: string
+  /** Color label (e.g. "Red", "Blue") mapped to VS Code theme CSS vars at render time, or null for default. */
+  color: string | null
+  /** Position among top-level sidebar children (interleaved with ungrouped worktrees). */
+  order: number
+  collapsed: boolean
 }
 
 /**
@@ -46,6 +58,7 @@ export interface ManagedSession {
 interface StateFile {
   worktrees: Record<string, Omit<Worktree, "id">>
   sessions: Record<string, Omit<ManagedSession, "id">>
+  sections?: Record<string, Omit<Section, "id">>
   tabOrder?: Record<string, string[]>
   worktreeOrder?: string[]
   sessionsCollapsed?: boolean
@@ -67,6 +80,7 @@ export class WorktreeStateManager {
   private readonly file: string
   private worktrees = new Map<string, Worktree>()
   private sessions = new Map<string, ManagedSession>()
+  private sections = new Map<string, Section>()
   private tabOrder: Record<string, string[]> = {}
   private worktreeOrder: string[] = []
   private collapsed = false
@@ -260,6 +274,99 @@ export class WorktreeStateManager {
   }
 
   // ---------------------------------------------------------------------------
+  // Sections
+  // ---------------------------------------------------------------------------
+
+  getSections(): Section[] {
+    return [...this.sections.values()]
+  }
+
+  getSection(id: string): Section | undefined {
+    return this.sections.get(id)
+  }
+
+  addSection(name: string, color: string | null, worktreeIds?: string[]): Section {
+    const id = generateId("sec")
+    const order = this.worktreeOrder.length
+    const sec: Section = { id, name, color, order, collapsed: false }
+    this.sections.set(id, sec)
+    this.worktreeOrder.push(id)
+    if (worktreeIds) {
+      for (const wtId of worktreeIds) {
+        const wt = this.worktrees.get(wtId)
+        if (wt) {
+          wt.sectionId = id
+          // Remove from top-level worktreeOrder since it's now inside a section
+          const idx = this.worktreeOrder.indexOf(wtId)
+          if (idx !== -1) this.worktreeOrder.splice(idx, 1)
+        }
+      }
+    }
+    this.log(`Added section ${id}: "${name}"`)
+    void this.save()
+    return sec
+  }
+
+  renameSection(id: string, name: string): void {
+    const sec = this.sections.get(id)
+    if (!sec || !name) return
+    sec.name = name
+    this.log(`Renamed section ${id} to "${name}"`)
+    void this.save()
+  }
+
+  setSectionColor(id: string, color: string | null): void {
+    const sec = this.sections.get(id)
+    if (!sec) return
+    sec.color = color
+    void this.save()
+  }
+
+  toggleSection(id: string): void {
+    const sec = this.sections.get(id)
+    if (!sec) return
+    sec.collapsed = !sec.collapsed
+    void this.save()
+  }
+
+  deleteSection(id: string): void {
+    if (!this.sections.delete(id)) return
+    // Ungroup all worktrees in this section — do NOT delete them
+    for (const wt of this.worktrees.values()) {
+      if (wt.sectionId === id) wt.sectionId = undefined
+    }
+    // Remove from sidebar order
+    const idx = this.worktreeOrder.indexOf(id)
+    if (idx !== -1) this.worktreeOrder.splice(idx, 1)
+    this.log(`Deleted section ${id}, ungrouped its worktrees`)
+    void this.save()
+  }
+
+  moveToSection(worktreeIds: string[], sectionId: string | null): void {
+    // Expand to include all multi-version siblings (same groupId)
+    const expanded = new Set(worktreeIds)
+    for (const wtId of worktreeIds) {
+      const wt = this.worktrees.get(wtId)
+      if (!wt?.groupId) continue
+      for (const sibling of this.worktrees.values()) {
+        if (sibling.groupId === wt.groupId) expanded.add(sibling.id)
+      }
+    }
+    for (const wtId of expanded) {
+      const wt = this.worktrees.get(wtId)
+      if (!wt) continue
+      wt.sectionId = sectionId ?? undefined
+      if (sectionId) {
+        const idx = this.worktreeOrder.indexOf(wtId)
+        if (idx !== -1) this.worktreeOrder.splice(idx, 1)
+      } else {
+        if (!this.worktreeOrder.includes(wtId)) this.worktreeOrder.push(wtId)
+      }
+    }
+    void this.save()
+  }
+
+  // ---------------------------------------------------------------------------
   // Sessions collapsed
   // ---------------------------------------------------------------------------
 
@@ -314,6 +421,7 @@ export class WorktreeStateManager {
       const data = JSON.parse(content) as StateFile
       this.worktrees.clear()
       this.sessions.clear()
+      this.sections.clear()
       this.tabOrder = {}
       this.worktreeOrder = []
       this.reviewDiffStyle = "unified"
@@ -328,6 +436,9 @@ export class WorktreeStateManager {
       }
       for (const [id, s] of Object.entries(data.sessions ?? {})) {
         this.sessions.set(id, { id, ...s })
+      }
+      for (const [id, sec] of Object.entries(data.sections ?? {})) {
+        this.sections.set(id, { id, ...sec })
       }
       if (data.tabOrder) {
         this.tabOrder = data.tabOrder
@@ -403,6 +514,13 @@ export class WorktreeStateManager {
     for (const [id, s] of this.sessions) {
       const { id: _, ...rest } = s
       data.sessions[id] = rest
+    }
+    if (this.sections.size > 0) {
+      data.sections = {}
+      for (const [id, sec] of this.sections) {
+        const { id: _, ...rest } = sec
+        data.sections[id] = rest
+      }
     }
     if (Object.keys(this.tabOrder).length > 0) {
       data.tabOrder = this.tabOrder
