@@ -2037,37 +2037,44 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         (await Provider.getSmallModel(input.providerID)) ?? (await Provider.getModel(input.providerID, input.modelID))
       )
     })
-    const result = await LLM.stream({
-      agent,
-      user: firstRealUser.info as MessageV2.User,
-      system: [],
-      small: true,
-      tools: {},
-      model,
-      abort: new AbortController().signal,
-      sessionID: `title-${input.session.id}`, // kilocode_change - separate taskID to prevent small-model leak (#6552)
-      retries: 2,
-      messages: [
-        {
-          role: "user",
-          content: "Generate a title for this conversation:\n",
-        },
-        ...(hasOnlySubtaskParts
-          ? [{ role: "user" as const, content: subtaskParts.map((p) => p.prompt).join("\n") }]
-          : MessageV2.toModelMessages(contextMessages, model)),
-      ],
-    })
-    const text = await result.text.catch((err) => log.error("failed to generate title", { error: err }))
-    if (text) {
+    const msgs = [
+      {
+        role: "user" as const,
+        content: "Generate a title for this conversation:\n",
+      },
+      ...(hasOnlySubtaskParts
+        ? [{ role: "user" as const, content: subtaskParts.map((p) => p.prompt).join("\n") }]
+        : MessageV2.toModelMessages(contextMessages, model)),
+    ]
+
+    // kilocode_change start - retry up to 3 times on error or empty title
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const result = await LLM.stream({
+        agent,
+        user: firstRealUser.info as MessageV2.User,
+        system: [],
+        small: true,
+        tools: {},
+        model,
+        abort: new AbortController().signal,
+        sessionID: `title-${input.session.id}`, // separate taskID to prevent small-model leak (#6552)
+        retries: 2,
+        messages: msgs,
+      })
+      const text = await result.text.catch((err) => {
+        log.error("failed to generate title", { error: err, attempt })
+        return undefined
+      })
+      if (!text) continue
       const cleaned = text
         .replace(/<think>[\s\S]*?<\/think>\s*/g, "")
         .split("\n")
         .map((line) => line.trim())
         .find((line) => line.length > 0)
-      if (!cleaned) return
-
+      if (!cleaned) continue
       const title = cleaned.length > 100 ? cleaned.substring(0, 97) + "..." : cleaned
       return Session.setTitle({ sessionID: input.session.id, title })
     }
+    // kilocode_change end
   }
 }
