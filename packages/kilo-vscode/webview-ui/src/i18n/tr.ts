@@ -1068,6 +1068,14 @@ export const dict = {
   "settings.experimental.continueOnDeny.description": "Bir izin reddedildiğinde ajan döngüsüne devam et",
   "settings.experimental.mcpTimeout.title": "MCP Zaman Aşımı (ms)",
   "settings.experimental.mcpTimeout.description": "MCP sunucu istekleri için milisaniye cinsinden zaman aşımı",
+  "settings.experimental.remote.title": "Remote Kontrolü",
+  "settings.experimental.remote.description":
+    "Kilo Cloud üzerinden oturumların Remote kontrolünü etkinleştirin. Bu, bu makinedeki CLI'leri de etkileyecektir.",
+  "remote.indicator": "Remote",
+  "remote.toast.enabled": "IDE yeniden başlatılana kadar Remote etkin",
+  "remote.toast.disabled": "IDE yeniden başlatılana kadar Remote devre dışı",
+  "remote.status.connected": "Remote kontrolü bağlandı",
+  "remote.status.connecting": "Remote kontrolü bağlanıyor…",
   "settings.experimental.toolToggles": "Araç Açma/Kapatma",
 
   "settings.agentBehaviour.defaultAgent.title": "Varsayılan Ajan",

@@ -1898,6 +1898,7 @@ export class AgentManagerProvider implements Disposable {
 
   public dispose(): void {
     this.connectionService.unregisterFocused("agent-manager")
+    this.connectionService.registerOpen("agent-manager", [])
     this.stopDiffPolling()
     this.statsPoller.stop()
     this.terminalManager.dispose()

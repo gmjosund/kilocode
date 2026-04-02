@@ -1072,6 +1072,14 @@ export const dict = {
     "Ga door met de agent loop wanneer een toestemming wordt geweigerd",
   "settings.experimental.mcpTimeout.title": "MCP Timeout (ms)",
   "settings.experimental.mcpTimeout.description": "Timeout voor MCP-serververzoeken in milliseconden",
+  "settings.experimental.remote.title": "Remote-bediening",
+  "settings.experimental.remote.description":
+    "Schakel Remote-bediening van sessies in via Kilo Cloud. Dit heeft ook invloed op CLI's op deze machine.",
+  "remote.indicator": "Remote",
+  "remote.toast.enabled": "Remote ingeschakeld tot IDE-herstart",
+  "remote.toast.disabled": "Remote uitgeschakeld tot IDE-herstart",
+  "remote.status.connected": "Remote-bediening verbonden",
+  "remote.status.connecting": "Remote-bediening maakt verbinding…",
   "settings.experimental.toolToggles": "Tool Schakelaars",
 
   "settings.agentBehaviour.defaultAgent.title": "Standaard Agent",

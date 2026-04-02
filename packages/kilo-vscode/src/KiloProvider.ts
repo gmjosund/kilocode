@@ -364,6 +364,15 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
     // Handle messages from webview (shared handler)
     this.setupWebviewMessageHandler(panel.webview)
 
+    // Unregister focus when the editor tab becomes inactive, re-register when active
+    panel.onDidChangeViewState(() => {
+      if (panel.active) {
+        if (this.currentSession) this.connectionService.registerFocused(this.instanceId, this.currentSession.id)
+      } else {
+        this.connectionService.unregisterFocused(this.instanceId)
+      }
+    })
+
     this.initializeConnection()
   }
 
