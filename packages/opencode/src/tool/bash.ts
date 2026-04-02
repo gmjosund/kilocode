@@ -63,12 +63,18 @@ export const BashTool = Tool.define("bash", async () => {
   // Windows-native shell uses cmd/PowerShell names; otherwise use Unix names.
   const fileCommands = isWindowsNative
     ? new Set([
+        "cd",
         "copy",
         "move",
         "xcopy",
         "robocopy",
         "type",
         "dir",
+        "mkdir",
+        "md",
+        "rd",
+        "del",
+        "New-Item",
         "Get-Content",
         "Copy-Item",
         "Move-Item",
