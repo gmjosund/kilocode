@@ -8,7 +8,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-function ops(handler: (args: string[], cwd: string) => Promise<string>): GitOps {
+function ops(handler: (args: string[], cwd: string, env?: Record<string, string>) => Promise<string>): GitOps {
   return new GitOps({ log: () => undefined, refreshMs: 120000, runGit: handler })
 }
 
@@ -248,6 +248,60 @@ describe("GitOps", () => {
       await Promise.all([git.refreshRemote("/repo", "origin"), git.refreshRemote("/repo", "origin")])
       const fetches = commands.filter((c) => c[0] === "fetch")
       expect(fetches.length).toBe(1)
+    })
+
+    it("passes non-interactive env only for fetch commands", async () => {
+      const captured: { args: string[]; env?: Record<string, string> }[] = []
+      const git = ops(async (args, _cwd, env) => {
+        captured.push({ args, env })
+        if (args[0] === "rev-parse" && args[1] === "--git-common-dir") return "/repo/.git"
+        return ""
+      })
+      await git.refreshRemote("/repo", "origin")
+
+      const revParse = captured.find((c) => c.args[0] === "rev-parse")
+      expect(revParse?.env).toBeUndefined()
+
+      const fetch = captured.find((c) => c.args[0] === "fetch")
+      expect(fetch?.env).toBeDefined()
+      expect(fetch?.env?.GIT_TERMINAL_PROMPT).toBe("0")
+    })
+
+    it("sets GIT_SSH_COMMAND when not already configured", async () => {
+      const prev = process.env.GIT_SSH_COMMAND
+      delete process.env.GIT_SSH_COMMAND
+      try {
+        const captured: { args: string[]; env?: Record<string, string> }[] = []
+        const git = ops(async (args, _cwd, env) => {
+          captured.push({ args, env })
+          if (args[0] === "rev-parse" && args[1] === "--git-common-dir") return "/repo/.git"
+          return ""
+        })
+        await git.refreshRemote("/repo", "origin")
+        const fetch = captured.find((c) => c.args[0] === "fetch")
+        expect(fetch?.env?.GIT_SSH_COMMAND).toBe("ssh -o BatchMode=yes")
+      } finally {
+        if (prev !== undefined) process.env.GIT_SSH_COMMAND = prev
+      }
+    })
+
+    it("preserves existing GIT_SSH_COMMAND", async () => {
+      const prev = process.env.GIT_SSH_COMMAND
+      process.env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/custom_key"
+      try {
+        const captured: { args: string[]; env?: Record<string, string> }[] = []
+        const git = ops(async (args, _cwd, env) => {
+          captured.push({ args, env })
+          if (args[0] === "rev-parse" && args[1] === "--git-common-dir") return "/repo/.git"
+          return ""
+        })
+        await git.refreshRemote("/repo", "origin")
+        const fetch = captured.find((c) => c.args[0] === "fetch")
+        expect(fetch?.env?.GIT_SSH_COMMAND).toBeUndefined()
+      } finally {
+        if (prev !== undefined) process.env.GIT_SSH_COMMAND = prev
+        else delete process.env.GIT_SSH_COMMAND
+      }
     })
   })
 

@@ -9,7 +9,7 @@ interface GitOpsOptions {
   log: (...args: unknown[]) => void
   refreshMs?: number
   /** Override git command execution for testing. */
-  runGit?: (args: string[], cwd: string) => Promise<string>
+  runGit?: (args: string[], cwd: string, env?: Record<string, string>) => Promise<string>
 }
 
 export interface ApplyConflict {
@@ -40,26 +40,47 @@ interface ExecResult {
   stderr: string
 }
 
+/**
+ * Build environment variables that prevent git and SSH from opening interactive
+ * prompts. Used for background operations (e.g. periodic fetch) so users with
+ * SSH keys that require passphrase confirmation are not bombarded with dialogs.
+ *
+ * Returns a full `process.env` overlay suitable for `simple-git.env()` or
+ * `child_process.spawn`. `GIT_SSH_COMMAND` is only overridden when the user
+ * hasn't already configured their own.
+ */
+export function nonInteractiveEnv(): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {
+    ...process.env,
+    GIT_TERMINAL_PROMPT: "0",
+  }
+  if (!process.env.GIT_SSH_COMMAND) {
+    env.GIT_SSH_COMMAND = "ssh -o BatchMode=yes"
+  }
+  return env
+}
+
 export class GitOps {
   private lastFetch = new Map<string, number>()
   private inflightFetch = new Map<string, Promise<void>>()
   private readonly refreshMs: number
   private readonly log: (...args: unknown[]) => void
-  private readonly runGit: (args: string[], cwd: string) => Promise<string>
+  private readonly runGit: (args: string[], cwd: string, env?: Record<string, string>) => Promise<string>
 
   constructor(options: GitOpsOptions) {
     this.refreshMs = options.refreshMs ?? 120000
     this.log = options.log
     this.runGit =
       options.runGit ??
-      ((args, cwd) =>
-        simpleGit(cwd)
-          .raw(args)
-          .then((out) => out.trim()))
+      ((args, cwd, env) => {
+        const git = simpleGit(cwd)
+        if (env) git.env({ ...process.env, ...env })
+        return git.raw(args).then((out) => out.trim())
+      })
   }
 
-  private raw(args: string[], cwd: string): Promise<string> {
-    return this.runGit(args, cwd)
+  private raw(args: string[], cwd: string, env?: Record<string, string>): Promise<string> {
+    return this.runGit(args, cwd, env)
   }
 
   /** Return the name of the currently checked-out branch, or `"HEAD"` if detached. */
@@ -129,7 +150,11 @@ export class GitOps {
     if (now - prev < this.refreshMs) return
     this.lastFetch.set(key, now)
 
-    const job = this.raw(["fetch", "--quiet", "--no-tags", remote], cwd)
+    const env = {
+      GIT_TERMINAL_PROMPT: "0",
+      ...(process.env.GIT_SSH_COMMAND ? {} : { GIT_SSH_COMMAND: "ssh -o BatchMode=yes" }),
+    }
+    const job = this.raw(["fetch", "--quiet", "--no-tags", remote], cwd, env)
       .catch((err) => {
         this.log(`Failed to refresh remote refs for ${cwd}:`, err)
       })
