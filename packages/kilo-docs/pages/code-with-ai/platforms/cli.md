@@ -468,10 +468,57 @@ The CLI supports overriding config values with environment variables. The suppor
 - For `kilocode` provider: `KILOCODE_<FIELD_NAME>` (e.g., `KILOCODE_MODEL` → `kilocodeModel`)
 - For other providers: `KILO_<FIELD_NAME>` (e.g., `KILO_API_KEY` → `apiKey`)
 
-## Switching into an Organization from the CLI
+## Using the CLI in an Organization
 
-Use the `/teams` command to see a list of all organizations you can switch into.
+If you belong to a Kilo [Teams or Enterprise](/docs/collaborate/teams/about-plans) organization, you can use the CLI under your organization's account. This routes requests through the organization's billing and applies any organization-level model access controls.
 
-Use `/teams` and select a team to switch teams.
+### Switching Teams in Interactive Mode
+
+Use the `/teams` command (aliases: `/team`, `/org`, `/orgs`) to switch between your personal account and any organizations you belong to.
+
+1. Run `/teams` in the TUI
+2. Select your personal account or an organization from the list — the current selection is marked with `(current)`
+3. The CLI reloads providers and models for the selected account
+
+After switching, you can verify your active context with `/profile` (aliases: `/me`, `/whoami`), which shows your name, email, current team and role, and balance.
+
+{% callout type="note" %}
+The `/teams` and `/profile` commands are only visible when you are connected to [Kilo Gateway](/docs/ai-providers/kilo-gateway/about). If you don't see them, run `/connect` and sign in first.
+{% /callout %}
 
 The process is the same when switching into a Team or Enterprise organization.
+
+### Setting the Organization for Non-Interactive Runs
+
+In CI/CD pipelines and scripted `kilo run` invocations, there is no TUI to select a team. Use the `KILO_ORG_ID` environment variable to specify which organization the CLI should operate under.
+
+You can find your organization ID in the [Kilo dashboard](https://app.kilo.ai) under your organization settings.
+
+```bash
+# Run under an organization in autonomous mode
+KILO_ORG_ID="your-org-id" kilo run --auto "Implement feature X"
+```
+
+In a GitHub Actions workflow:
+
+```yaml
+- name: Run Kilo Code
+  env:
+    KILO_API_KEY: ${{ secrets.KILO_API_KEY }}
+    KILO_ORG_ID: ${{ secrets.KILO_ORG_ID }}
+  run: kilo run --auto "Implement the requested changes"
+```
+
+{% callout type="tip" %}
+Store `KILO_ORG_ID` and `KILO_API_KEY` as repository or organization secrets — never hard-code them in workflow files.
+{% /callout %}
+
+#### How the Organization Is Resolved
+
+When the CLI makes requests to Kilo Gateway, the active organization is determined in the following priority order (highest first):
+
+1. **`KILO_ORG_ID` environment variable** — always takes precedence
+2. **Stored auth state** — the last team selected via `/teams` (persisted locally)
+3. **Personal account** — used when no organization is set
+
+This means `KILO_ORG_ID` overrides any interactive selection, making it reliable for automated environments where the auth state may vary.
