@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=kilocode.Kilo-Code"><img src="https://raster.shields.io/badge/VS_Code_Marketplace-007ACC?style=flat&logo=visualstudiocode&logoColor=white" alt="VS Code Marketplace" height="20"></a>
-  <a href="https://x.com/kilocode"><img src="https://raster.shields.io/badge/kilocode-000000?style=flat&logo=x&logoColor=white" alt="X (Twitter)" height="20"></a>
-  <a href="https://blog.kilo.ai"><img src="https://raster.shields.io/badge/Blog-555?style=flat&logo=substack&logoColor=white" alt="Substack Blog" height="20"></a>
-  <a href="https://kilo.ai/discord"><img src="https://raster.shields.io/badge/Join%20Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord" height="20"></a>
-  <a href="https://www.reddit.com/r/kilocode/"><img src="https://raster.shields.io/badge/Join%20r%2Fkilocode-D84315?style=flat&logo=reddit&logoColor=white" alt="Reddit" height="20"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=kilocode.Kilo-Code"><img src="https://img.shields.io/badge/VS_Code_Marketplace-007ACC?style=flat&logo=visualstudiocode&logoColor=white" alt="VS Code Marketplace" height="20"></a>
+  <a href="https://x.com/kilocode"><img src="https://img.shields.io/badge/kilocode-000000?style=flat&logo=x&logoColor=white" alt="X (Twitter)" height="20"></a>
+  <a href="https://blog.kilo.ai"><img src="https://img.shields.io/badge/Blog-555?style=flat&logo=substack&logoColor=white" alt="Substack Blog" height="20"></a>
+  <a href="https://kilo.ai/discord"><img src="https://img.shields.io/badge/Join%20Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord" height="20"></a>
+  <a href="https://www.reddit.com/r/kilocode/"><img src="https://img.shields.io/badge/Join%20r%2Fkilocode-D84315?style=flat&logo=reddit&logoColor=white" alt="Reddit" height="20"></a>
 </p>
 
 # 🚀 Kilo
@@ -40,7 +40,7 @@
 2. Create your account to access 500+ cutting-edge AI models including Gemini 3 Pro, Claude 4.5 Sonnet & Opus, and GPT-5 – with transparent pricing that matches provider rates exactly.
 3. Start coding with AI that adapts to your workflow. Watch our quick-start guide to see Kilo in action:
 
-<a href="https://youtu.be/pqGfYXgrhig"><img src="https://img.youtube.com/vi/pqGfYXgrhig/maxresdefault.jpg" alt="Watch the video" width="640" height="360"></a>
+<a href="https://youtu.be/pqGfYXgrhig"><img src="https://img.youtube.com/vi/pqGfYXgrhig/hqdefault.jpg" alt="Watch the video" width="640" height="360"></a>
 
 ## Developer Setup
 
@@ -86,49 +86,49 @@ Thanks to all the contributors who help make Kilo better!
   <tr>
     <td align="center">
       <a href="https://github.com/mcowger">
-        <img src="https://avatars.githubusercontent.com/u/1929548?size=100" width="100" height="100" alt="mcowger" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/1929548?size=40" width="40" height="40" alt="mcowger" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/bhaktatejas922">
-        <img src="https://avatars.githubusercontent.com/u/26863466?size=100" width="100" height="100" alt="bhaktatejas922" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/26863466?size=40" width="40" height="40" alt="bhaktatejas922" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/NyxJae">
-        <img src="https://avatars.githubusercontent.com/u/52313587?size=100" width="100" height="100" alt="NyxJae" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/52313587?size=40" width="40" height="40" alt="NyxJae" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/Aikiboy123">
-        <img src="https://avatars.githubusercontent.com/u/161741275?size=100" width="100" height="100" alt="Aikiboy123" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/161741275?size=40" width="40" height="40" alt="Aikiboy123" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/cobra91">
-        <img src="https://avatars.githubusercontent.com/u/1060585?size=100" width="100" height="100" alt="cobra91" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/1060585?size=40" width="40" height="40" alt="cobra91" style="border-radius: 50%;" />
       </a>
     </td>
   </tr>
   <tr>
     <td align="center">
       <a href="https://github.com/ivanarifin">
-        <img src="https://avatars.githubusercontent.com/u/111653938?size=100" width="100" height="100" alt="ivanarifin" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/111653938?size=40" width="40" height="40" alt="ivanarifin" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/PeterDaveHello">
-        <img src="https://avatars.githubusercontent.com/u/3691490?size=100" width="100" height="100" alt="PeterDaveHello" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/3691490?size=40" width="40" height="40" alt="PeterDaveHello" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/possible055">
-        <img src="https://avatars.githubusercontent.com/u/38576169?size=100" width="100" height="100" alt="possible055" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/38576169?size=40" width="40" height="40" alt="possible055" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/seuros">
-        <img src="https://avatars.githubusercontent.com/u/2394703?size=100" width="100" height="100" alt="seuros" style="border-radius: 50%;" />
+        <img src="https://avatars.githubusercontent.com/u/2394703?size=40" width="40" height="40" alt="seuros" style="border-radius: 50%;" />
       </a>
     </td>
     <td align="center">
