@@ -129,6 +129,23 @@ To explore DSL capabilities interactively: **Tools → Internal Actions → UI �
 
 Inspection `Plugin DevKit | Code | Undesirable class usage` highlights when you use raw Swing where a platform replacement exists.
 
+### Multi-line and Rich Text
+
+| Need                                                  | Component                                              |
+| ----------------------------------------------------- | ------------------------------------------------------ |
+| Rich HTML with modern CSS, icons, shortcuts           | `JBHtmlPane` (`com.intellij.ui.components.JBHtmlPane`) |
+| Simple multi-line label with HTML                     | `JBLabel` + `XmlStringUtil.wrapInHtml()`               |
+| Scrollable / wrapping HTML panel                      | `SwingHelper.createHtmlViewer()`                       |
+| High-perf colored text fragments (trees/lists/tables) | `SimpleColoredComponent`                               |
+| Plain-text newline splitting                          | `MultiLineLabel` — legacy, do not use in new code      |
+
+- Build HTML programmatically with `HtmlChunk`/`HtmlBuilder` (`com.intellij.openapi.util.text.HtmlChunk`). Avoid raw HTML string concatenation — it risks injection and breaks localization.
+- For simple wrapping/escaping: `XmlStringUtil.wrapInHtml(content)`, `XmlStringUtil.wrapInHtmlLines(lines...)`, `XmlStringUtil.escapeString(text)`.
+- Selectable/copyable label text: `JBLabel.setCopyable(true)` (switches internally to `JEditorPane` while preserving label appearance). Use `setAllowAutoWrapping(true)` for auto-wrap.
+- When creating a `JEditorPane` manually, always use `HTMLEditorKitBuilder` instead of constructing `HTMLEditorKit` directly: `editorPane.setEditorKit(HTMLEditorKitBuilder.simple())` or `.withWordWrapViewFactory().build()`.
+- Single-line overflow/ellipsis: use `SwingTextTrimmer` — do not manually truncate strings.
+- All user-visible strings go in `*.properties` files; HTML markup in values is acceptable.
+
 ### Colors and Theming
 
 - **Never** use `java.awt.Color` directly. Use `JBColor(lightColor, darkColor)` or `JBColor.namedColor("key", fallback)` for theme-aware colors.
