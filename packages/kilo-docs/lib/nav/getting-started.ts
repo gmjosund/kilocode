@@ -57,12 +57,13 @@ export const GettingStartedNav: NavSection[] = [
         ],
       },
       {
-        href: "/getting-started/migrating",
-        children: "Migrating from Cursor",
-      },
-      {
         href: "/getting-started/migrating-from-other-tools",
         children: "Migrating from Other Tools",
+        subLinks: [
+          { href: "/getting-started/migrating", children: "From Cursor / Windsurf" },
+          { href: "/getting-started/migrating-from-claude-code", children: "From Claude Code" },
+          { href: "/getting-started/switching-from-cline", children: "From Cline" },
+        ],
       },
       {
         href: "/getting-started/troubleshooting",
