@@ -165,7 +165,11 @@ export namespace Provider {
         options: {},
       }
     },
-    azure: async () => {
+    azure: async (provider) => {
+      const resourceName =
+        provider.options?.["resourceName"] ??
+        Env.get("AZURE_RESOURCE_NAME") ??
+        Env.get("AZURE_OPENAI_RESOURCE_NAME")
       return {
         autoload: false,
         async getModel(sdk: any, modelID: string, options?: Record<string, any>) {
@@ -175,7 +179,9 @@ export namespace Provider {
             return sdk.responses(modelID)
           }
         },
-        options: {},
+        options: {
+          ...(resourceName ? { resourceName } : {}),
+        },
       }
     },
     "azure-cognitive-services": async () => {
