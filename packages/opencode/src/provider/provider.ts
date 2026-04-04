@@ -166,6 +166,7 @@ export namespace Provider {
       }
     },
     azure: async (provider) => {
+      const baseURL = provider.options?.["baseURL"] ?? Env.get("AZURE_OPENAI_ENDPOINT")
       const resourceName =
         provider.options?.["resourceName"] ??
         Env.get("AZURE_RESOURCE_NAME") ??
@@ -180,7 +181,8 @@ export namespace Provider {
           }
         },
         options: {
-          ...(resourceName ? { resourceName } : {}),
+          // baseURL takes precedence over resourceName per @ai-sdk/azure docs
+          ...(baseURL ? { baseURL } : resourceName ? { resourceName } : {}),
         },
       }
     },
