@@ -547,6 +547,9 @@ export namespace ProviderTransform {
         if (id.includes("gpt-5-") || id === "gpt-5") {
           azureEfforts.unshift("minimal")
         }
+        if (model.release_date >= "2025-12-04") {
+          azureEfforts.push("xhigh")
+        }
         return Object.fromEntries(
           azureEfforts.map((effort) => [
             effort,
