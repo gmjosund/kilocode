@@ -37,8 +37,19 @@ See [Auto-Approving Actions](/docs/getting-started/settings/auto-approving-actio
 
 ### Is the context progress graph still available?
 
-The context progress graph is being evaluated for the new extension.
-This feature may be reintroduced in a future update.
+The context progress graph will be [added soon](https://github.com/Kilo-Org/kilocode/issues/8210) for users who like to see it.
+
+### I like to closely monitor and approve the behavior of the agent. How can I do that better in the new version?
+
+We are working to improve the experience in closely managing an agent. Identified improvements and progress are being tracked in a [GitHub issue](https://github.com/Kilo-Org/kilocode/issues/8415).
+
+In the meantime we suggest exploring:
+* [Auto-approval](https://kilo.ai/docs/getting-started/settings/auto-approving-actions) of actions: to control what the agent is allowed to do, and require approval when desired
+* [Agents](https://kilo.ai/docs/code-with-ai/agents/using-agents) (previously known as Modes): Managing the agent types in the extension, adding new ones, and setting the default models for each.
+
+### How can I control which models each agent/mode uses?
+
+Modes have been renamed to Agents in the new extension. You can set the default mode for each agent in `Settings -> Models -> Model per Mode`. For more information please check the [agents documentation](https://kilo.ai/docs/code-with-ai/agents/using-agents).
 
 ### Where is the diff view for file changes?
 
