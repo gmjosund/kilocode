@@ -940,6 +940,10 @@ export const dict = {
   "session.status.retrying": "再試行中（{{ attempt }}回目）… {{ message }}",
   "session.status.working": "作業中…",
 
+  "ui.sessionTurn.cancel": "キャンセル",
+  "ui.sessionTurn.status.thinking": "考え中...",
+  "ui.sessionTurn.status.consideringNextSteps": "次のステップを検討中...",
+
   "dialog.model.noProviders": "プロバイダーなし",
 
   "prompt.placeholder.connecting": "サーバーに接続中...",
@@ -1262,6 +1266,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "すべてのKilo製品で共有される小さく効率的なコア。どのような作業スタイルでも馴染みのある体験を提供します。",
   "migration.whatsNew.blogLink": "完全なアナウンスを読む",
+  "migration.whatsNew.docsLink": "新機能とよくある質問",
   "migration.whatsNew.continue": "続行",
 
   // Screen 2 — Migrate Settings
@@ -1344,4 +1349,5 @@ export const dict = {
   "notifications.action.next": "次へ",
   "notifications.action.close": "閉じる",
   "notifications.action.tryModel": "{{model}}を試す",
+  "notifications.action.tryModelGeneric": "モデルを試す",
 }

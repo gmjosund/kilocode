@@ -935,6 +935,10 @@ export const dict = {
   "session.status.retrying": "...إعادة المحاولة (المحاولة {{ attempt }})… {{ message }}",
   "session.status.working": "...جارٍ العمل",
 
+  "ui.sessionTurn.cancel": "إلغاء",
+  "ui.sessionTurn.status.thinking": "...جارٍ التفكير",
+  "ui.sessionTurn.status.consideringNextSteps": "...جارٍ التفكير في الخطوات التالية",
+
   "dialog.model.noProviders": "لا يوجد موفرون",
 
   "prompt.placeholder.connecting": "جارٍ الاتصال بالخادم...",
@@ -1247,6 +1251,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "نواة صغيرة وفعالة واحدة عبر كل منتجات Kilo. تجربة مألوفة بغض النظر عن طريقة عملك.",
   "migration.whatsNew.blogLink": "اقرأ الإعلان الكامل",
+  "migration.whatsNew.docsLink": "الجديد والأسئلة الشائعة",
   "migration.whatsNew.continue": "متابعة",
 
   // Screen 2 — Migrate Settings
@@ -1329,4 +1334,5 @@ export const dict = {
   "notifications.action.next": "التالي",
   "notifications.action.close": "إغلاق",
   "notifications.action.tryModel": "جرّب {{model}}",
+  "notifications.action.tryModelGeneric": "جرّب النموذج",
 }

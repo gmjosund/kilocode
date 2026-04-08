@@ -943,6 +943,10 @@ export const dict = {
   "session.status.retrying": "Tentando novamente (tentativa {{ attempt }})… {{ message }}",
   "session.status.working": "Trabalhando…",
 
+  "ui.sessionTurn.cancel": "Cancelar",
+  "ui.sessionTurn.status.thinking": "Pensando...",
+  "ui.sessionTurn.status.consideringNextSteps": "Considerando próximos passos...",
+
   "dialog.model.noProviders": "Nenhum provedor",
 
   "prompt.placeholder.connecting": "Conectando ao servidor...",
@@ -1276,6 +1280,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "Um núcleo pequeno e eficiente em todos os produtos Kilo. Uma experiência familiar independentemente de como você escolha trabalhar.",
   "migration.whatsNew.blogLink": "Leia o anúncio completo",
+  "migration.whatsNew.docsLink": "Novidades e perguntas frequentes",
   "migration.whatsNew.continue": "Continuar",
 
   // Screen 2 — Migrate Settings
@@ -1358,4 +1363,5 @@ export const dict = {
   "notifications.action.next": "Próximo",
   "notifications.action.close": "Fechar",
   "notifications.action.tryModel": "Experimentar {{model}}",
+  "notifications.action.tryModelGeneric": "Experimentar modelo",
 }

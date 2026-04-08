@@ -928,6 +928,10 @@ export const dict = {
   "session.status.retrying": "正在重试（第 {{ attempt }} 次）… {{ message }}",
   "session.status.working": "处理中…",
 
+  "ui.sessionTurn.cancel": "取消",
+  "ui.sessionTurn.status.thinking": "思考中...",
+  "ui.sessionTurn.status.consideringNextSteps": "正在考虑下一步...",
+
   "dialog.model.noProviders": "无供应商",
 
   "prompt.placeholder.connecting": "正在连接服务器...",
@@ -1223,6 +1227,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "所有 Kilo 产品共享一个小巧高效的核心。无论你选择哪种方式工作，都能获得熟悉的体验。",
   "migration.whatsNew.blogLink": "阅读完整公告",
+  "migration.whatsNew.docsLink": "新功能与常见问题",
   "migration.whatsNew.continue": "继续",
 
   // Screen 2 — Migrate Settings
@@ -1303,4 +1308,5 @@ export const dict = {
   "notifications.action.next": "下一个",
   "notifications.action.close": "关闭",
   "notifications.action.tryModel": "尝试 {{model}}",
+  "notifications.action.tryModelGeneric": "尝试模型",
 } satisfies Partial<Record<Keys, string>>

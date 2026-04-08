@@ -945,6 +945,10 @@ export const dict = {
   "session.status.retrying": "Повторна спроба (спроба {{ attempt }})… {{ message }}",
   "session.status.working": "Працює...",
 
+  "ui.sessionTurn.cancel": "Скасувати",
+  "ui.sessionTurn.status.thinking": "Думаю...",
+  "ui.sessionTurn.status.consideringNextSteps": "Обдумую наступні кроки...",
+
   "dialog.model.noProviders": "Немає провайдерів",
 
   "prompt.placeholder.connecting": "Підключення до сервера...",
@@ -1260,6 +1264,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "Малий та ефективний ядерний модуль у кожному продукті Kilo. Знайомий досвід незалежно від того, як ви вважаєте за краще працювати.",
   "migration.whatsNew.blogLink": "Читати повне оголошення",
+  "migration.whatsNew.docsLink": "Що нового та часті запитання",
   "migration.whatsNew.continue": "Продовжити",
 
   // Screen 2 — Migrate Settings
@@ -1343,6 +1348,7 @@ export const dict = {
   "notifications.action.next": "Далі",
   "notifications.action.close": "Закрити",
   "notifications.action.tryModel": "Спробувати {{model}}",
+  "notifications.action.tryModelGeneric": "Спробувати модель",
   // Missing translations - English fallbacks until translated
   "profile.switchingAccount": "Перемикання акаунту…",
   "settings.agentBehaviour.createMode": "Створити новий режим",
@@ -1366,7 +1372,8 @@ export const dict = {
   "settings.agentBehaviour.editMode": "Редагувати режим",
   "settings.agentBehaviour.editMode.back": "Назад до списку",
   "settings.agentBehaviour.editMode.description": "Опис",
-  "settings.agentBehaviour.editMode.native": "Вбудований режим (визначення лише для читання)",
+  "settings.agentBehaviour.editMode.native":
+    "Це вбудований режим. Його базове визначення неможливо змінити, але ви можете налаштувати перевизначення нижче.",
   "settings.agentBehaviour.editMode.prompt": "Системний запит",
   "settings.agentBehaviour.editMode.promptOverride":
     "Власне перевизначення системного запиту для цього вбудованого режиму",

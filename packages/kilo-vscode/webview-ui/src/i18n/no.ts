@@ -945,6 +945,10 @@ export const dict = {
   "session.status.retrying": "Prøver på nytt (forsøk {{ attempt }})… {{ message }}",
   "session.status.working": "Arbeider…",
 
+  "ui.sessionTurn.cancel": "Avbryt",
+  "ui.sessionTurn.status.thinking": "Tenker...",
+  "ui.sessionTurn.status.consideringNextSteps": "Vurderer neste steg...",
+
   "dialog.model.noProviders": "Ingen leverandører",
 
   "prompt.placeholder.connecting": "Kobler til server...",
@@ -1263,6 +1267,7 @@ export const dict = {
   "migration.whatsNew.features.foundation.detail":
     "Én liten, effektiv kjerne på tvers av alle Kilo-produkter. En kjent opplevelse uansett hvordan du velger å jobbe.",
   "migration.whatsNew.blogLink": "Les hele kunngjøringen",
+  "migration.whatsNew.docsLink": "Nyheter og ofte stilte spørsmål",
   "migration.whatsNew.continue": "Fortsett",
 
   // Screen 2 — Migrate Settings
@@ -1343,4 +1348,5 @@ export const dict = {
   "notifications.action.next": "Neste",
   "notifications.action.close": "Lukk",
   "notifications.action.tryModel": "Prøv {{model}}",
+  "notifications.action.tryModelGeneric": "Prøv modell",
 } satisfies Partial<Record<Keys, string>>
