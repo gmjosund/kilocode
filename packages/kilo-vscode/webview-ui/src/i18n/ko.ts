@@ -1337,4 +1337,5 @@ export const dict = {
   "notifications.action.next": "다음",
   "notifications.action.close": "닫기",
   "notifications.action.tryModel": "{{model}} 시도",
+  "notifications.action.tryModelGeneric": "모델 시도",
 }

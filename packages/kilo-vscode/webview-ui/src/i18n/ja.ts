@@ -1349,4 +1349,5 @@ export const dict = {
   "notifications.action.next": "次へ",
   "notifications.action.close": "閉じる",
   "notifications.action.tryModel": "{{model}}を試す",
+  "notifications.action.tryModelGeneric": "モデルを試す",
 }

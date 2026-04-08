@@ -1359,4 +1359,5 @@ export const dict = {
   "notifications.action.next": "Sljedeći",
   "notifications.action.close": "Zatvori",
   "notifications.action.tryModel": "Probaj {{model}}",
+  "notifications.action.tryModelGeneric": "Probaj model",
 }

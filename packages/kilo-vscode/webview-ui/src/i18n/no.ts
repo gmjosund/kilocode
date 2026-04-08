@@ -1348,4 +1348,5 @@ export const dict = {
   "notifications.action.next": "Neste",
   "notifications.action.close": "Lukk",
   "notifications.action.tryModel": "Prøv {{model}}",
+  "notifications.action.tryModelGeneric": "Prøv modell",
 } satisfies Partial<Record<Keys, string>>

@@ -1334,4 +1334,5 @@ export const dict = {
   "notifications.action.next": "التالي",
   "notifications.action.close": "إغلاق",
   "notifications.action.tryModel": "جرّب {{model}}",
+  "notifications.action.tryModelGeneric": "جرّب النموذج",
 }

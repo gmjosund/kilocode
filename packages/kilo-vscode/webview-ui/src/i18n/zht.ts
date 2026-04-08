@@ -1311,4 +1311,5 @@ export const dict = {
   "notifications.action.next": "下一個",
   "notifications.action.close": "關閉",
   "notifications.action.tryModel": "嘗試 {{model}}",
+  "notifications.action.tryModelGeneric": "嘗試模型",
 } satisfies Partial<Record<Keys, string>>

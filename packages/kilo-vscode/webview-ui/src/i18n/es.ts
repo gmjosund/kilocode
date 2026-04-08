@@ -1366,4 +1366,5 @@ export const dict = {
   "notifications.action.next": "Siguiente",
   "notifications.action.close": "Cerrar",
   "notifications.action.tryModel": "Probar {{model}}",
+  "notifications.action.tryModelGeneric": "Probar modelo",
 }

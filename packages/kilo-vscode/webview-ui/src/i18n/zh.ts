@@ -1308,4 +1308,5 @@ export const dict = {
   "notifications.action.next": "下一个",
   "notifications.action.close": "关闭",
   "notifications.action.tryModel": "尝试 {{model}}",
+  "notifications.action.tryModelGeneric": "尝试模型",
 } satisfies Partial<Record<Keys, string>>
