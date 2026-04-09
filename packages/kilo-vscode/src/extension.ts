@@ -16,6 +16,7 @@ import { TelemetryProxy } from "./services/telemetry"
 import { registerCommitMessageService } from "./services/commit-message"
 import { registerCodeActions, registerTerminalActions, KiloCodeActionProvider } from "./services/code-actions"
 import { registerToggleAutoApprove } from "./commands/toggle-auto-approve"
+import { RemoteStatusService } from "./services/RemoteStatusService"
 
 // Activated via "onStartupFinished" (package.json) so that commands, code actions, keybindings,
 // autocomplete, commit-message generation, and URI deep links all work immediately — without
@@ -33,8 +34,13 @@ export function activate(context: vscode.ExtensionContext) {
   const browserAutomationService = new BrowserAutomationService(connectionService)
   browserAutomationService.syncWithSettings()
 
+  // Create remote status service (one status bar item for all webviews)
+  const remoteService = new RemoteStatusService()
+  context.subscriptions.push(remoteService)
+  connectionService.setRemoteService(remoteService)
+
   // Re-register browser automation MCP server on CLI backend reconnect, configure telemetry,
-  // and reload autocomplete so it picks up the now-available backend connection.
+  // set remote service client, and reload autocomplete so it picks up the now-available backend connection.
   const unsubscribeStateChange = connectionService.onStateChange((state) => {
     if (state === "connected") {
       browserAutomationService.reregisterIfEnabled()
@@ -42,7 +48,17 @@ export function activate(context: vscode.ExtensionContext) {
       if (config) {
         telemetry.configure(config.baseUrl, config.password)
       }
+      try {
+        remoteService.setClient(connectionService.getClient())
+        console.log("[Kilo New] CLI connected, calling remoteService.refresh()")
+        remoteService.refresh().catch((err) => console.warn("[Kilo New] initial remote refresh failed:", err))
+      } catch {
+        remoteService.setClient(null)
+      }
       AutocompleteServiceManager.getInstance()?.load()
+    } else {
+      remoteService.clearState()
+      remoteService.setClient(null)
     }
   })
 
@@ -60,6 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Create the provider with shared service
   const provider = new KiloProvider(context.extensionUri, connectionService, context)
+  provider.setRemoteService(remoteService)
 
   // Register the webview view provider for the sidebar.
   // retainContextWhenHidden keeps the webview alive when switching to other sidebar panels.
@@ -103,6 +120,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewPanelSerializer("kilo-code.new.TabPanel", {
       deserializeWebviewPanel(panel: vscode.WebviewPanel) {
         const tabProvider = new KiloProvider(context.extensionUri, connectionService, context)
+        tabProvider.setRemoteService(remoteService)
         tabProvider.setContinueInWorktreeHandler((sessionId, progress) =>
           agentManagerProvider.continueFromSidebar(sessionId, progress),
         )
@@ -138,6 +156,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Create settings/profile editor provider (opens in editor area, not sidebar)
   const settingsEditorProvider = new SettingsEditorProvider(context.extensionUri, connectionService, context)
+  settingsEditorProvider.setRemoteService(remoteService)
   context.subscriptions.push(settingsEditorProvider)
 
   // Create sub-agent viewer provider (read-only editor panel for sub-agent sessions)
@@ -228,8 +247,18 @@ export function activate(context: vscode.ExtensionContext) {
       await provider.waitForReady()
       provider.postMessage({ type: "triggerTask", text: `Generate a terminal command: ${input}` })
     }),
+    vscode.commands.registerCommand("kilo-code.new.toggleRemote", () => {
+      remoteService.toggle().catch((err) => console.error("[Kilo New] toggleRemote command failed:", err))
+    }),
     vscode.commands.registerCommand("kilo-code.new.openInTab", () => {
-      return openKiloInNewTab(context, connectionService, agentManagerProvider, tabPanels, diffVirtualProvider)
+      return openKiloInNewTab(
+        context,
+        connectionService,
+        agentManagerProvider,
+        tabPanels,
+        diffVirtualProvider,
+        remoteService,
+      )
     }),
     vscode.commands.registerCommand("kilo-code.new.showChanges", () => {
       diffViewerProvider.openPanel()
@@ -362,6 +391,7 @@ async function openKiloInNewTab(
   agentManagerProvider: AgentManagerProvider,
   tabPanels: Map<vscode.WebviewPanel, KiloProvider>,
   diffVirtualProvider: DiffVirtualProvider,
+  remoteService: RemoteStatusService,
 ) {
   const lastCol = Math.max(...vscode.window.visibleTextEditors.map((e) => e.viewColumn || 0), 0)
   const hasVisibleEditors = vscode.window.visibleTextEditors.length > 0
@@ -384,6 +414,7 @@ async function openKiloInNewTab(
   }
 
   const tabProvider = new KiloProvider(context.extensionUri, connectionService, context)
+  tabProvider.setRemoteService(remoteService)
   tabProvider.setContinueInWorktreeHandler((sessionId, progress) =>
     agentManagerProvider.continueFromSidebar(sessionId, progress),
   )

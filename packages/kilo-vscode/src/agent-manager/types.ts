@@ -314,6 +314,18 @@ interface CloseSessionIn {
   sessionId: string
 }
 
+/** Persist a non-worktree session to agent-manager.json (worktreeId = null). */
+interface PersistSessionIn {
+  type: "agentManager.persistSession"
+  sessionId: string
+}
+
+/** Remove a non-worktree session from agent-manager.json. */
+interface ForgetSessionIn {
+  type: "agentManager.forgetSession"
+  sessionId: string
+}
+
 interface ConfigureSetupScriptIn {
   type: "agentManager.configureSetupScript"
 }
@@ -465,6 +477,11 @@ interface OpenPRIn {
   worktreeId: string
 }
 
+interface OpenSessionsIn {
+  type: "agentManager.openSessions"
+  sessionIDs: string[]
+}
+
 interface OpenFileIn {
   type: "agentManager.openFile"
   sessionId: string
@@ -589,6 +606,8 @@ export type AgentManagerInMessage =
   | OpenLocallyIn
   | AddSessionToWorktreeIn
   | CloseSessionIn
+  | PersistSessionIn
+  | ForgetSessionIn
   | ForkSessionIn
   | ConfigureSetupScriptIn
   | ShowTerminalIn
@@ -619,6 +638,7 @@ export type AgentManagerInMessage =
   | RevertWorktreeFileIn
   | RefreshPRIn
   | OpenPRIn
+  | OpenSessionsIn
   | OpenFileIn
   | GenericOpenFileIn
   | PreviewImageIn
