@@ -498,7 +498,7 @@ export namespace Config {
           stdout: err.stdout.toString(),
           stderr: err.stderr.toString(),
         }
-        if (Flag.OPENCODE_STRICT_CONFIG_DEPS) {
+        if (Flag.KILO_STRICT_CONFIG_DEPS) {
           log.error("failed to install dependencies", detail)
           throw err
         }
@@ -506,7 +506,7 @@ export namespace Config {
         return
       }
 
-      if (Flag.OPENCODE_STRICT_CONFIG_DEPS) {
+      if (Flag.KILO_STRICT_CONFIG_DEPS) {
         log.error("failed to install dependencies", { dir, error: err })
         throw err
       }
