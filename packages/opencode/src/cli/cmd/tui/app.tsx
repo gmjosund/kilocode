@@ -44,7 +44,6 @@ import { PromptHistoryProvider } from "./component/prompt/history"
 import { FrecencyProvider } from "./component/prompt/frecency"
 import { PromptStashProvider } from "./component/prompt/stash"
 import { DialogAlert } from "./ui/dialog-alert"
-import { isKiloError, showKiloErrorToast } from "@/kilocode/kilo-errors" // kilocode_change
 import { DialogConfirm } from "./ui/dialog-confirm"
 import { ToastProvider, useToast } from "./ui/toast"
 import { ExitProvider, useExit } from "./context/exit"
@@ -58,23 +57,11 @@ import { ArgsProvider, useArgs, type Args } from "./context/args"
 import open from "open"
 import { writeHeapSnapshot } from "v8"
 import { PromptRefProvider, usePromptRef } from "./context/prompt"
-import { registerKiloCommands } from "@/kilocode/kilo-commands" // kilocode_change
-import { KiloClawView } from "@/kilocode/claw/view" // kilocode_change
-import { initializeTUIDependencies } from "@kilocode/kilo-gateway/tui" // kilocode_change
+import * as KiloApp from "@/kilocode/cli/cmd/tui/app" // kilocode_change
 import { TuiConfigProvider, useTuiConfig } from "./context/tui-config"
 import { TuiConfig } from "@/config/tui"
 import { createTuiApi, TuiPluginRuntime, type RouteMap } from "./plugin"
 import { FormatError, FormatUnknownError } from "@/cli/error"
-
-// kilocode_change start
-function isAllowEverything(permission: unknown): boolean {
-  if (typeof permission !== "object" || permission === null) return false
-  const wildcard = (permission as Record<string, unknown>)["*"]
-  if (typeof wildcard === "string") return wildcard === "allow"
-  if (typeof wildcard === "object" && wildcard !== null) return (wildcard as Record<string, unknown>)["*"] === "allow"
-  return false
-}
-// kilocode_change end
 
 async function getTerminalBackgroundColor(): Promise<"dark" | "light"> {
   // can't set raw mode if not a TTY
@@ -354,55 +341,38 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
   }
   const [terminalTitleEnabled, setTerminalTitleEnabled] = createSignal(kv.get("terminal_title_enabled", true))
 
-  // kilocode_change start — notify server which session the user is viewing (for live session indicators)
-  createEffect(() => {
-    const sessionID = route.data.type === "session" ? route.data.sessionID : undefined
-    sdk.client.session.viewed({ focused: sessionID ? [sessionID] : [] }).catch(() => {})
-  })
-  // kilocode_change end
-
-  // kilocode_change start — evict per-session data from store when navigating away
-  createEffect(
-    on(
-      () => (route.data.type === "session" ? route.data.sessionID : undefined),
-      (current, prev) => {
-        if (prev && prev !== current) sync.session.evict(prev)
-      },
-    ),
-  )
-  // kilocode_change end
+  KiloApp.useSessionEffects({ route, sdk, sync }) // kilocode_change
 
   // Update terminal window title based on current route and session
   createEffect(() => {
     if (!terminalTitleEnabled() || Flag.KILO_DISABLE_TERMINAL_TITLE) return
 
-    const titleDefault = "Kilo CLI" // kilocode_change
+    const titleDefault = KiloApp.APP_TITLE // kilocode_change
 
     if (route.data.type === "home") {
-      renderer.setTerminalTitle(titleDefault) // kilocode_change
+      renderer.setTerminalTitle(titleDefault)
       return
     }
 
     if (route.data.type === "session") {
       const session = sync.session.get(route.data.sessionID)
       if (!session || SessionApi.isDefaultTitle(session.title)) {
-        renderer.setTerminalTitle(titleDefault) // kilocode_change
+        renderer.setTerminalTitle(titleDefault)
         return
       }
 
       const title = session.title.length > 40 ? session.title.slice(0, 37) + "..." : session.title
-      renderer.setTerminalTitle(`${titleDefault} | ${title}`) // kilocode_change
+      renderer.setTerminalTitle(`${titleDefault} | ${title}`)
       return
     }
 
     if (route.data.type === "plugin") {
-      renderer.setTerminalTitle(`${titleDefault} | ${route.data.id}`) // kilocode_change
+      renderer.setTerminalTitle(`${titleDefault} | ${route.data.id}`)
     }
 
     // kilocode_change start
-    if (route.data.type === "kiloclaw") {
-      renderer.setTerminalTitle(`${titleDefault} | KiloClaw`)
-    }
+    const kiloTitle = KiloApp.getTerminalTitle(route, titleDefault)
+    if (kiloTitle) renderer.setTerminalTitle(kiloTitle)
     // kilocode_change end
   })
 
@@ -711,7 +681,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
       title: "Open docs",
       value: "docs.open",
       onSelect: () => {
-        open("https://kilo.ai/docs").catch(() => {}) // kilocode_change
+        open(KiloApp.DOCS_URL).catch(() => {}) // kilocode_change
         dialog.clear()
       },
       category: "System",
@@ -817,48 +787,10 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
         dialog.clear()
       },
     },
-    // kilocode_change start
-    {
-      get title() {
-        return isAllowEverything(sync.data.config.permission) ? "Disable auto-approve mode" : "Enable auto-approve mode"
-      },
-      value: "permission.allow_everything",
-      category: "System",
-      onSelect: async (dialog) => {
-        const enabled = isAllowEverything(sync.data.config.permission)
-        const result = await sdk.client.permission.allowEverything({ enable: !enabled })
-        if (result.error) {
-          toast.show({
-            variant: "error",
-            message: `Failed to ${!enabled ? "enable" : "disable"} auto-approve mode`,
-          })
-          return
-        }
-        dialog.clear()
-      },
-    },
-    // kilocode_change end
   ])
 
-  // kilocode_change start - Initialize TUI dependencies for kilo-gateway
-  initializeTUIDependencies({
-    useCommandDialog: useCommandDialog,
-    useSync: useSync,
-    useDialog: useDialog,
-    useToast: useToast,
-    useTheme: useTheme,
-    useSDK: useSDK,
-    DialogAlert: DialogAlert,
-    DialogSelect: DialogSelect,
-    Link: Link,
-    Clipboard: Clipboard,
-    useKeyboard: useKeyboard,
-    TextAttributes: TextAttributes,
-  })
-  registerKiloCommands(useSDK)
-  // kilocode_change end
+  KiloApp.init() // kilocode_change
 
-  // kilocode_change - Delete OpenRouter Alert
   sdk.event.on(TuiEvent.CommandExecute.type, (evt) => {
     command.trigger(evt.properties.command)
   })
@@ -892,12 +824,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
   sdk.event.on("session.error", (evt) => {
     const error = evt.properties.error
     if (error && typeof error === "object" && error.name === "MessageAbortedError") return
-    // kilocode_change start - Show warning toast for Kilo errors instead of generic error toast
-    if (error && typeof error === "object" && isKiloError(error)) {
-      showKiloErrorToast(error, toast)
-      return
-    }
-    // kilocode_change end
+    if (KiloApp.handleSessionError(error, toast)) return // kilocode_change
 
     const message = errorMessage(error)
 
@@ -949,7 +876,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
     await DialogAlert.show(
       dialog,
       "Update Complete",
-      `Successfully updated to Kilo v${result.data.version}. Please restart the application.`, // kilocode_change
+      `Successfully updated to ${KiloApp.APP_NAME} v${result.data.version}. Please restart the application.`, // kilocode_change
     )
 
     exit()
@@ -991,7 +918,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
           </Match>
           {/* kilocode_change start */}
           <Match when={route.data.type === "kiloclaw"}>
-            <KiloClawView />
+            <KiloApp.KiloClawView />
           </Match>
           {/* kilocode_change end */}
         </Switch>
