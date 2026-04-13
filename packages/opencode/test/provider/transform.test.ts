@@ -2321,6 +2321,7 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
+  // kilocode_change start
   describe("@ai-sdk/azure", () => {
     test("gpt-5.4 includes xhigh", () => {
       const model = createMockModel({
@@ -2342,6 +2343,7 @@ describe("ProviderTransform.variants", () => {
       })
     })
   })
+  // kilocode_change end
 
   describe("@ai-sdk/cerebras", () => {
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningEffort", () => {

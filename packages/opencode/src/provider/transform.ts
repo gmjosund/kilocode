@@ -583,9 +583,11 @@ export namespace ProviderTransform {
         if (id.includes("gpt-5-") || id === "gpt-5") {
           azureEfforts.unshift("minimal")
         }
+        // kilocode_change start
         if (model.release_date >= "2025-12-04") {
           azureEfforts.push("xhigh")
         }
+        // kilocode_change end
         return Object.fromEntries(
           azureEfforts.map((effort) => [
             effort,
