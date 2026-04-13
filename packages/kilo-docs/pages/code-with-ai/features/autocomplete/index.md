@@ -30,7 +30,7 @@ This keybinding requires `kilo-code.new.autocomplete.enableSmartInlineTaskKeybin
 
 ## Provider and Model
 
-Autocomplete currently uses **Codestral** (`mistralai/codestral-2508`) routed through the **Kilo Gateway**. Codestral is optimized for Fill-in-the-Middle (FIM) completions. Support for additional FIM models is planned for future releases.
+Autocomplete currently uses **Codestral** (`mistralai/codestral-2508`) routed through the **Kilo Gateway**. Codestral is optimized for Fill-in-the-Middle (FIM) completions, and there is no option to select a different model at this time. Support for additional FIM models is planned for future releases.
 
 Requests are billed through your Kilo account. To use your own Mistral API key instead, see [Setting Up Mistral for Free Autocomplete](/docs/code-with-ai/features/autocomplete/mistral-setup).
 
