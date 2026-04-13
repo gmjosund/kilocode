@@ -941,6 +941,7 @@ export const dict = {
   "session.status.retry": "Opnieuw proberen...",
   "session.status.retrying": "Opnieuw proberen (poging {{ attempt }})... {{ message }}",
   "session.status.working": "Bezig...",
+  "session.status.offline": "Netwerkverbinding verbroken — opnieuw verbinden...",
 
   "ui.sessionTurn.cancel": "Annuleren",
   "ui.sessionTurn.status.thinking": "Denken...",
@@ -953,6 +954,7 @@ export const dict = {
   "prompt.placeholder.error": "Verbinding mislukt. Controleer het uitvoerpaneel of herstart de extensie.",
 
   "context.usage.sessionCost": "Sessiekosten",
+  "context.usage.olderSessions": "{{count}} oudere sessies",
   "context.stats.thisSession": "Deze sessie",
 
   "time.justNow": "zojuist",
@@ -1076,6 +1078,14 @@ export const dict = {
     "Ga door met de agent loop wanneer een toestemming wordt geweigerd",
   "settings.experimental.mcpTimeout.title": "MCP Timeout (ms)",
   "settings.experimental.mcpTimeout.description": "Timeout voor MCP-serververzoeken in milliseconden",
+  "settings.experimental.remote.title": "Remote-bediening",
+  "settings.experimental.remote.description":
+    "Schakel Remote-bediening van sessies in via Kilo Cloud. Dit heeft ook invloed op CLI's op deze machine.",
+  "settings.experimental.remote.current": "Huidige status:",
+  "settings.experimental.remote.startup": "Automatisch inschakelen bij opstarten:",
+  "settings.experimental.remote.active": "Actief",
+  "settings.experimental.remote.inactive": "Inactief",
+  "settings.experimental.remote.hint": "Gebruik /remote in de chat om te schakelen",
   "settings.experimental.toolToggles": "Tool Schakelaars",
 
   "settings.agentBehaviour.defaultAgent.title": "Standaard Agent",
@@ -1382,5 +1392,15 @@ export const dict = {
     "Dit is een ingebouwde modus. De basisdefinitie kan niet worden gewijzigd, maar u kunt hieronder overrides configureren.",
   "settings.agentBehaviour.editMode.prompt": "Systeemprompt",
   "settings.agentBehaviour.editMode.promptOverride": "Aangepaste systeemprompt voor deze ingebouwde modus",
+  "settings.agentBehaviour.badge.subagent": "subagent",
+  "settings.agentBehaviour.permissions.title": "Berekende machtigingen",
+  "settings.agentBehaviour.permissions.count": "{{count}} regels",
+  "settings.agentBehaviour.permissions.effective": "Effectief (wildcard):",
+  "settings.agentBehaviour.permissions.col.tool": "Tool",
+  "settings.agentBehaviour.permissions.col.pattern": "Patroon",
+  "settings.agentBehaviour.permissions.col.action": "Actie",
+  "settings.agentBehaviour.permissions.copy": "Machtigingen kopiëren als JSON",
+  "settings.agentBehaviour.permissions.hint":
+    "Regels worden op volgorde geëvalueerd — de laatst overeenkomende regel wint. Dit is de opgeloste regelset van de CLI backend.",
   "settings.agentBehaviour.editMode.save": "Klaar",
 }

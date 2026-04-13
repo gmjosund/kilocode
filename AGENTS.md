@@ -10,6 +10,7 @@ Kilo CLI is an open source AI coding agent that generates code from natural lang
 ## Build and Dev
 
 - **Dev**: `bun run dev` (runs from root) or `bun run --cwd packages/opencode --conditions=browser src/index.ts`
+- **Dev with params**: `bun dev -- help`
 - **Extension**: `bun run extension` (build + launch VS Code with the extension in dev mode). Pass `--no-build` to skip the build.
 - **Typecheck**: `bun turbo typecheck` (uses `tsgo`, not `tsc`)
 - **Test**: `bun test` from `packages/opencode/` (NOT from root -- root blocks tests)
@@ -170,9 +171,15 @@ Tests MUST test actual implementation, do not duplicate logic into a test.
 
 [Conventional Commits](https://www.conventionalcommits.org/) with scopes matching packages: `vscode`, `cli`, `agent-manager`, `sdk`, `ui`, `i18n`, `kilo-docs`, `gateway`, `telemetry`, `desktop`. Omit scope when spanning multiple packages.
 
+## Pull Requests
+
+PR descriptions should be 2-3 lines covering **what** changed and **why**. Focus on intent and context a reviewer can't get from the diff — skip file-by-file inventories, test result summaries, and anything obvious from the code itself.
+
 ## Fork Merge Process
 
 Kilo CLI is a fork of [opencode](https://github.com/anomalyco/opencode).
+
+**Very important**: when planning or coding, update shared files with OpenCode as last resort! Everything is shared code from OpenCode, except folders that contain `kilo` in the name or have a parent directory that contains `kilo` in the name. Example of kilo specific folders: `packages/opencode/src/kilocode/` and `packages/kilo-docs/`. Always look for ways to implement your feature or fix in a way that minimizes changes to shared code.
 
 ### Minimizing Merge Conflicts
 
@@ -215,6 +222,21 @@ const bar = 2
 
 ```typescript
 // kilocode_change - new file
+```
+
+<!-- prettier-ignore -->
+**JSX/TSX (inside JSX templates):**
+
+<!-- prettier-ignore -->
+```tsx
+{/* kilocode_change */}
+```
+
+<!-- prettier-ignore -->
+```tsx
+{/* kilocode_change start */}
+<MyComponent />
+{/* kilocode_change end */}
 ```
 
 #### When markers are NOT needed

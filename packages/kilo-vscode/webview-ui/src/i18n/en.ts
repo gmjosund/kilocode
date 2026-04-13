@@ -940,6 +940,7 @@ export const dict = {
   "session.status.retry": "Retrying…",
   "session.status.retrying": "Retrying (attempt {{ attempt }})… {{ message }}",
   "session.status.working": "Working...",
+  "session.status.offline": "Network disconnected — reconnecting...",
 
   "ui.sessionTurn.cancel": "Cancel",
   "ui.sessionTurn.status.thinking": "Thinking...",
@@ -952,6 +953,7 @@ export const dict = {
   "prompt.placeholder.error": "Connection failed. Check the output panel or restart the extension.",
 
   "context.usage.sessionCost": "Session cost",
+  "context.usage.olderSessions": "{{count}} older sessions",
   "context.stats.thisSession": "This session",
 
   "time.justNow": "just now",
@@ -1067,6 +1069,14 @@ export const dict = {
   "settings.experimental.continueOnDeny.description": "Continue the agent loop when a permission is denied",
   "settings.experimental.mcpTimeout.title": "MCP Timeout (ms)",
   "settings.experimental.mcpTimeout.description": "Timeout for MCP server requests in milliseconds",
+  "settings.experimental.remote.title": "Remote Control",
+  "settings.experimental.remote.description":
+    "Enable remote control of sessions via Kilo Cloud. This will also affect CLIs on this machine.",
+  "settings.experimental.remote.current": "Current state:",
+  "settings.experimental.remote.startup": "Auto-enable on startup:",
+  "settings.experimental.remote.active": "Active",
+  "settings.experimental.remote.inactive": "Inactive",
+  "settings.experimental.remote.hint": "Use /remote in chat to toggle",
   "settings.experimental.toolToggles": "Tool Toggles",
 
   "settings.agentBehaviour.defaultAgent.title": "Default Agent",
@@ -1178,6 +1188,16 @@ export const dict = {
   "settings.agentBehaviour.editMode.native":
     "This is a built-in mode. Its base definition cannot be changed, but you can configure overrides below.",
   "settings.agentBehaviour.editMode.promptOverride": "Custom prompt override for this built-in mode",
+  "settings.agentBehaviour.badge.subagent": "subagent",
+  "settings.agentBehaviour.permissions.title": "Calculated Permissions",
+  "settings.agentBehaviour.permissions.count": "{{count}} rules",
+  "settings.agentBehaviour.permissions.effective": "Effective (wildcard):",
+  "settings.agentBehaviour.permissions.col.tool": "Tool",
+  "settings.agentBehaviour.permissions.col.pattern": "Pattern",
+  "settings.agentBehaviour.permissions.col.action": "Action",
+  "settings.agentBehaviour.permissions.copy": "Copy permissions as JSON",
+  "settings.agentBehaviour.permissions.hint":
+    "Rules are evaluated in order — last matching rule wins. This is the resolved ruleset from the CLI backend.",
 
   "settings.autoApprove.description":
     "Define how tools are allowed to run. Most tools default to Allow. doom_loop and external_directory default to Ask.",
